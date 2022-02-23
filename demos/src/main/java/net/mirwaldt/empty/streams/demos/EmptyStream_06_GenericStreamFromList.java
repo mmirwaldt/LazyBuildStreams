@@ -140,10 +140,8 @@ public class EmptyStream_06_GenericStreamFromList {
 // Output:
 /*
 ############################################################
-    list=[]
-            ############################################################
-            # WARNING: Unable to get Instrumentation. Dynamic Attach failed. You may add this JAR as -javaagent manually, or supply -Djdk.attach.allowAttachSelf
-# WARNING: Unable to attach Serviceability Agent. sun.jvm.hotspot.memory.Universe.getNarrowOopBase()
+list=[]
+############################################################
     eagerBuildEmpty:
     totalSize=128 bytes
             totalCount=4 objects
