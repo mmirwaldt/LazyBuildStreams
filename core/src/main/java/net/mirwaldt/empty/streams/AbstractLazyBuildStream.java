@@ -4,8 +4,9 @@ import java.util.Spliterator;
 import java.util.function.Supplier;
 import java.util.stream.*;
 
-public abstract class AbstractLazyBuildStream<T, S extends BaseStream<T, S>, I extends Spliterator<T>>
-        implements Supplier<S> {
+abstract sealed class AbstractLazyBuildStream<T, S extends BaseStream<T, S>, I extends Spliterator<T>>
+        implements Supplier<S>
+        permits LazyBuildGenericStream, LazyBuildIntStream, LazyBuildLongStream, LazyBuildDoubleStream {
     protected final boolean isParallel;
     protected Spliterator<?> spliterator;
     protected Supplier<S> streamSupplier;

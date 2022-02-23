@@ -6,7 +6,7 @@ import java.util.stream.*;
 
 import static net.mirwaldt.empty.streams.util.LazyBuildIntStreamUtil.*;
 
-public class LazyBuildIntStream
+final class LazyBuildIntStream
         extends AbstractLazyBuildStream<Integer, IntStream, Spliterator.OfInt>
         implements IntStream {
     public LazyBuildIntStream(IntStream first) {
@@ -225,7 +225,6 @@ public class LazyBuildIntStream
     protected Supplier<IntStream> emptyStreamSupplier() {
         return EMPTY_INT_STREAM_SUPPLIER;
     }
-
 
     @Override
     public IntStream get() {

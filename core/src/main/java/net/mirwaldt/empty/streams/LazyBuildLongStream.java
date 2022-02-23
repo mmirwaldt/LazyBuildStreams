@@ -6,7 +6,7 @@ import java.util.stream.*;
 
 import static net.mirwaldt.empty.streams.util.LazyBuildLongStreamUtil.*;
 
-public class LazyBuildLongStream
+final class LazyBuildLongStream
         extends AbstractLazyBuildStream<Long, LongStream, Spliterator.OfLong>
         implements LongStream {
     public LazyBuildLongStream(LongStream first) {

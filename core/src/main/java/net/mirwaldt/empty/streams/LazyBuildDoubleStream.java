@@ -6,7 +6,7 @@ import java.util.stream.*;
 
 import static net.mirwaldt.empty.streams.util.LazyBuildDoubleStreamUtil.*;
 
-public class LazyBuildDoubleStream
+final class LazyBuildDoubleStream
         extends AbstractLazyBuildStream<Double, DoubleStream, Spliterator.OfDouble>
         implements DoubleStream {
 
