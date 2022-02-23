@@ -6,7 +6,7 @@ import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
-class LazyBuildStreamFactory {
+public class LazyBuildStreamFactory {
     private LazyBuildStreamFactory() {
 
     }
