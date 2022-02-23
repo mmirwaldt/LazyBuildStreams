@@ -7,70 +7,81 @@ import java.util.stream.*;
 final class LazyBuildDoubleStream
         extends AbstractLazyBuildStream<Double, DoubleStream, Spliterator.OfDouble>
         implements DoubleStream {
-    public LazyBuildDoubleStream(DoubleStream first) {
-        super(first.isParallel(), first.spliterator());
+    LazyBuildDoubleStream(DoubleStream first) {
+        super(first.spliterator(), first.isParallel());
     }
 
-    public LazyBuildDoubleStream(Spliterator.OfDouble spliterator) {
-        super(spliterator);
+    LazyBuildDoubleStream(Spliterator.OfDouble spliterator, boolean isParallel) {
+        super(spliterator, isParallel);
     }
 
-    LazyBuildDoubleStream(boolean isParallel, Spliterator<?> spliterator, Supplier<DoubleStream> streamSupplier) {
-        super(isParallel, spliterator, streamSupplier);
+    LazyBuildDoubleStream(Spliterator<?> spliterator, Supplier<DoubleStream> streamSupplier, boolean isParallel) {
+        super(spliterator, streamSupplier, isParallel);
     }
 
     @Override
     public DoubleStream filter(DoublePredicate predicate) {
+        initIfFirst();
         return nextDoubleStream(toDoubleStreamSupplier(streamSupplier, (stream) -> stream.filter(predicate)));
     }
 
     @Override
     public DoubleStream map(DoubleUnaryOperator mapper) {
+        initIfFirst();
         return nextDoubleStream(toDoubleStreamSupplier(streamSupplier, (stream) -> stream.map(mapper)));
     }
 
     @Override
     public <U> Stream<U> mapToObj(DoubleFunction<? extends U> mapper) {
+        initIfFirst();
         return nextStream(toStreamSupplier(streamSupplier, (stream) -> stream.mapToObj(mapper)));
     }
 
     @Override
     public IntStream mapToInt(DoubleToIntFunction mapper) {
+        initIfFirst();
         return nextIntStream(toIntStreamSupplier(streamSupplier, (stream) -> stream.mapToInt(mapper)));
     }
 
     @Override
     public LongStream mapToLong(DoubleToLongFunction mapper) {
+        initIfFirst();
         return nextLongStream(toLongStreamSupplier(streamSupplier, (stream) -> stream.mapToLong(mapper)));
     }
 
     @Override
     public DoubleStream flatMap(DoubleFunction<? extends DoubleStream> mapper) {
+        initIfFirst();
         return nextDoubleStream(toDoubleStreamSupplier(streamSupplier, (stream) -> stream.flatMap(mapper)));
     }
 
     @Override
     public DoubleStream distinct() {
+        initIfFirst();
         return nextDoubleStream(toDoubleStreamSupplier(streamSupplier, DoubleStream::distinct));
     }
 
     @Override
     public DoubleStream sorted() {
+        initIfFirst();
         return nextDoubleStream(toDoubleStreamSupplier(streamSupplier, DoubleStream::sorted));
     }
 
     @Override
     public DoubleStream peek(DoubleConsumer action) {
+        initIfFirst();
         return nextDoubleStream(toDoubleStreamSupplier(streamSupplier, (stream) -> stream.peek(action)));
     }
 
     @Override
     public DoubleStream limit(long maxSize) {
+        initIfFirst();
         return nextDoubleStream(toDoubleStreamSupplier(streamSupplier, (stream) -> stream.limit(maxSize)));
     }
 
     @Override
     public DoubleStream skip(long n) {
+        initIfFirst();
         return nextDoubleStream(toDoubleStreamSupplier(streamSupplier, (stream) -> stream.skip(n)));
     }
 
@@ -161,26 +172,31 @@ final class LazyBuildDoubleStream
 
     @Override
     public Stream<Double> boxed() {
+        initIfFirst();
         return nextStream(toStreamSupplier(streamSupplier, DoubleStream::boxed));
     }
 
     @Override
     public DoubleStream sequential() {
+        initIfFirst();
         return nextDoubleStream(toDoubleStreamSupplier(streamSupplier, DoubleStream::sequential), false);
     }
 
     @Override
     public DoubleStream parallel() {
+        initIfFirst();
         return nextDoubleStream(toDoubleStreamSupplier(streamSupplier, DoubleStream::parallel), true);
     }
 
     @Override
     public DoubleStream unordered() {
+        initIfFirst();
         return nextDoubleStream(toDoubleStreamSupplier(streamSupplier, BaseStream::unordered));
     }
 
     @Override
     public DoubleStream onClose(Runnable closeHandler) {
+        initIfFirst();
         return nextDoubleStream(toDoubleStreamSupplier(streamSupplier, (stream) -> stream.onClose(closeHandler)));
     }
 
@@ -209,28 +225,23 @@ final class LazyBuildDoubleStream
         return StreamSupport.doubleStream((Spliterator.OfDouble) spliterator, isParallel);
     }
 
-
     public static <R> Supplier<Stream<R>> toStreamSupplier(
             Supplier<DoubleStream> streamSupplier, Function<DoubleStream, Stream<R>> nextOp) {
-        return (streamSupplier == EMPTY_DOUBLE_STREAM_SUPPLIER)
-                ? emptyGenericStreamSupplier() : () -> nextOp.apply(streamSupplier.get());
+        return (isEmpty(streamSupplier)) ? emptyGenericStreamSupplier() : () -> nextOp.apply(streamSupplier.get());
     }
 
     public static Supplier<IntStream> toIntStreamSupplier(
             Supplier<DoubleStream> streamSupplier, Function<DoubleStream, IntStream> nextOp) {
-        return (streamSupplier == EMPTY_DOUBLE_STREAM_SUPPLIER)
-                ? EMPTY_INT_STREAM_SUPPLIER : () -> nextOp.apply(streamSupplier.get());
+        return (isEmpty(streamSupplier)) ? EMPTY_INT_STREAM_SUPPLIER : () -> nextOp.apply(streamSupplier.get());
     }
 
     public static Supplier<LongStream> toLongStreamSupplier(
             Supplier<DoubleStream> streamSupplier, Function<DoubleStream, LongStream> nextOp) {
-        return (streamSupplier == EMPTY_DOUBLE_STREAM_SUPPLIER)
-                ? EMPTY_LONG_STREAM_SUPPLIER : () -> nextOp.apply(streamSupplier.get());
+        return (isEmpty(streamSupplier)) ? EMPTY_LONG_STREAM_SUPPLIER : () -> nextOp.apply(streamSupplier.get());
     }
 
     public static Supplier<DoubleStream> toDoubleStreamSupplier(
             Supplier<DoubleStream> streamSupplier, Function<DoubleStream, DoubleStream> nextOp) {
-        return (streamSupplier == EMPTY_DOUBLE_STREAM_SUPPLIER)
-                ? EMPTY_DOUBLE_STREAM_SUPPLIER : () -> nextOp.apply(streamSupplier.get());
+        return (isEmpty(streamSupplier)) ? EMPTY_DOUBLE_STREAM_SUPPLIER : () -> nextOp.apply(streamSupplier.get());
     }
 }

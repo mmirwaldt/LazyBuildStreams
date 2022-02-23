@@ -28,18 +28,34 @@ public class LazyBuildStreamFactory {
     }
 
     public static <T> Stream<T> lazyBuildGenericStream(Spliterator<T> spliterator) {
-        return new LazyBuildGenericStream<T>(spliterator);
+        return lazyBuildGenericStream(spliterator, false);
     }
 
     public static IntStream lazyBuildIntStream(Spliterator.OfInt spliterator) {
-        return new LazyBuildIntStream(spliterator);
+        return lazyBuildIntStream(spliterator, false);
     }
 
     public static LongStream lazyBuildLongStream(Spliterator.OfLong spliterator) {
-        return new LazyBuildLongStream(spliterator);
+        return lazyBuildLongStream(spliterator, false);
     }
 
     public static DoubleStream lazyBuildDoubleStream(Spliterator.OfDouble spliterator) {
-        return new LazyBuildDoubleStream(spliterator);
+        return lazyBuildDoubleStream(spliterator, false);
+    }
+
+    public static <T> Stream<T> lazyBuildGenericStream(Spliterator<T> spliterator, boolean isParallel) {
+        return new LazyBuildGenericStream<T>(spliterator, isParallel);
+    }
+
+    public static IntStream lazyBuildIntStream(Spliterator.OfInt spliterator, boolean isParallel) {
+        return new LazyBuildIntStream(spliterator, isParallel);
+    }
+
+    public static LongStream lazyBuildLongStream(Spliterator.OfLong spliterator, boolean isParallel) {
+        return new LazyBuildLongStream(spliterator, isParallel);
+    }
+
+    public static DoubleStream lazyBuildDoubleStream(Spliterator.OfDouble spliterator, boolean isParallel) {
+        return new LazyBuildDoubleStream(spliterator, isParallel);
     }
 }

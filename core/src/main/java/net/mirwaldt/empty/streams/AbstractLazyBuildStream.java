@@ -1,6 +1,7 @@
 package net.mirwaldt.empty.streams;
 
 import java.util.Spliterator;
+import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.*;
 
@@ -36,24 +37,25 @@ abstract sealed class AbstractLazyBuildStream<T, S extends BaseStream<T, S>, I e
         }
     };
 
-    protected final boolean isParallel;
+    private final boolean isFirst;
     protected Spliterator<?> spliterator;
     protected Supplier<S> streamSupplier;
+    protected final boolean isParallel;
 
-    AbstractLazyBuildStream(I spliterator) {
-        this(false, spliterator);
-    }
+    private boolean wasUsedOrClose;
 
-    AbstractLazyBuildStream(boolean isParallel, I spliterator) {
-        this.isParallel = isParallel;
+    AbstractLazyBuildStream(I spliterator, boolean isParallel) {
+        this.isFirst = true;
         this.spliterator = spliterator;
-        this.streamSupplier = firstSupplier(spliterator);
+        this.streamSupplier = null;
+        this.isParallel = isParallel;
     }
 
-    AbstractLazyBuildStream(boolean isParallel, Spliterator<?> spliterator, Supplier<S> streamSupplier) {
-        this.isParallel = isParallel;
+    AbstractLazyBuildStream(Spliterator<?> spliterator, Supplier<S> streamSupplier, boolean isParallel) {
+        this.isFirst = false;
         this.spliterator = spliterator;
         this.streamSupplier = streamSupplier;
+        this.isParallel = isParallel;
     }
 
     abstract protected I emptySpliterator();
@@ -67,11 +69,21 @@ abstract sealed class AbstractLazyBuildStream<T, S extends BaseStream<T, S>, I e
 
     @Override
     public void close() {
+        wasUsedOrClose = true;
+        spliterator = null;
         streamSupplier = null;
     }
 
-    private Supplier<S> firstSupplier(Spliterator<?> spliterator) {
+    protected void initIfFirst() {
+        checkIfUsedOrClosed();
+        if (isFirst) {
+            streamSupplier = firstSupplier();
+        }
+    }
+
+    private Supplier<S> firstSupplier() {
         if (spliterator.equals(emptySpliterator())) {
+            spliterator = null;
             return emptyStreamSupplier();
         } else {
             return this;
@@ -79,31 +91,27 @@ abstract sealed class AbstractLazyBuildStream<T, S extends BaseStream<T, S>, I e
     }
 
     protected S getOnce() {
-        checkIfUsed();
+        checkIfUsedOrClosed();
         S stream;
-        if (0 < spliterator.estimateSize()) {
+        if (spliterator != null && 0 < spliterator.estimateSize()) {
             stream = streamSupplier.get();
         } else {
             stream = emptyStreamSupplier().get();
         }
-        streamSupplier = () -> stream;
+        close();
         return stream;
     }
 
-
     protected void clear() {
-        if(streamSupplier != this) {
+        wasUsedOrClose = true;
+        if (streamSupplier != this) {
             spliterator = null;
         }
         streamSupplier = null;
     }
 
-    protected boolean wasUsed() {
-        return streamSupplier == null;
-    }
-
-    protected void checkIfUsed() {
-        if (wasUsed()) {
+    protected void checkIfUsedOrClosed() {
+        if (wasUsedOrClose) {
             throw new IllegalStateException("stream has already been operated upon or closed");
         }
     }
@@ -125,34 +133,41 @@ abstract sealed class AbstractLazyBuildStream<T, S extends BaseStream<T, S>, I e
     }
 
     protected <R> Stream<R> nextStream(Supplier<Stream<R>> nextStreamSupplier, boolean isParallel) {
-        checkIfUsed();
-        var next = new LazyBuildGenericStream<>(isParallel, spliterator, nextStreamSupplier);
+        checkIfUsedOrClosed();
+        var next = new LazyBuildGenericStream<>(spliterator, nextStreamSupplier, isParallel);
         clear();
         return next;
     }
 
     protected IntStream nextIntStream(Supplier<IntStream> nextStreamSupplier, boolean isParallel) {
-        checkIfUsed();
-        var next = new LazyBuildIntStream(isParallel, spliterator, nextStreamSupplier);
+        checkIfUsedOrClosed();
+        var next = new LazyBuildIntStream(spliterator, nextStreamSupplier, isParallel);
         clear();
         return next;
     }
 
     protected LongStream nextLongStream(Supplier<LongStream> nextStreamSupplier, boolean isParallel) {
-        checkIfUsed();
-        var next = new LazyBuildLongStream(isParallel, spliterator, nextStreamSupplier);
+        checkIfUsedOrClosed();
+        var next = new LazyBuildLongStream(spliterator, nextStreamSupplier, isParallel);
         clear();
         return next;
     }
 
     protected DoubleStream nextDoubleStream(Supplier<DoubleStream> nextStreamSupplier, boolean isParallel) {
-        checkIfUsed();
-        var next = new LazyBuildDoubleStream(isParallel, spliterator, nextStreamSupplier);
+        checkIfUsedOrClosed();
+        var next = new LazyBuildDoubleStream(spliterator, nextStreamSupplier, isParallel);
         clear();
         return next;
     }
 
     public static <T> Supplier<Stream<T>> emptyGenericStreamSupplier() {
         return (Supplier<Stream<T>>) EMPTY_STREAM_SUPPLIER;
+    }
+
+    protected static <U, V extends BaseStream<U, V>> boolean isEmpty(Supplier<V> streamSupplier) {
+        return streamSupplier == emptyGenericStreamSupplier()
+                || streamSupplier == EMPTY_INT_STREAM_SUPPLIER
+                || streamSupplier == EMPTY_LONG_STREAM_SUPPLIER
+                || streamSupplier == EMPTY_DOUBLE_STREAM_SUPPLIER;
     }
 }
