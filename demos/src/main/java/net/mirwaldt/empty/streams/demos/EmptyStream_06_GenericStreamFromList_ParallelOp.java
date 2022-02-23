@@ -10,7 +10,7 @@ import static net.mirwaldt.empty.streams.demos.PrintUtil.*;
 /**
  * Use with VM option -Djol.magicFieldOffset=true
  */
-public class EmptyStream_06_GenericStreamFromList {
+public class EmptyStream_06_GenericStreamFromList_ParallelOp {
     public static void main(String[] args) {
         List<String> list = new ArrayList<>();
 

@@ -11,7 +11,7 @@ import static net.mirwaldt.empty.streams.demos.PrintUtil.*;
 /**
  * Use with VM option -Djol.magicFieldOffset=true
  */
-public class EmptyStream_08_IntStreamFromIntArray_Parallel {
+public class EmptyStream_08_IntStreamFromIntArray_ParallelOp {
     public static void main(String[] args) {
         List<Integer> list = new ArrayList<>();
 
@@ -143,8 +143,6 @@ public class EmptyStream_08_IntStreamFromIntArray_Parallel {
 ############################################################
 list=[]
 ############################################################
-# WARNING: Unable to get Instrumentation. Dynamic Attach failed. You may add this JAR as -javaagent manually, or supply -Djdk.attach.allowAttachSelf
-# WARNING: Unable to attach Serviceability Agent. sun.jvm.hotspot.memory.Universe.getNarrowOopBase()
 eagerBuildEmpty:
 totalSize=208 bytes
 totalCount=6 objects

@@ -8,7 +8,7 @@ import static net.mirwaldt.empty.streams.demos.PrintUtil.*;
 /**
  * Use with VM option -Djol.magicFieldOffset=true
  */
-public class EmptyStream_05_DefaultEmptyGenericStream_Parallel {
+public class EmptyStream_05_DefaultEmptyGenericStream_ParallelOp {
     public static void main(String[] args) {
         // eager build
         Stream<String> eagerBuildEmpty = Stream.empty();
