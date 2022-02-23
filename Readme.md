@@ -4,13 +4,13 @@
 
 Heinz Kabutz once noticed with a colleague at a conference that empty streams create a useless stream pipeline. He wrote
 about the problem in his blog on https://javaspecialists.eu/archive/Issue295-Faster-Empty-Streams.html
-and proposed a solution. He submitted as a PR to the openjdk on https://github.com/openjdk/jdk/pull/6275 . The PR still
+and proposed a solution. He submitted it as a PR to the openjdk on https://github.com/openjdk/jdk/pull/6275 . The PR still
 waits for more reviews and acceptance.    
-I, Michael Mirwaldt, came the idea to mind a lazy build of the pipeline by using lambdas.
+This inspired me, Michael Mirwaldt, to think of a lazy build of the pipeline by using lambdas.
 
-### What is the advantage of a lazy build of a pipeline?
+### What is the advantage of the approach of a lazy build of the pipeline?
 
-A lazy build cannot only defer the build of the pipeline. It can also check whether building the pipeline is worth to be
+This approach cannot only defer the build of the pipeline. It can also check whether building the pipeline is worth to be
 done. Then the stream must not be Stream.empty(). It can also be the stream of an empty list. The build of the pipeline
 can even be avoided in that case. If the list, however, gets filled before the terminal operation of the stream is called,
 then the pipeline can be built and used as if the list had never been empty.
