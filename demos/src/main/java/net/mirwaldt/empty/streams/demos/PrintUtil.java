@@ -8,6 +8,8 @@ import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
 public class PrintUtil {
+    public static boolean printAll = false;
+
     public static <T> void printStatistics(String name, Stream<T> stream) {
         printStatistics(name, GraphLayout.parseInstance(stream));
     }
@@ -28,7 +30,9 @@ public class PrintUtil {
         System.out.println(name);
         System.out.println("totalSize=" + graphLayout.totalSize() + " bytes");
         System.out.println("totalCount=" + graphLayout.totalCount() + " objects");
-        System.out.println(graphLayout.toPrintable());
+        if(printAll) {
+            System.out.println(graphLayout.toPrintable());
+        }
     }
 
     public static void printLineOfMinus() {
