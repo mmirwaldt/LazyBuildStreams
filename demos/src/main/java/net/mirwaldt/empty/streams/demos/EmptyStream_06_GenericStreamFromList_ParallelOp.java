@@ -23,22 +23,22 @@ public class EmptyStream_06_GenericStreamFromList_ParallelOp {
 
         // eager build of empty
         Stream<String> eagerBuildEmpty = list.stream();
-        printStatistics("eagerBuildEmpty:", eagerBuildEmpty);
+        printStatistics("eagerBuildEmpty:", eagerBuildEmpty, list);
 
         printLineOfMinus(); // ------------------------------------------------------------
 
         Stream<String> eagerBuildFilteredEmpty = eagerBuildEmpty.filter(s -> !s.isEmpty());
-        printStatistics("eagerBuildFilteredEmpty:", eagerBuildFilteredEmpty);
+        printStatistics("eagerBuildFilteredEmpty:", eagerBuildFilteredEmpty, list);
 
         printLineOfMinus(); // ------------------------------------------------------------
 
         Stream<String> eagerBuildFilteredMappedEmpty = eagerBuildFilteredEmpty.map(String::toUpperCase);
-        printStatistics("eagerBuildFilteredMappedEmpty:", eagerBuildFilteredMappedEmpty);
+        printStatistics("eagerBuildFilteredMappedEmpty:", eagerBuildFilteredMappedEmpty, list);
 
         printLineOfMinus(); // ------------------------------------------------------------
 
         Stream<String> eagerBuildFilteredMappedParallelEmpty = eagerBuildFilteredMappedEmpty.parallel();
-        printStatistics("eagerBuildFilteredMappedParallelEmpty:", eagerBuildFilteredMappedParallelEmpty);
+        printStatistics("eagerBuildFilteredMappedParallelEmpty:", eagerBuildFilteredMappedParallelEmpty, list);
 
         printLineOfMinus(); // ------------------------------------------------------------
 
@@ -51,22 +51,22 @@ public class EmptyStream_06_GenericStreamFromList_ParallelOp {
 
         // lazy build of empty
         Stream<String> lazyBuildEmpty = lazyBuildGenericStream(list.stream());
-        printStatistics("lazyBuildEmpty:", lazyBuildEmpty);
+        printStatistics("lazyBuildEmpty:", lazyBuildEmpty, list);
 
         printLineOfMinus(); // ------------------------------------------------------------
 
         Stream<String> lazyBuildFilteredEmpty = lazyBuildEmpty.filter(s -> !s.isEmpty());
-        printStatistics("lazyBuildFilteredEmpty:", lazyBuildFilteredEmpty);
+        printStatistics("lazyBuildFilteredEmpty:", lazyBuildFilteredEmpty, list);
 
         printLineOfMinus(); // ------------------------------------------------------------
 
         Stream<String> lazyBuildFilteredMappedEmpty = lazyBuildFilteredEmpty.map(String::toUpperCase);
-        printStatistics("lazyBuildFilteredMappedEmpty:", lazyBuildFilteredMappedEmpty);
+        printStatistics("lazyBuildFilteredMappedEmpty:", lazyBuildFilteredMappedEmpty, list);
 
         printLineOfMinus(); // ------------------------------------------------------------
 
         Stream<String> lazyBuildFilteredMappedParallelEmpty = lazyBuildFilteredMappedEmpty.parallel();
-        printStatistics("lazyBuildFilteredMappedParallelEmpty:", lazyBuildFilteredMappedParallelEmpty);
+        printStatistics("lazyBuildFilteredMappedParallelEmpty:", lazyBuildFilteredMappedParallelEmpty, list);
 
         printLineOfMinus(); // ------------------------------------------------------------
 
@@ -86,22 +86,22 @@ public class EmptyStream_06_GenericStreamFromList_ParallelOp {
 
         // eager build of empty
         Stream<String> eagerBuildNonEmpty = list.stream();
-        printStatistics("eagerBuildNonEmpty:", eagerBuildNonEmpty);
+        printStatistics("eagerBuildNonEmpty:", eagerBuildNonEmpty, list);
 
         printLineOfMinus(); // ------------------------------------------------------------
 
         Stream<String> eagerBuildFilteredNonEmpty = eagerBuildNonEmpty.filter(s -> !s.isEmpty());
-        printStatistics("eagerBuildFilteredNonEmpty:", eagerBuildFilteredNonEmpty);
+        printStatistics("eagerBuildFilteredNonEmpty:", eagerBuildFilteredNonEmpty, list);
 
         printLineOfMinus(); // ------------------------------------------------------------
 
         Stream<String> eagerBuildFilteredMappedNonEmpty = eagerBuildFilteredNonEmpty.map(String::toUpperCase);
-        printStatistics("eagerBuildFilteredMappedNonEmpty:", eagerBuildFilteredMappedNonEmpty);
+        printStatistics("eagerBuildFilteredMappedNonEmpty:", eagerBuildFilteredMappedNonEmpty, list);
 
         printLineOfMinus(); // ------------------------------------------------------------
 
         Stream<String> eagerBuildFilteredMappedParallelNonEmpty = eagerBuildFilteredMappedNonEmpty.parallel();
-        printStatistics("eagerBuildFilteredMappedParallelNonEmpty:", eagerBuildFilteredMappedParallelNonEmpty);
+        printStatistics("eagerBuildFilteredMappedParallelNonEmpty:", eagerBuildFilteredMappedParallelNonEmpty, list);
 
         printLineOfMinus(); // ------------------------------------------------------------
 
@@ -114,22 +114,22 @@ public class EmptyStream_06_GenericStreamFromList_ParallelOp {
 
         // lazy build of empty
         Stream<String> lazyBuildNonEmpty = lazyBuildGenericStream(list.stream());
-        printStatistics("lazyBuildNonEmpty:", lazyBuildNonEmpty);
+        printStatistics("lazyBuildNonEmpty:", lazyBuildNonEmpty, list);
 
         printLineOfMinus(); // ------------------------------------------------------------
 
         Stream<String> lazyBuildFilteredNonEmpty = lazyBuildNonEmpty.filter(s -> !s.isEmpty());
-        printStatistics("lazyBuildFilteredNonEmpty:", lazyBuildFilteredNonEmpty);
+        printStatistics("lazyBuildFilteredNonEmpty:", lazyBuildFilteredNonEmpty, list);
 
         printLineOfMinus(); // ------------------------------------------------------------
 
         Stream<String> lazyBuildFilteredMappedNonEmpty = lazyBuildFilteredNonEmpty.map(String::toUpperCase);
-        printStatistics("lazyBuildFilteredMappedNonEmpty:", lazyBuildFilteredMappedNonEmpty);
+        printStatistics("lazyBuildFilteredMappedNonEmpty:", lazyBuildFilteredMappedNonEmpty, list);
 
         printLineOfMinus(); // ------------------------------------------------------------
 
         Stream<String> lazyBuildFilteredMappedParallelNonEmpty = lazyBuildFilteredMappedNonEmpty.parallel();
-        printStatistics("lazyBuildFilteredMappedParallelNonEmpty:", lazyBuildFilteredMappedParallelNonEmpty);
+        printStatistics("lazyBuildFilteredMappedParallelNonEmpty:", lazyBuildFilteredMappedParallelNonEmpty, list);
 
         printLineOfMinus(); // ------------------------------------------------------------
 
@@ -143,76 +143,76 @@ public class EmptyStream_06_GenericStreamFromList_ParallelOp {
 list=[]
 ############################################################
 eagerBuildEmpty:
-totalSize=128 bytes
-totalCount=4 objects
+totalSize=88 bytes
+totalCount=2 objects
 ------------------------------------------------------------
 eagerBuildFilteredEmpty:
-totalSize=208 bytes
-totalCount=6 objects
+totalSize=168 bytes
+totalCount=4 objects
 ------------------------------------------------------------
 eagerBuildFilteredMappedEmpty:
-totalSize=288 bytes
-totalCount=8 objects
+totalSize=248 bytes
+totalCount=6 objects
 ------------------------------------------------------------
 eagerBuildFilteredMappedParallelEmpty:
-totalSize=288 bytes
-totalCount=8 objects
+totalSize=248 bytes
+totalCount=6 objects
 ------------------------------------------------------------
 eagerBuildFilteredMappedParallelEmpty.findFirst().orElse("?")=?
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 lazyBuildEmpty:
-totalSize=96 bytes
-totalCount=4 objects
+totalSize=56 bytes
+totalCount=2 objects
 ------------------------------------------------------------
 lazyBuildFilteredEmpty:
-totalSize=176 bytes
-totalCount=8 objects
+totalSize=136 bytes
+totalCount=6 objects
 ------------------------------------------------------------
 lazyBuildFilteredMappedEmpty:
-totalSize=232 bytes
-totalCount=11 objects
+totalSize=192 bytes
+totalCount=9 objects
 ------------------------------------------------------------
 lazyBuildFilteredMappedParallelEmpty:
-totalSize=272 bytes
-totalCount=13 objects
+totalSize=232 bytes
+totalCount=11 objects
 ------------------------------------------------------------
 lazyBuildFilteredMappedParallelEmpty.findFirst().orElse("?")=?
 ############################################################
 list=["", "Heinz", "Michael"]
 ############################################################
 eagerBuildNonEmpty:
-totalSize=304 bytes
-totalCount=10 objects
+totalSize=88 bytes
+totalCount=2 objects
 ------------------------------------------------------------
 eagerBuildFilteredNonEmpty:
-totalSize=384 bytes
-totalCount=12 objects
+totalSize=168 bytes
+totalCount=4 objects
 ------------------------------------------------------------
 eagerBuildFilteredMappedNonEmpty:
-totalSize=464 bytes
-totalCount=14 objects
+totalSize=248 bytes
+totalCount=6 objects
 ------------------------------------------------------------
 eagerBuildFilteredMappedParallelNonEmpty:
-totalSize=464 bytes
-totalCount=14 objects
+totalSize=248 bytes
+totalCount=6 objects
 ------------------------------------------------------------
 eagerBuildFilteredMappedParallelNonEmpty.findFirst().orElse("?")=HEINZ
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 lazyBuildNonEmpty:
-totalSize=272 bytes
-totalCount=10 objects
+totalSize=56 bytes
+totalCount=2 objects
 ------------------------------------------------------------
 lazyBuildFilteredNonEmpty:
-totalSize=352 bytes
-totalCount=14 objects
+totalSize=136 bytes
+totalCount=6 objects
 ------------------------------------------------------------
 lazyBuildFilteredMappedNonEmpty:
-totalSize=408 bytes
-totalCount=17 objects
+totalSize=192 bytes
+totalCount=9 objects
 ------------------------------------------------------------
 lazyBuildFilteredMappedParallelNonEmpty:
-totalSize=448 bytes
-totalCount=19 objects
+totalSize=232 bytes
+totalCount=11 objects
 ------------------------------------------------------------
 lazyBuildFilteredMappedParallelNonEmpty.findFirst().orElse("?")=HEINZ
 */

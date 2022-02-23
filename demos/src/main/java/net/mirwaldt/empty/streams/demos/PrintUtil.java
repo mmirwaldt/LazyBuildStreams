@@ -10,20 +10,28 @@ import java.util.stream.Stream;
 public class PrintUtil {
     public static boolean printAll = false;
 
-    public static <T> void printStatistics(String name, Stream<T> stream) {
-        printStatistics(name, GraphLayout.parseInstance(stream));
+    public static <T> void printStatistics(String name, Stream<T> stream, Object...ignored) {
+        printStatistics(name,
+                GraphLayout.parseInstance(stream)
+                        .subtract(GraphLayout.parseInstance(ignored)));
     }
 
-    public static void printStatistics(String name, IntStream stream) {
-        printStatistics(name, GraphLayout.parseInstance(stream));
+    public static void printStatistics(String name, IntStream stream, Object...ignored) {
+        printStatistics(name,
+                GraphLayout.parseInstance(stream)
+                        .subtract(GraphLayout.parseInstance(ignored)));
     }
 
-    public static void printStatistics(String name, LongStream stream) {
-        printStatistics(name, GraphLayout.parseInstance(stream));
+    public static void printStatistics(String name, LongStream stream, Object...ignored) {
+        printStatistics(name,
+                GraphLayout.parseInstance(stream)
+                        .subtract(GraphLayout.parseInstance(ignored)));
     }
 
-    public static void printStatistics(String name, DoubleStream stream) {
-        printStatistics(name, GraphLayout.parseInstance(stream));
+    public static void printStatistics(String name, DoubleStream stream, Object...ignored) {
+        printStatistics(name,
+                GraphLayout.parseInstance(stream)
+                        .subtract(GraphLayout.parseInstance(ignored)));
     }
 
     public static void printStatistics(String name, GraphLayout graphLayout) {

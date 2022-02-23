@@ -25,17 +25,17 @@ public class EmptyStream_10_IntStreamFromIntArray_ParallelStream {
         // eager build of empty
         IntStream eagerBuildEmpty = list.parallelStream()
                 .mapToInt(Integer::valueOf);
-        printStatistics("eagerBuildEmpty:", eagerBuildEmpty);
+        printStatistics("eagerBuildEmpty:", eagerBuildEmpty, list);
 
         printLineOfMinus(); // ------------------------------------------------------------
 
         IntStream eagerBuildFilteredEmpty = eagerBuildEmpty.filter(i -> 0 < i);
-        printStatistics("eagerBuildFilteredEmpty:", eagerBuildFilteredEmpty);
+        printStatistics("eagerBuildFilteredEmpty:", eagerBuildFilteredEmpty, list);
 
         printLineOfMinus(); // ------------------------------------------------------------
 
         IntStream eagerBuildFilteredMappedEmpty = eagerBuildFilteredEmpty.map(i -> 2 * i);
-        printStatistics("eagerBuildFilteredMappedEmpty:", eagerBuildFilteredMappedEmpty);
+        printStatistics("eagerBuildFilteredMappedEmpty:", eagerBuildFilteredMappedEmpty, list);
 
         printLineOfMinus(); // ------------------------------------------------------------
 
@@ -49,17 +49,17 @@ public class EmptyStream_10_IntStreamFromIntArray_ParallelStream {
         // lazy build of empty
         IntStream lazyBuildEmpty = lazyBuildIntStream(lazyBuildGenericStream(list.parallelStream())
                 .mapToInt(Integer::valueOf));
-        printStatistics("lazyBuildEmpty:", lazyBuildEmpty);
+        printStatistics("lazyBuildEmpty:", lazyBuildEmpty, list);
 
         printLineOfMinus(); // ------------------------------------------------------------
 
         IntStream lazyBuildFilteredEmpty = lazyBuildEmpty.filter(i -> 0 < i);
-        printStatistics("lazyBuildFilteredEmpty:", lazyBuildFilteredEmpty);
+        printStatistics("lazyBuildFilteredEmpty:", lazyBuildFilteredEmpty, list);
 
         printLineOfMinus(); // ------------------------------------------------------------
 
         IntStream lazyBuildFilteredMappedEmpty = lazyBuildFilteredEmpty.map(i -> 2 * i);
-        printStatistics("lazyBuildFilteredMappedEmpty:", lazyBuildFilteredMappedEmpty);
+        printStatistics("lazyBuildFilteredMappedEmpty:", lazyBuildFilteredMappedEmpty, list);
 
         printLineOfMinus(); // ------------------------------------------------------------
 
@@ -81,17 +81,17 @@ public class EmptyStream_10_IntStreamFromIntArray_ParallelStream {
         // eager build of empty
         IntStream eagerBuildNonEmpty = list.parallelStream()
                 .mapToInt(Integer::valueOf);
-        printStatistics("eagerBuildNonEmpty:", eagerBuildNonEmpty);
+        printStatistics("eagerBuildNonEmpty:", eagerBuildNonEmpty, list);
 
         printLineOfMinus(); // ------------------------------------------------------------
 
         IntStream eagerBuildFilteredNonEmpty = eagerBuildNonEmpty.filter(i -> 0 < i);
-        printStatistics("eagerBuildFilteredNonEmpty:", eagerBuildFilteredNonEmpty);
+        printStatistics("eagerBuildFilteredNonEmpty:", eagerBuildFilteredNonEmpty, list);
 
         printLineOfMinus(); // ------------------------------------------------------------
 
         IntStream eagerBuildFilteredMappedNonEmpty = eagerBuildFilteredNonEmpty.map(i -> 2 * i);
-        printStatistics("eagerBuildFilteredMappedNonEmpty:", eagerBuildFilteredMappedNonEmpty);
+        printStatistics("eagerBuildFilteredMappedNonEmpty:", eagerBuildFilteredMappedNonEmpty, list);
 
         printLineOfMinus(); // ------------------------------------------------------------
 
@@ -105,17 +105,17 @@ public class EmptyStream_10_IntStreamFromIntArray_ParallelStream {
         // lazy build of empty
         IntStream lazyBuildNonEmpty = lazyBuildIntStream(lazyBuildGenericStream(list.parallelStream())
                 .mapToInt(Integer::valueOf));
-        printStatistics("lazyBuildNonEmpty:", lazyBuildNonEmpty);
+        printStatistics("lazyBuildNonEmpty:", lazyBuildNonEmpty, list);
 
         printLineOfMinus(); // ------------------------------------------------------------
 
         IntStream lazyBuildFilteredNonEmpty = lazyBuildNonEmpty.filter(i -> 0 < i);
-        printStatistics("lazyBuildFilteredNonEmpty:", lazyBuildFilteredNonEmpty);
+        printStatistics("lazyBuildFilteredNonEmpty:", lazyBuildFilteredNonEmpty, list);
 
         printLineOfMinus(); // ------------------------------------------------------------
 
         IntStream lazyBuildFilteredMappedNonEmpty = lazyBuildFilteredNonEmpty.map(i -> 2 * i);
-        printStatistics("lazyBuildFilteredMappedNonEmpty:", lazyBuildFilteredMappedNonEmpty);
+        printStatistics("lazyBuildFilteredMappedNonEmpty:", lazyBuildFilteredMappedNonEmpty, list);
 
         printLineOfMinus(); // ------------------------------------------------------------
 
@@ -128,16 +128,16 @@ public class EmptyStream_10_IntStreamFromIntArray_ParallelStream {
 list=[]
 ############################################################
 eagerBuildEmpty:
-totalSize=208 bytes
-totalCount=6 objects
+totalSize=168 bytes
+totalCount=4 objects
 ------------------------------------------------------------
 eagerBuildFilteredEmpty:
-totalSize=288 bytes
-totalCount=8 objects
+totalSize=248 bytes
+totalCount=6 objects
 ------------------------------------------------------------
 eagerBuildFilteredMappedEmpty:
-totalSize=368 bytes
-totalCount=10 objects
+totalSize=328 bytes
+totalCount=8 objects
 ------------------------------------------------------------
 eagerBuildFilteredMappedEmpty.findFirst().orElse(-1)=-1
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -158,31 +158,31 @@ lazyBuildFilteredMappedEmpty.findFirst().orElse(-1)=-1
 list=["-3", "2", "5"]
 ############################################################
 eagerBuildNonEmpty:
-totalSize=296 bytes
-totalCount=9 objects
+totalSize=168 bytes
+totalCount=4 objects
 ------------------------------------------------------------
 eagerBuildFilteredNonEmpty:
-totalSize=376 bytes
-totalCount=11 objects
+totalSize=248 bytes
+totalCount=6 objects
 ------------------------------------------------------------
 eagerBuildFilteredMappedNonEmpty:
-totalSize=456 bytes
-totalCount=13 objects
+totalSize=328 bytes
+totalCount=8 objects
 ------------------------------------------------------------
 eagerBuildFilteredMappedNonEmpty.findFirst().orElse("?")=4
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 lazyBuildNonEmpty:
-totalSize=384 bytes
-totalCount=12 objects
+totalSize=256 bytes
+totalCount=7 objects
 ------------------------------------------------------------
 lazyBuildFilteredNonEmpty:
-totalSize=464 bytes
-totalCount=16 objects
+totalSize=336 bytes
+totalCount=11 objects
 ------------------------------------------------------------
 lazyBuildFilteredMappedNonEmpty:
-totalSize=520 bytes
-totalCount=19 objects
+totalSize=392 bytes
+totalCount=14 objects
 ------------------------------------------------------------
 lazyBuildFilteredMappedNonEmpty.findFirst().orElse(-1)=4
- */
+*/
 }
