@@ -10,6 +10,10 @@ import java.util.stream.Stream;
 import static net.mirwaldt.empty.streams.util.LazyBuildGenericStreamUtil.emptyGenericStreamSupplier;
 
 public class LazyBuildIntStreamUtil {
+    private LazyBuildIntStreamUtil() {
+
+    }
+
     public final static Supplier<IntStream> EMPTY_INT_STREAM_SUPPLIER = new Supplier<IntStream>() {
         @Override
         public IntStream get() {

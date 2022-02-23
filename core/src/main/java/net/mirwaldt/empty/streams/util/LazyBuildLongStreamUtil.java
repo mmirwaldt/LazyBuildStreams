@@ -12,6 +12,10 @@ import static net.mirwaldt.empty.streams.util.LazyBuildGenericStreamUtil.emptyGe
 import static net.mirwaldt.empty.streams.util.LazyBuildIntStreamUtil.EMPTY_INT_STREAM_SUPPLIER;
 
 public class LazyBuildLongStreamUtil {
+    private LazyBuildLongStreamUtil() {
+
+    }
+
     public final static Supplier<LongStream> EMPTY_LONG_STREAM_SUPPLIER = new Supplier<LongStream>() {
         @Override
         public LongStream get() {

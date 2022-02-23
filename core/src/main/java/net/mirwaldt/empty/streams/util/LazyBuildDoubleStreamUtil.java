@@ -19,6 +19,10 @@ public class LazyBuildDoubleStreamUtil {
         }
     };
 
+    private LazyBuildDoubleStreamUtil() {
+
+    }
+
     public static <R> Supplier<Stream<R>> toStreamSupplier(
             Supplier<DoubleStream> streamSupplier, Function<DoubleStream, Stream<R>> nextOp) {
         return (streamSupplier == EMPTY_DOUBLE_STREAM_SUPPLIER)

@@ -6,7 +6,11 @@ import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
-public class LazyBuildStreamFactory {
+class LazyBuildStreamFactory {
+    private LazyBuildStreamFactory() {
+
+    }
+
     public static <T> Stream<T> lazyBuildGenericStream(Stream<T> stream) {
         return new LazyBuildGenericStream<T>(stream);
     }

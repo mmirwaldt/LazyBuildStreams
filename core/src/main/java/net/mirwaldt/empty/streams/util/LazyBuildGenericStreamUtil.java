@@ -20,6 +20,10 @@ public class LazyBuildGenericStreamUtil {
         }
     };
 
+    private LazyBuildGenericStreamUtil() {
+
+    }
+
     public static <T> Supplier<Stream<T>> emptyGenericStreamSupplier() {
         return (Supplier<Stream<T>>) EMPTY_STREAM_SUPPLIER;
     }
