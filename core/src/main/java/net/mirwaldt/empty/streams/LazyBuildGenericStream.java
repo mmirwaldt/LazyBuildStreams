@@ -191,11 +191,6 @@ final class LazyBuildGenericStream<T>
     }
 
     @Override
-    public boolean isParallel() {
-        return isParallel;
-    }
-
-    @Override
     public Stream<T> sequential() {
         return nextStream(toStreamSupplier(streamSupplier, BaseStream::sequential), false);
     }
@@ -213,11 +208,6 @@ final class LazyBuildGenericStream<T>
     @Override
     public Stream<T> onClose(Runnable closeHandler) {
         return nextStream(toStreamSupplier(streamSupplier, (stream) -> stream.onClose(closeHandler)));
-    }
-
-    @Override
-    public void close() {
-        clear();
     }
 
     @Override

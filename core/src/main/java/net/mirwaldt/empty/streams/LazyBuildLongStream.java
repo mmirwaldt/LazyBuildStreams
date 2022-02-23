@@ -200,16 +200,6 @@ final class LazyBuildLongStream
     }
 
     @Override
-    public boolean isParallel() {
-        return isParallel;
-    }
-
-    @Override
-    public void close() {
-        streamSupplier = LongStream::empty;
-    }
-
-    @Override
     protected Spliterator.OfLong emptySpliterator() {
         return Spliterators.emptyLongSpliterator();
     }

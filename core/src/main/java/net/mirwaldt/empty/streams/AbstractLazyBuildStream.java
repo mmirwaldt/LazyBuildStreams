@@ -5,7 +5,7 @@ import java.util.function.Supplier;
 import java.util.stream.*;
 
 abstract sealed class AbstractLazyBuildStream<T, S extends BaseStream<T, S>, I extends Spliterator<T>>
-        implements Supplier<S>
+        implements Supplier<S>, BaseStream<T, S>
         permits LazyBuildGenericStream, LazyBuildIntStream, LazyBuildLongStream, LazyBuildDoubleStream {
     @SuppressWarnings("Convert2Lambda")
     private final static Supplier<?> EMPTY_STREAM_SUPPLIER = new Supplier<Object>() {
@@ -56,7 +56,21 @@ abstract sealed class AbstractLazyBuildStream<T, S extends BaseStream<T, S>, I e
         this.streamSupplier = streamSupplier;
     }
 
-    public Supplier<S> firstSupplier(I spliterator) {
+    abstract protected I emptySpliterator();
+
+    abstract protected Supplier<S> emptyStreamSupplier();
+
+    @Override
+    public boolean isParallel() {
+        return isParallel;
+    }
+
+    @Override
+    public void close() {
+        streamSupplier = null;
+    }
+
+    private Supplier<S> firstSupplier(Spliterator<?> spliterator) {
         if (spliterator.equals(emptySpliterator())) {
             return emptyStreamSupplier();
         } else {
@@ -76,9 +90,6 @@ abstract sealed class AbstractLazyBuildStream<T, S extends BaseStream<T, S>, I e
         return stream;
     }
 
-    abstract protected I emptySpliterator();
-
-    abstract protected Supplier<S> emptyStreamSupplier();
 
     protected void clear() {
         if(streamSupplier != this) {

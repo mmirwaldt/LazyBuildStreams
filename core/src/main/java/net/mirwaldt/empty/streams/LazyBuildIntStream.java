@@ -205,16 +205,6 @@ final class LazyBuildIntStream
     }
 
     @Override
-    public boolean isParallel() {
-        return isParallel;
-    }
-
-    @Override
-    public void close() {
-        getOnce().close();
-    }
-
-    @Override
     protected Spliterator.OfInt emptySpliterator() {
         return Spliterators.emptyIntSpliterator();
     }
