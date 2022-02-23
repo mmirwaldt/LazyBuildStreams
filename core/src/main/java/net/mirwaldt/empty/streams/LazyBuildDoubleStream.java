@@ -15,7 +15,7 @@ public class LazyBuildDoubleStream
     }
 
     public LazyBuildDoubleStream(Spliterator.OfDouble spliterator) {
-        super(false, spliterator);
+        super(spliterator);
     }
 
     LazyBuildDoubleStream(boolean isParallel, Spliterator<?> spliterator, Supplier<DoubleStream> streamSupplier) {

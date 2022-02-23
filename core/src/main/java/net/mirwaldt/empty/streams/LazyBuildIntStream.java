@@ -14,7 +14,7 @@ public class LazyBuildIntStream
     }
 
     public LazyBuildIntStream(Spliterator.OfInt spliterator) {
-        super(false, spliterator);
+        super(spliterator);
     }
 
     LazyBuildIntStream(boolean isParallel, Spliterator<?> spliterator, Supplier<IntStream> streamSupplier) {

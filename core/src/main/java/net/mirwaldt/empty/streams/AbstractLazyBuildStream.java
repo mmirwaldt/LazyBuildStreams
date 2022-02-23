@@ -10,10 +10,14 @@ public abstract class AbstractLazyBuildStream<T, S extends BaseStream<T, S>, I e
     protected Spliterator<?> spliterator;
     protected Supplier<S> streamSupplier;
 
+    AbstractLazyBuildStream(I spliterator) {
+        this(false, spliterator);
+    }
+
     AbstractLazyBuildStream(boolean isParallel, I spliterator) {
         this.isParallel = isParallel;
         this.spliterator = spliterator;
-        this.streamSupplier = firstSupplier(spliterator, isParallel);
+        this.streamSupplier = firstSupplier(spliterator);
     }
 
     AbstractLazyBuildStream(boolean isParallel, Spliterator<?> spliterator, Supplier<S> streamSupplier) {
@@ -22,7 +26,7 @@ public abstract class AbstractLazyBuildStream<T, S extends BaseStream<T, S>, I e
         this.streamSupplier = streamSupplier;
     }
 
-    public Supplier<S> firstSupplier(I spliterator, boolean isParallel) {
+    public Supplier<S> firstSupplier(I spliterator) {
         if (spliterator.equals(emptySpliterator())) {
             return emptyStreamSupplier();
         } else {

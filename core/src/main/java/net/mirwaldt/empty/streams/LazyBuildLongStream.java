@@ -14,7 +14,7 @@ public class LazyBuildLongStream
     }
 
     public LazyBuildLongStream(Spliterator.OfLong spliterator) {
-        super(false, spliterator);
+        super(spliterator);
     }
 
     LazyBuildLongStream(boolean isParallel, Spliterator<?> spliterator, Supplier<LongStream> streamSupplier) {

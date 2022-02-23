@@ -15,7 +15,7 @@ public class LazyBuildGenericStream<T>
     }
 
     public LazyBuildGenericStream(Spliterator<T> spliterator) {
-        super(false, spliterator);
+        super(spliterator);
     }
 
     LazyBuildGenericStream(boolean isParallel, Spliterator<?> spliterator, Supplier<Stream<T>> streamSupplier) {
