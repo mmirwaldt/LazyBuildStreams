@@ -14,8 +14,12 @@ public class LazyBuildGenericStream<T>
         super(first.isParallel(), first.spliterator());
     }
 
-    LazyBuildGenericStream(boolean isParallel, BooleanSupplier isEmpty, Supplier<Stream<T>> streamSupplier) {
-        super(isParallel, isEmpty, streamSupplier);
+    public LazyBuildGenericStream(Spliterator<T> spliterator) {
+        super(false, spliterator);
+    }
+
+    LazyBuildGenericStream(boolean isParallel, Spliterator<?> spliterator, Supplier<Stream<T>> streamSupplier) {
+        super(isParallel, spliterator, streamSupplier);
     }
 
     @Override
@@ -219,11 +223,6 @@ public class LazyBuildGenericStream<T>
     }
 
     @Override
-    protected Stream<T> streamFactory(Spliterator<T> spliterator, boolean isParallel) {
-        return StreamSupport.stream(spliterator, isParallel);
-    }
-
-    @Override
     protected Spliterator<T> emptySpliterator() {
         return Spliterators.emptySpliterator();
     }
@@ -231,6 +230,11 @@ public class LazyBuildGenericStream<T>
     @Override
     protected Supplier<Stream<T>> emptyStreamSupplier() {
         return emptyGenericStreamSupplier();
+    }
+
+    @Override
+    public Stream<T> get() {
+        return StreamSupport.stream((Spliterator<T>) spliterator, isParallel);
     }
 }
 

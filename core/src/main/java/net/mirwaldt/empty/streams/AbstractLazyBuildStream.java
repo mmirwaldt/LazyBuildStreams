@@ -1,23 +1,24 @@
 package net.mirwaldt.empty.streams;
 
 import java.util.Spliterator;
-import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 import java.util.stream.*;
 
-public abstract class AbstractLazyBuildStream<T, S extends BaseStream<T, S>, I extends Spliterator<T>> {
+public abstract class AbstractLazyBuildStream<T, S extends BaseStream<T, S>, I extends Spliterator<T>>
+        implements Supplier<S> {
     protected final boolean isParallel;
-    protected BooleanSupplier isEmpty;
+    protected Spliterator<?> spliterator;
     protected Supplier<S> streamSupplier;
 
     AbstractLazyBuildStream(boolean isParallel, I spliterator) {
         this.isParallel = isParallel;
-        this.isEmpty = () -> 0 < spliterator.estimateSize();
+        this.spliterator = spliterator;
         this.streamSupplier = firstSupplier(spliterator, isParallel);
     }
-    AbstractLazyBuildStream(boolean isParallel, BooleanSupplier isEmpty, Supplier<S> streamSupplier) {
+
+    AbstractLazyBuildStream(boolean isParallel, Spliterator<?> spliterator, Supplier<S> streamSupplier) {
         this.isParallel = isParallel;
-        this.isEmpty = isEmpty;
+        this.spliterator = spliterator;
         this.streamSupplier = streamSupplier;
     }
 
@@ -25,15 +26,15 @@ public abstract class AbstractLazyBuildStream<T, S extends BaseStream<T, S>, I e
         if (spliterator.equals(emptySpliterator())) {
             return emptyStreamSupplier();
         } else {
-            return () -> streamFactory(spliterator, isParallel);
+            return this;
         }
     }
 
     protected S getOnce() {
         checkIfUsed();
         S stream;
-        if(isEmpty.getAsBoolean()) {
-            stream = (isParallel) ? streamSupplier.get().parallel() : streamSupplier.get().sequential();
+        if (0 < spliterator.estimateSize()) {
+            stream = streamSupplier.get();
         } else {
             stream = emptyStreamSupplier().get();
         }
@@ -41,14 +42,14 @@ public abstract class AbstractLazyBuildStream<T, S extends BaseStream<T, S>, I e
         return stream;
     }
 
-    abstract protected S streamFactory(I spliterator, boolean isParallel);
-
     abstract protected I emptySpliterator();
 
     abstract protected Supplier<S> emptyStreamSupplier();
 
     protected void clear() {
-        isEmpty = null;
+        if(streamSupplier != this) {
+            spliterator = null;
+        }
         streamSupplier = null;
     }
 
@@ -57,7 +58,7 @@ public abstract class AbstractLazyBuildStream<T, S extends BaseStream<T, S>, I e
     }
 
     protected void checkIfUsed() {
-        if(wasUsed()) {
+        if (wasUsed()) {
             throw new IllegalStateException("stream has already been operated upon or closed");
         }
     }
@@ -80,28 +81,28 @@ public abstract class AbstractLazyBuildStream<T, S extends BaseStream<T, S>, I e
 
     protected <R> Stream<R> nextStream(Supplier<Stream<R>> nextStreamSupplier, boolean isParallel) {
         checkIfUsed();
-        var next = new LazyBuildGenericStream<>(isParallel, isEmpty, nextStreamSupplier);
+        var next = new LazyBuildGenericStream<>(isParallel, spliterator, nextStreamSupplier);
         clear();
         return next;
     }
 
     protected IntStream nextIntStream(Supplier<IntStream> nextStreamSupplier, boolean isParallel) {
         checkIfUsed();
-        var next = new LazyBuildIntStream(isParallel, isEmpty, nextStreamSupplier);
+        var next = new LazyBuildIntStream(isParallel, spliterator, nextStreamSupplier);
         clear();
         return next;
     }
 
     protected LongStream nextLongStream(Supplier<LongStream> nextStreamSupplier, boolean isParallel) {
         checkIfUsed();
-        var next = new LazyBuildLongStream(isParallel, isEmpty, nextStreamSupplier);
+        var next = new LazyBuildLongStream(isParallel, spliterator, nextStreamSupplier);
         clear();
         return next;
     }
 
     protected DoubleStream nextDoubleStream(Supplier<DoubleStream> nextStreamSupplier, boolean isParallel) {
         checkIfUsed();
-        var next = new LazyBuildDoubleStream(isParallel, isEmpty, nextStreamSupplier);
+        var next = new LazyBuildDoubleStream(isParallel, spliterator, nextStreamSupplier);
         clear();
         return next;
     }

@@ -13,8 +13,12 @@ public class LazyBuildIntStream
         super(first.isParallel(), first.spliterator());
     }
 
-    LazyBuildIntStream(boolean isParallel, BooleanSupplier isEmpty, Supplier<IntStream> streamSupplier) {
-        super(isParallel, isEmpty, streamSupplier);
+    public LazyBuildIntStream(Spliterator.OfInt spliterator) {
+        super(false, spliterator);
+    }
+
+    LazyBuildIntStream(boolean isParallel, Spliterator<?> spliterator, Supplier<IntStream> streamSupplier) {
+        super(isParallel, spliterator, streamSupplier);
     }
 
     @Override
@@ -213,11 +217,6 @@ public class LazyBuildIntStream
     }
 
     @Override
-    protected IntStream streamFactory(Spliterator.OfInt spliterator, boolean isParallel) {
-        return StreamSupport.intStream(spliterator, isParallel);
-    }
-
-    @Override
     protected Spliterator.OfInt emptySpliterator() {
         return Spliterators.emptyIntSpliterator();
     }
@@ -225,5 +224,11 @@ public class LazyBuildIntStream
     @Override
     protected Supplier<IntStream> emptyStreamSupplier() {
         return EMPTY_INT_STREAM_SUPPLIER;
+    }
+
+
+    @Override
+    public IntStream get() {
+        return StreamSupport.intStream((Spliterator.OfInt) spliterator, isParallel);
     }
 }

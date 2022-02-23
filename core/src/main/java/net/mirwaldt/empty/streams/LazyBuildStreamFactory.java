@@ -1,5 +1,7 @@
 package net.mirwaldt.empty.streams;
 
+import java.util.Iterator;
+import java.util.Spliterator;
 import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
@@ -20,5 +22,21 @@ public class LazyBuildStreamFactory {
 
     public static DoubleStream lazyBuildDoubleStream(DoubleStream stream) {
         return new LazyBuildDoubleStream(stream);
+    }
+
+    public static <T> Stream<T> lazyBuildGenericStream(Spliterator<T> spliterator) {
+        return new LazyBuildGenericStream<T>(spliterator);
+    }
+
+    public static IntStream lazyBuildIntStream(Spliterator.OfInt spliterator) {
+        return new LazyBuildIntStream(spliterator);
+    }
+
+    public static LongStream lazyBuildLongStream(Spliterator.OfLong spliterator) {
+        return new LazyBuildLongStream(spliterator);
+    }
+
+    public static DoubleStream lazyBuildDoubleStream(Spliterator.OfDouble spliterator) {
+        return new LazyBuildDoubleStream(spliterator);
     }
 }

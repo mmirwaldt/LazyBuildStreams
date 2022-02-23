@@ -13,8 +13,12 @@ public class LazyBuildLongStream
         super(first.isParallel(), first.spliterator());
     }
 
-    LazyBuildLongStream(boolean isParallel, BooleanSupplier isEmpty, Supplier<LongStream> streamSupplier) {
-        super(isParallel, isEmpty, streamSupplier);
+    public LazyBuildLongStream(Spliterator.OfLong spliterator) {
+        super(false, spliterator);
+    }
+
+    LazyBuildLongStream(boolean isParallel, Spliterator<?> spliterator, Supplier<LongStream> streamSupplier) {
+        super(isParallel, spliterator, streamSupplier);
     }
 
     @Override
@@ -208,11 +212,6 @@ public class LazyBuildLongStream
     }
 
     @Override
-    protected LongStream streamFactory(Spliterator.OfLong spliterator, boolean isParallel) {
-        return StreamSupport.longStream(spliterator, isParallel);
-    }
-
-    @Override
     protected Spliterator.OfLong emptySpliterator() {
         return Spliterators.emptyLongSpliterator();
     }
@@ -220,5 +219,10 @@ public class LazyBuildLongStream
     @Override
     protected Supplier<LongStream> emptyStreamSupplier() {
         return EMPTY_LONG_STREAM_SUPPLIER;
+    }
+
+    @Override
+    public LongStream get() {
+        return StreamSupport.longStream((Spliterator.OfLong) spliterator, isParallel);
     }
 }

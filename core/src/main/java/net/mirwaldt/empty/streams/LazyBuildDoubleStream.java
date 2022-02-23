@@ -14,8 +14,12 @@ public class LazyBuildDoubleStream
         super(first.isParallel(), first.spliterator());
     }
 
-    LazyBuildDoubleStream(boolean isParallel, BooleanSupplier isEmpty, Supplier<DoubleStream> streamSupplier) {
-        super(isParallel, isEmpty, streamSupplier);
+    public LazyBuildDoubleStream(Spliterator.OfDouble spliterator) {
+        super(false, spliterator);
+    }
+
+    LazyBuildDoubleStream(boolean isParallel, Spliterator<?> spliterator, Supplier<DoubleStream> streamSupplier) {
+        super(isParallel, spliterator, streamSupplier);
     }
 
     @Override
@@ -204,11 +208,6 @@ public class LazyBuildDoubleStream
     }
 
     @Override
-    protected DoubleStream streamFactory(Spliterator.OfDouble spliterator, boolean isParallel) {
-        return StreamSupport.doubleStream(spliterator, isParallel);
-    }
-
-    @Override
     protected Spliterator.OfDouble emptySpliterator() {
         return Spliterators.emptyDoubleSpliterator();
     }
@@ -216,5 +215,10 @@ public class LazyBuildDoubleStream
     @Override
     protected Supplier<DoubleStream> emptyStreamSupplier() {
         return EMPTY_DOUBLE_STREAM_SUPPLIER;
+    }
+
+    @Override
+    public DoubleStream get() {
+        return StreamSupport.doubleStream((Spliterator.OfDouble) spliterator, isParallel);
     }
 }
