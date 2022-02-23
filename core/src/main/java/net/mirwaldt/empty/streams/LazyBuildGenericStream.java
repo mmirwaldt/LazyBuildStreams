@@ -5,8 +5,6 @@ import java.util.*;
 import java.util.function.*;
 import java.util.stream.*;
 
-import static net.mirwaldt.empty.streams.util.LazyBuildGenericStreamUtil.*;
-
 final class LazyBuildGenericStream<T>
         extends AbstractLazyBuildStream<T, Stream<T>, Spliterator<T>>
         implements Stream<T> {
@@ -235,6 +233,30 @@ final class LazyBuildGenericStream<T>
     @Override
     public Stream<T> get() {
         return StreamSupport.stream((Spliterator<T>) spliterator, isParallel);
+    }
+
+    public static <T, R> Supplier<Stream<R>> toStreamSupplier(
+            Supplier<Stream<T>> streamSupplier, Function<Stream<T>, Stream<R>> nextOp) {
+        return (streamSupplier == AbstractLazyBuildStream.<T>emptyGenericStreamSupplier())
+                ? emptyGenericStreamSupplier() : () -> nextOp.apply(streamSupplier.get());
+    }
+
+    public static <T> Supplier<IntStream> toIntStreamSupplier(
+            Supplier<Stream<T>> streamSupplier, Function<Stream<T>, IntStream> nextOp) {
+        return (streamSupplier == AbstractLazyBuildStream.<T>emptyGenericStreamSupplier())
+                ? EMPTY_INT_STREAM_SUPPLIER : () -> nextOp.apply(streamSupplier.get());
+    }
+
+    public static <T> Supplier<LongStream> toLongStreamSupplier(
+            Supplier<Stream<T>> streamSupplier, Function<Stream<T>, LongStream> nextOp) {
+        return (streamSupplier == AbstractLazyBuildStream.<T>emptyGenericStreamSupplier())
+                ? EMPTY_LONG_STREAM_SUPPLIER : () -> nextOp.apply(streamSupplier.get());
+    }
+
+    public static <T> Supplier<DoubleStream> toDoubleStreamSupplier(
+            Supplier<Stream<T>> streamSupplier, Function<Stream<T>, DoubleStream> nextOp) {
+        return (streamSupplier == AbstractLazyBuildStream.<T>emptyGenericStreamSupplier())
+                ? EMPTY_DOUBLE_STREAM_SUPPLIER : () -> nextOp.apply(streamSupplier.get());
     }
 }
 

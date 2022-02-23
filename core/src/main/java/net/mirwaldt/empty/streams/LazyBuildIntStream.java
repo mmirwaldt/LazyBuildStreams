@@ -4,8 +4,6 @@ import java.util.*;
 import java.util.function.*;
 import java.util.stream.*;
 
-import static net.mirwaldt.empty.streams.util.LazyBuildIntStreamUtil.*;
-
 final class LazyBuildIntStream
         extends AbstractLazyBuildStream<Integer, IntStream, Spliterator.OfInt>
         implements IntStream {
@@ -229,5 +227,30 @@ final class LazyBuildIntStream
     @Override
     public IntStream get() {
         return StreamSupport.intStream((Spliterator.OfInt) spliterator, isParallel);
+    }
+
+
+    public static <R> Supplier<Stream<R>> toStreamSupplier(
+            Supplier<IntStream> streamSupplier, Function<IntStream, Stream<R>> nextOp) {
+        return (streamSupplier == EMPTY_INT_STREAM_SUPPLIER)
+                ? emptyGenericStreamSupplier() : () -> nextOp.apply(streamSupplier.get());
+    }
+
+    public static Supplier<IntStream> toIntStreamSupplier(
+            Supplier<IntStream> streamSupplier, Function<IntStream, IntStream> nextOp) {
+        return (streamSupplier == EMPTY_INT_STREAM_SUPPLIER)
+                ? IntStream::empty : () -> nextOp.apply(streamSupplier.get());
+    }
+
+    public static Supplier<LongStream> toLongStreamSupplier(
+            Supplier<IntStream> streamSupplier, Function<IntStream, LongStream> nextOp) {
+        return (streamSupplier == EMPTY_INT_STREAM_SUPPLIER)
+                ? LongStream::empty : () -> nextOp.apply(streamSupplier.get());
+    }
+
+    public static Supplier<DoubleStream> toDoubleStreamSupplier(
+            Supplier<IntStream> streamSupplier, Function<IntStream, DoubleStream> nextOp) {
+        return (streamSupplier == EMPTY_INT_STREAM_SUPPLIER)
+                ? DoubleStream::empty : () -> nextOp.apply(streamSupplier.get());
     }
 }

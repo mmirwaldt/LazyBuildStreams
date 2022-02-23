@@ -7,6 +7,35 @@ import java.util.stream.*;
 abstract sealed class AbstractLazyBuildStream<T, S extends BaseStream<T, S>, I extends Spliterator<T>>
         implements Supplier<S>
         permits LazyBuildGenericStream, LazyBuildIntStream, LazyBuildLongStream, LazyBuildDoubleStream {
+    @SuppressWarnings("Convert2Lambda")
+    private final static Supplier<?> EMPTY_STREAM_SUPPLIER = new Supplier<Object>() {
+        @Override
+        public Object get() {
+            return Stream.empty();
+        }
+    };
+
+    protected final static Supplier<LongStream> EMPTY_LONG_STREAM_SUPPLIER = new Supplier<LongStream>() {
+        @Override
+        public LongStream get() {
+            return LongStream.empty();
+        }
+    };
+
+    protected final static Supplier<IntStream> EMPTY_INT_STREAM_SUPPLIER = new Supplier<IntStream>() {
+        @Override
+        public IntStream get() {
+            return IntStream.empty();
+        }
+    };
+
+    protected final static Supplier<DoubleStream> EMPTY_DOUBLE_STREAM_SUPPLIER = new Supplier<DoubleStream>() {
+        @Override
+        public DoubleStream get() {
+            return DoubleStream.empty();
+        }
+    };
+
     protected final boolean isParallel;
     protected Spliterator<?> spliterator;
     protected Supplier<S> streamSupplier;
@@ -110,5 +139,9 @@ abstract sealed class AbstractLazyBuildStream<T, S extends BaseStream<T, S>, I e
         var next = new LazyBuildDoubleStream(isParallel, spliterator, nextStreamSupplier);
         clear();
         return next;
+    }
+
+    public static <T> Supplier<Stream<T>> emptyGenericStreamSupplier() {
+        return (Supplier<Stream<T>>) EMPTY_STREAM_SUPPLIER;
     }
 }

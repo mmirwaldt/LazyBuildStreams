@@ -8,11 +8,8 @@ import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
+import static net.mirwaldt.empty.streams.AbstractLazyBuildStream.*;
 import static net.mirwaldt.empty.streams.LazyBuildStreamFactory.*;
-import static net.mirwaldt.empty.streams.util.LazyBuildDoubleStreamUtil.EMPTY_DOUBLE_STREAM_SUPPLIER;
-import static net.mirwaldt.empty.streams.util.LazyBuildIntStreamUtil.EMPTY_INT_STREAM_SUPPLIER;
-import static net.mirwaldt.empty.streams.util.LazyBuildLongStreamUtil.EMPTY_LONG_STREAM_SUPPLIER;
-import static net.mirwaldt.empty.streams.util.LazyBuildGenericStreamUtil.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class LazyBuildStreamUtilTest {
