@@ -18,11 +18,11 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 public class LazyBuildStreamUtilTest {
     @Test
     void testIdentityOfEmptyStreamSupplier() {
-        var x = emptyStreamSupplier();
-        assertSame(emptyStreamSupplier(), x);
+        var x = emptyGenericStreamSupplier();
+        assertSame(emptyGenericStreamSupplier(), x);
 
         var y = (Supplier<Stream<Object>>) Stream::empty;
-        assertNotSame(emptyStreamSupplier(), y);
+        assertNotSame(emptyGenericStreamSupplier(), y);
     }
 
     @Test

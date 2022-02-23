@@ -1,21 +1,21 @@
 package net.mirwaldt.empty.streams;
 
-import java.util.DoubleSummaryStatistics;
-import java.util.OptionalDouble;
-import java.util.PrimitiveIterator;
-import java.util.Spliterator;
+import java.util.*;
 import java.util.function.*;
 import java.util.stream.*;
 
 import static net.mirwaldt.empty.streams.util.LazyBuildDoubleStreamUtil.*;
 
-public class LazyBuildDoubleStream extends AbstractLazyBuildStream<Double, DoubleStream> implements DoubleStream {
+public class LazyBuildDoubleStream
+        extends AbstractLazyBuildStream<Double, DoubleStream, Spliterator.OfDouble>
+        implements DoubleStream {
+
     public LazyBuildDoubleStream(DoubleStream first) {
-        super(first.isParallel(), firstSupplier(first));
+        super(first.isParallel(), first.spliterator());
     }
 
-    LazyBuildDoubleStream(boolean isParallel, Supplier<DoubleStream> streamSupplier) {
-        super(isParallel, streamSupplier);
+    LazyBuildDoubleStream(boolean isParallel, BooleanSupplier isEmpty, Supplier<DoubleStream> streamSupplier) {
+        super(isParallel, isEmpty, streamSupplier);
     }
 
     @Override
@@ -203,7 +203,18 @@ public class LazyBuildDoubleStream extends AbstractLazyBuildStream<Double, Doubl
         getOnce().close();
     }
 
-    protected DoubleStream getOnce() {
-        return super.getOnce((stream) -> (isParallel) ? stream.parallel() : stream.sequential());
+    @Override
+    protected DoubleStream streamFactory(Spliterator.OfDouble spliterator, boolean isParallel) {
+        return StreamSupport.doubleStream(spliterator, isParallel);
+    }
+
+    @Override
+    protected Spliterator.OfDouble emptySpliterator() {
+        return Spliterators.emptyDoubleSpliterator();
+    }
+
+    @Override
+    protected Supplier<DoubleStream> emptyStreamSupplier() {
+        return EMPTY_DOUBLE_STREAM_SUPPLIER;
     }
 }

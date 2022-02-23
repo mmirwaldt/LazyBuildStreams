@@ -6,13 +6,15 @@ import java.util.stream.*;
 
 import static net.mirwaldt.empty.streams.util.LazyBuildIntStreamUtil.*;
 
-public class LazyBuildIntStream extends AbstractLazyBuildStream<Integer, IntStream> implements IntStream {
+public class LazyBuildIntStream
+        extends AbstractLazyBuildStream<Integer, IntStream, Spliterator.OfInt>
+        implements IntStream {
     public LazyBuildIntStream(IntStream first) {
-        super(first.isParallel(), firstSupplier(first));
+        super(first.isParallel(), first.spliterator());
     }
 
-    LazyBuildIntStream(boolean isParallel, Supplier<IntStream> streamSupplier) {
-        super(isParallel, streamSupplier);
+    LazyBuildIntStream(boolean isParallel, BooleanSupplier isEmpty, Supplier<IntStream> streamSupplier) {
+        super(isParallel, isEmpty, streamSupplier);
     }
 
     @Override
@@ -210,7 +212,18 @@ public class LazyBuildIntStream extends AbstractLazyBuildStream<Integer, IntStre
         getOnce().close();
     }
 
-    protected IntStream getOnce() {
-        return super.getOnce((stream) -> (isParallel) ? stream.parallel() : stream.sequential());
+    @Override
+    protected IntStream streamFactory(Spliterator.OfInt spliterator, boolean isParallel) {
+        return StreamSupport.intStream(spliterator, isParallel);
+    }
+
+    @Override
+    protected Spliterator.OfInt emptySpliterator() {
+        return Spliterators.emptyIntSpliterator();
+    }
+
+    @Override
+    protected Supplier<IntStream> emptyStreamSupplier() {
+        return EMPTY_INT_STREAM_SUPPLIER;
     }
 }

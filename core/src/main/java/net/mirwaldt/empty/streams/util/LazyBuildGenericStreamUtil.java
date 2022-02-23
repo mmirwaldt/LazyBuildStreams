@@ -19,40 +19,39 @@ public class LazyBuildGenericStreamUtil {
         }
     };
 
-    public static <T> Supplier<Stream<T>> emptyStreamSupplier() {
+    public static <T> Supplier<Stream<T>> emptyGenericStreamSupplier() {
         return (Supplier<Stream<T>>) EMPTY_STREAM_SUPPLIER;
     }
 
-    public static <T> Supplier<Stream<T>> firstSupplier(Stream<T> first) {
-        Spliterator<T> spliterator = first.spliterator();
+    public static <T> Supplier<Stream<T>> firstSupplier(Spliterator<T> spliterator, boolean isParallel) {
         if (spliterator.equals(emptySpliterator())) {
-            return emptyStreamSupplier();
+            return emptyGenericStreamSupplier();
         } else {
-            return () -> StreamSupport.stream(spliterator, first.isParallel());
+            return () -> StreamSupport.stream(spliterator, isParallel);
         }
     }
 
     public static <T, R> Supplier<Stream<R>> toStreamSupplier(
             Supplier<Stream<T>> streamSupplier, Function<Stream<T>, Stream<R>> nextOp) {
-        return (streamSupplier == LazyBuildGenericStreamUtil.<T>emptyStreamSupplier())
-                ? emptyStreamSupplier() : () -> nextOp.apply(streamSupplier.get());
+        return (streamSupplier == LazyBuildGenericStreamUtil.<T>emptyGenericStreamSupplier())
+                ? emptyGenericStreamSupplier() : () -> nextOp.apply(streamSupplier.get());
     }
 
     public static <T> Supplier<IntStream> toIntStreamSupplier(
             Supplier<Stream<T>> streamSupplier, Function<Stream<T>, IntStream> nextOp) {
-        return (streamSupplier == LazyBuildGenericStreamUtil.<T>emptyStreamSupplier())
+        return (streamSupplier == LazyBuildGenericStreamUtil.<T>emptyGenericStreamSupplier())
                 ? EMPTY_INT_STREAM_SUPPLIER : () -> nextOp.apply(streamSupplier.get());
     }
 
     public static <T> Supplier<LongStream> toLongStreamSupplier(
             Supplier<Stream<T>> streamSupplier, Function<Stream<T>, LongStream> nextOp) {
-        return (streamSupplier == LazyBuildGenericStreamUtil.<T>emptyStreamSupplier())
+        return (streamSupplier == LazyBuildGenericStreamUtil.<T>emptyGenericStreamSupplier())
                 ? EMPTY_LONG_STREAM_SUPPLIER : () -> nextOp.apply(streamSupplier.get());
     }
 
     public static <T> Supplier<DoubleStream> toDoubleStreamSupplier(
             Supplier<Stream<T>> streamSupplier, Function<Stream<T>, DoubleStream> nextOp) {
-        return (streamSupplier == LazyBuildGenericStreamUtil.<T>emptyStreamSupplier())
+        return (streamSupplier == LazyBuildGenericStreamUtil.<T>emptyGenericStreamSupplier())
                 ? EMPTY_DOUBLE_STREAM_SUPPLIER : () -> nextOp.apply(streamSupplier.get());
     }
 }

@@ -1,26 +1,54 @@
 package net.mirwaldt.empty.streams;
 
+import java.util.Spliterator;
+import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
-import java.util.function.UnaryOperator;
 import java.util.stream.*;
 
-public class AbstractLazyBuildStream<T, S extends BaseStream<T, S>> {
+public abstract class AbstractLazyBuildStream<T, S extends BaseStream<T, S>, I extends Spliterator<T>> {
     protected final boolean isParallel;
+    protected BooleanSupplier isEmpty;
     protected Supplier<S> streamSupplier;
 
-    AbstractLazyBuildStream(boolean isParallel, Supplier<S> next) {
+    AbstractLazyBuildStream(boolean isParallel, I spliterator) {
         this.isParallel = isParallel;
-        this.streamSupplier = next;
+        this.isEmpty = () -> 0 < spliterator.estimateSize();
+        this.streamSupplier = firstSupplier(spliterator, isParallel);
+    }
+    AbstractLazyBuildStream(boolean isParallel, BooleanSupplier isEmpty, Supplier<S> streamSupplier) {
+        this.isParallel = isParallel;
+        this.isEmpty = isEmpty;
+        this.streamSupplier = streamSupplier;
     }
 
-    protected S getOnce(UnaryOperator<S> parallelOperator) {
+    public Supplier<S> firstSupplier(I spliterator, boolean isParallel) {
+        if (spliterator.equals(emptySpliterator())) {
+            return emptyStreamSupplier();
+        } else {
+            return () -> streamFactory(spliterator, isParallel);
+        }
+    }
+
+    protected S getOnce() {
         checkIfUsed();
-        S stream = parallelOperator.apply(streamSupplier.get());
+        S stream;
+        if(isEmpty.getAsBoolean()) {
+            stream = (isParallel) ? streamSupplier.get().parallel() : streamSupplier.get().sequential();
+        } else {
+            stream = emptyStreamSupplier().get();
+        }
         streamSupplier = () -> stream;
         return stream;
     }
 
+    abstract protected S streamFactory(I spliterator, boolean isParallel);
+
+    abstract protected I emptySpliterator();
+
+    abstract protected Supplier<S> emptyStreamSupplier();
+
     protected void clear() {
+        isEmpty = null;
         streamSupplier = null;
     }
 
@@ -34,7 +62,7 @@ public class AbstractLazyBuildStream<T, S extends BaseStream<T, S>> {
         }
     }
 
-    protected <S> Stream<S> nextStream(Supplier<Stream<S>> nextStreamSupplier) {
+    protected <U> Stream<U> nextStream(Supplier<Stream<U>> nextStreamSupplier) {
         return nextStream(nextStreamSupplier, isParallel);
     }
 
@@ -52,28 +80,28 @@ public class AbstractLazyBuildStream<T, S extends BaseStream<T, S>> {
 
     protected <R> Stream<R> nextStream(Supplier<Stream<R>> nextStreamSupplier, boolean isParallel) {
         checkIfUsed();
-        LazyBuildGenericStream<R> next = new LazyBuildGenericStream<R>(isParallel, nextStreamSupplier);
+        var next = new LazyBuildGenericStream<>(isParallel, isEmpty, nextStreamSupplier);
         clear();
         return next;
     }
 
     protected IntStream nextIntStream(Supplier<IntStream> nextStreamSupplier, boolean isParallel) {
         checkIfUsed();
-        LazyBuildIntStream next = new LazyBuildIntStream(isParallel, nextStreamSupplier);
+        var next = new LazyBuildIntStream(isParallel, isEmpty, nextStreamSupplier);
         clear();
         return next;
     }
 
     protected LongStream nextLongStream(Supplier<LongStream> nextStreamSupplier, boolean isParallel) {
         checkIfUsed();
-        LazyBuildLongStream next = new LazyBuildLongStream(isParallel, nextStreamSupplier);
+        var next = new LazyBuildLongStream(isParallel, isEmpty, nextStreamSupplier);
         clear();
         return next;
     }
 
     protected DoubleStream nextDoubleStream(Supplier<DoubleStream> nextStreamSupplier, boolean isParallel) {
         checkIfUsed();
-        LazyBuildDoubleStream next = new LazyBuildDoubleStream(isParallel, nextStreamSupplier);
+        var next = new LazyBuildDoubleStream(isParallel, isEmpty, nextStreamSupplier);
         clear();
         return next;
     }

@@ -5,7 +5,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.*;
 
-import static net.mirwaldt.empty.streams.util.LazyBuildGenericStreamUtil.emptyStreamSupplier;
+import static net.mirwaldt.empty.streams.util.LazyBuildGenericStreamUtil.emptyGenericStreamSupplier;
 import static net.mirwaldt.empty.streams.util.LazyBuildIntStreamUtil.EMPTY_INT_STREAM_SUPPLIER;
 import static net.mirwaldt.empty.streams.util.LazyBuildLongStreamUtil.EMPTY_LONG_STREAM_SUPPLIER;
 
@@ -33,7 +33,7 @@ public class LazyBuildDoubleStreamUtil {
     public static <R> Supplier<Stream<R>> toStreamSupplier(
             Supplier<DoubleStream> streamSupplier, Function<DoubleStream, Stream<R>> nextOp) {
         return (streamSupplier == EMPTY_DOUBLE_STREAM_SUPPLIER)
-                ? emptyStreamSupplier() : () -> nextOp.apply(streamSupplier.get());
+                ? emptyGenericStreamSupplier() : () -> nextOp.apply(streamSupplier.get());
     }
 
     public static Supplier<IntStream> toIntStreamSupplier(

@@ -5,7 +5,8 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.*;
 
-import static net.mirwaldt.empty.streams.util.LazyBuildGenericStreamUtil.emptyStreamSupplier;
+import static java.util.Spliterators.emptyIntSpliterator;
+import static net.mirwaldt.empty.streams.util.LazyBuildGenericStreamUtil.emptyGenericStreamSupplier;
 
 public class LazyBuildIntStreamUtil {
     public final static Supplier<IntStream> EMPTY_INT_STREAM_SUPPLIER = new Supplier<IntStream>() {
@@ -16,7 +17,7 @@ public class LazyBuildIntStreamUtil {
     };
 
     public static Supplier<IntStream> firstSupplier(IntStream first) {
-        if (first.equals(IntStream.empty())) {
+        if (first.spliterator().equals(emptyIntSpliterator())) {
             return EMPTY_INT_STREAM_SUPPLIER;
         } else {
             Spliterator.OfInt spliterator = first.spliterator();
@@ -31,7 +32,7 @@ public class LazyBuildIntStreamUtil {
     public static <R> Supplier<Stream<R>> toStreamSupplier(
             Supplier<IntStream> streamSupplier, Function<IntStream, Stream<R>> nextOp) {
         return (streamSupplier == EMPTY_INT_STREAM_SUPPLIER)
-                ? emptyStreamSupplier() : () -> nextOp.apply(streamSupplier.get());
+                ? emptyGenericStreamSupplier() : () -> nextOp.apply(streamSupplier.get());
     }
 
     public static Supplier<IntStream> toIntStreamSupplier(

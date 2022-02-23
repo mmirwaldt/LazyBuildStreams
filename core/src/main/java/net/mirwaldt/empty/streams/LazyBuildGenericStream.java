@@ -1,22 +1,21 @@
 package net.mirwaldt.empty.streams;
 
 
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.Optional;
-import java.util.Spliterator;
+import java.util.*;
 import java.util.function.*;
 import java.util.stream.*;
 
 import static net.mirwaldt.empty.streams.util.LazyBuildGenericStreamUtil.*;
 
-public class LazyBuildGenericStream<T> extends AbstractLazyBuildStream<T, Stream<T>> implements Stream<T> {
+public class LazyBuildGenericStream<T>
+        extends AbstractLazyBuildStream<T, Stream<T>,
+        Spliterator<T>> implements Stream<T> {
     public LazyBuildGenericStream(Stream<T> first) {
-        super(first.isParallel(), firstSupplier(first));
+        super(first.isParallel(), first.spliterator());
     }
 
-    LazyBuildGenericStream(boolean isParallel, Supplier<Stream<T>> next) {
-        super(isParallel, next);
+    LazyBuildGenericStream(boolean isParallel, BooleanSupplier isEmpty, Supplier<Stream<T>> streamSupplier) {
+        super(isParallel, isEmpty, streamSupplier);
     }
 
     @Override
@@ -219,8 +218,19 @@ public class LazyBuildGenericStream<T> extends AbstractLazyBuildStream<T, Stream
         clear();
     }
 
-    protected Stream<T> getOnce() {
-        return super.getOnce((stream) -> (isParallel) ? stream.parallel() : stream.sequential());
+    @Override
+    protected Stream<T> streamFactory(Spliterator<T> spliterator, boolean isParallel) {
+        return StreamSupport.stream(spliterator, isParallel);
+    }
+
+    @Override
+    protected Spliterator<T> emptySpliterator() {
+        return Spliterators.emptySpliterator();
+    }
+
+    @Override
+    protected Supplier<Stream<T>> emptyStreamSupplier() {
+        return emptyGenericStreamSupplier();
     }
 }
 

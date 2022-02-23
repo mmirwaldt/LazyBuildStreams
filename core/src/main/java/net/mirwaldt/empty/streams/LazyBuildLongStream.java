@@ -6,13 +6,15 @@ import java.util.stream.*;
 
 import static net.mirwaldt.empty.streams.util.LazyBuildLongStreamUtil.*;
 
-public class LazyBuildLongStream extends AbstractLazyBuildStream<Long, LongStream> implements LongStream {
+public class LazyBuildLongStream
+        extends AbstractLazyBuildStream<Long, LongStream, Spliterator.OfLong>
+        implements LongStream {
     public LazyBuildLongStream(LongStream first) {
-        super(first.isParallel(), firstSupplier(first));
+        super(first.isParallel(), first.spliterator());
     }
 
-    LazyBuildLongStream(boolean isParallel, Supplier<LongStream> streamSupplier) {
-        super(isParallel, streamSupplier);
+    LazyBuildLongStream(boolean isParallel, BooleanSupplier isEmpty, Supplier<LongStream> streamSupplier) {
+        super(isParallel, isEmpty, streamSupplier);
     }
 
     @Override
@@ -205,7 +207,18 @@ public class LazyBuildLongStream extends AbstractLazyBuildStream<Long, LongStrea
         streamSupplier = LongStream::empty;
     }
 
-    protected LongStream getOnce() {
-        return super.getOnce((stream) -> (isParallel) ? stream.parallel() : stream.sequential());
+    @Override
+    protected LongStream streamFactory(Spliterator.OfLong spliterator, boolean isParallel) {
+        return StreamSupport.longStream(spliterator, isParallel);
+    }
+
+    @Override
+    protected Spliterator.OfLong emptySpliterator() {
+        return Spliterators.emptyLongSpliterator();
+    }
+
+    @Override
+    protected Supplier<LongStream> emptyStreamSupplier() {
+        return EMPTY_LONG_STREAM_SUPPLIER;
     }
 }
