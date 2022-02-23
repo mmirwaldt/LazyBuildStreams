@@ -1,11 +1,12 @@
 package net.mirwaldt.empty.streams.util;
 
-import java.util.Spliterator;
 import java.util.function.Function;
 import java.util.function.Supplier;
-import java.util.stream.*;
+import java.util.stream.DoubleStream;
+import java.util.stream.IntStream;
+import java.util.stream.LongStream;
+import java.util.stream.Stream;
 
-import static java.util.Spliterators.emptySpliterator;
 import static net.mirwaldt.empty.streams.util.LazyBuildDoubleStreamUtil.EMPTY_DOUBLE_STREAM_SUPPLIER;
 import static net.mirwaldt.empty.streams.util.LazyBuildIntStreamUtil.EMPTY_INT_STREAM_SUPPLIER;
 import static net.mirwaldt.empty.streams.util.LazyBuildLongStreamUtil.EMPTY_LONG_STREAM_SUPPLIER;
@@ -21,14 +22,6 @@ public class LazyBuildGenericStreamUtil {
 
     public static <T> Supplier<Stream<T>> emptyGenericStreamSupplier() {
         return (Supplier<Stream<T>>) EMPTY_STREAM_SUPPLIER;
-    }
-
-    public static <T> Supplier<Stream<T>> firstSupplier(Spliterator<T> spliterator, boolean isParallel) {
-        if (spliterator.equals(emptySpliterator())) {
-            return emptyGenericStreamSupplier();
-        } else {
-            return () -> StreamSupport.stream(spliterator, isParallel);
-        }
     }
 
     public static <T, R> Supplier<Stream<R>> toStreamSupplier(

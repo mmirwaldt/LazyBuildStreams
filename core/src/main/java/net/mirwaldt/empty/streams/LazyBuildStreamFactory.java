@@ -1,6 +1,5 @@
 package net.mirwaldt.empty.streams;
 
-import java.util.Iterator;
 import java.util.Spliterator;
 import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;

@@ -1,9 +1,11 @@
 package net.mirwaldt.empty.streams.util;
 
-import java.util.Spliterator;
 import java.util.function.Function;
 import java.util.function.Supplier;
-import java.util.stream.*;
+import java.util.stream.DoubleStream;
+import java.util.stream.IntStream;
+import java.util.stream.LongStream;
+import java.util.stream.Stream;
 
 import static net.mirwaldt.empty.streams.util.LazyBuildGenericStreamUtil.emptyGenericStreamSupplier;
 import static net.mirwaldt.empty.streams.util.LazyBuildIntStreamUtil.EMPTY_INT_STREAM_SUPPLIER;
@@ -16,19 +18,6 @@ public class LazyBuildDoubleStreamUtil {
             return DoubleStream.empty();
         }
     };
-
-    public static Supplier<DoubleStream> firstSupplier(DoubleStream first) {
-        if (first.equals(DoubleStream.empty())) {
-            return EMPTY_DOUBLE_STREAM_SUPPLIER;
-        } else {
-            Spliterator.OfDouble spliterator = first.spliterator();
-            if (0 < spliterator.estimateSize()) {
-                return () -> StreamSupport.doubleStream(spliterator, false);
-            } else {
-                return DoubleStream::empty;
-            }
-        }
-    }
 
     public static <R> Supplier<Stream<R>> toStreamSupplier(
             Supplier<DoubleStream> streamSupplier, Function<DoubleStream, Stream<R>> nextOp) {
