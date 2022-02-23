@@ -20,6 +20,9 @@ This project has got two modules:
 * core : contains the classes
 * demos : contains demo classes which show the consumed memory and the number of objects used by a stream. It uses JOL.
 
+The demos can be executed but don't need to executed because the output was pasted at the end as a comment.
+**You must add the VM option -Djol.magicFieldOffset=true for JOL.**
+
 ### What are the next todos?
 The following needs to be done for a further analysis:
 * The tests of the openjdk should pass if possible
