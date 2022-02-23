@@ -8,8 +8,8 @@ import java.util.stream.*;
 import static net.mirwaldt.empty.streams.util.LazyBuildGenericStreamUtil.*;
 
 public class LazyBuildGenericStream<T>
-        extends AbstractLazyBuildStream<T, Stream<T>,
-        Spliterator<T>> implements Stream<T> {
+        extends AbstractLazyBuildStream<T, Stream<T>, Spliterator<T>>
+        implements Stream<T> {
     public LazyBuildGenericStream(Stream<T> first) {
         super(first.isParallel(), first.spliterator());
     }
