@@ -1,9 +1,7 @@
 package net.mirwaldt.empty.streams.demos;
 
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
-import static net.mirwaldt.empty.streams.LazyBuildStreamFactory.lazyBuildGenericStream;
 import static net.mirwaldt.empty.streams.LazyBuildStreamFactory.lazyBuildIntStream;
 import static net.mirwaldt.empty.streams.demos.PrintUtil.*;
 

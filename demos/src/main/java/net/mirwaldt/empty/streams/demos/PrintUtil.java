@@ -8,7 +8,7 @@ import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
 public class PrintUtil {
-    public static boolean printAll = false;
+    public static boolean printAll = true;
 
     public static <T> void printStatistics(String name, Stream<T> stream, Object...ignored) {
         printStatistics(name,

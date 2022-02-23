@@ -1,7 +1,6 @@
 package net.mirwaldt.empty.streams;
 
 import java.util.Spliterator;
-import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.*;
 
