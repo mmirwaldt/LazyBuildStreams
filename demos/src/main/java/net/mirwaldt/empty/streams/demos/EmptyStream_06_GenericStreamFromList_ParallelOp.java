@@ -173,8 +173,8 @@ totalSize=192 bytes
 totalCount=9 objects
 ------------------------------------------------------------
 lazyBuildFilteredMappedParallelEmpty:
-totalSize=232 bytes
-totalCount=11 objects
+totalSize=192 bytes
+totalCount=9 objects
 ------------------------------------------------------------
 lazyBuildFilteredMappedParallelEmpty.findFirst().orElse("?")=?
 ############################################################
@@ -211,8 +211,8 @@ totalSize=192 bytes
 totalCount=9 objects
 ------------------------------------------------------------
 lazyBuildFilteredMappedParallelNonEmpty:
-totalSize=232 bytes
-totalCount=11 objects
+totalSize=192 bytes
+totalCount=9 objects
 ------------------------------------------------------------
 lazyBuildFilteredMappedParallelNonEmpty.findFirst().orElse("?")=HEINZ
 */

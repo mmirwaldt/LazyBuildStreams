@@ -8,7 +8,7 @@ import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
 public class PrintUtil {
-    public static boolean printAll = true;
+    public static boolean printAll = false;
 
     public static <T> void printStatistics(String name, Stream<T> stream, Object...ignored) {
         printStatistics(name,
@@ -39,7 +39,7 @@ public class PrintUtil {
         System.out.println("totalSize=" + graphLayout.totalSize() + " bytes");
         System.out.println("totalCount=" + graphLayout.totalCount() + " objects");
         if(printAll) {
-            System.out.println(graphLayout.toPrintable());
+            System.out.println(graphLayout.toFootprint());
         }
     }
 
