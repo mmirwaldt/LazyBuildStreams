@@ -185,13 +185,13 @@ final class LazyBuildLongStream
     @Override
     public LongStream sequential() {
         initIfFirst();
-        return nextLongStream(toLongStreamSupplier(streamSupplier, LongStream::sequential), false);
+        return nextLongStream(toLongStreamSupplier(streamSupplier, s -> s), false);
     }
 
     @Override
     public LongStream parallel() {
         initIfFirst();
-        return nextLongStream(toLongStreamSupplier(streamSupplier, LongStream::parallel), true);
+        return nextLongStream(toLongStreamSupplier(streamSupplier, s -> s), true);
     }
 
     @Override
@@ -243,7 +243,9 @@ final class LazyBuildLongStream
 
     public static Supplier<LongStream> toLongStreamSupplier(
             Supplier<LongStream> streamSupplier, Function<LongStream, LongStream> nextOp) {
-        return (isEmpty(streamSupplier)) ? EMPTY_LONG_STREAM_SUPPLIER : () -> nextOp.apply(streamSupplier.get());
+        return (isEmpty(streamSupplier))
+                ? EMPTY_LONG_STREAM_SUPPLIER
+                : (isIdentity(nextOp)) ? streamSupplier : () -> nextOp.apply(streamSupplier.get());
     }
 
     public static Supplier<DoubleStream> toDoubleStreamSupplier(

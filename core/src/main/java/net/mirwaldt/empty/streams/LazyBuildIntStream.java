@@ -191,13 +191,13 @@ final class LazyBuildIntStream
     @Override
     public IntStream sequential() {
         initIfFirst();
-        return nextIntStream(toIntStreamSupplier(streamSupplier, IntStream::sequential), false);
+        return nextIntStream(toIntStreamSupplier(streamSupplier, s -> s), false);
     }
 
     @Override
     public IntStream parallel() {
         initIfFirst();
-        return nextIntStream(toIntStreamSupplier(streamSupplier, IntStream::parallel), true);
+        return nextIntStream(toIntStreamSupplier(streamSupplier, s -> s), true);
     }
 
     @Override
@@ -245,7 +245,9 @@ final class LazyBuildIntStream
 
     public static Supplier<IntStream> toIntStreamSupplier(
             Supplier<IntStream> streamSupplier, Function<IntStream, IntStream> nextOp) {
-        return (isEmpty(streamSupplier)) ? EMPTY_INT_STREAM_SUPPLIER : () -> nextOp.apply(streamSupplier.get());
+        return (isEmpty(streamSupplier))
+                ? EMPTY_INT_STREAM_SUPPLIER
+                : (isIdentity(nextOp)) ? streamSupplier : () -> nextOp.apply(streamSupplier.get());
     }
 
     public static Supplier<LongStream> toLongStreamSupplier(

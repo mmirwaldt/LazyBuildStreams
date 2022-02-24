@@ -168,7 +168,7 @@ final class LazyBuildDoubleStream
     @Override
     public OptionalDouble findAny() {
         return getOnce().findAny();
-    }    
+    }
 
     @Override
     public Stream<Double> boxed() {
@@ -179,13 +179,13 @@ final class LazyBuildDoubleStream
     @Override
     public DoubleStream sequential() {
         initIfFirst();
-        return nextDoubleStream(toDoubleStreamSupplier(streamSupplier, DoubleStream::sequential), false);
+        return nextDoubleStream(toDoubleStreamSupplier(streamSupplier, Function.identity()), false);
     }
 
     @Override
     public DoubleStream parallel() {
         initIfFirst();
-        return nextDoubleStream(toDoubleStreamSupplier(streamSupplier, DoubleStream::parallel), true);
+        return nextDoubleStream(toDoubleStreamSupplier(streamSupplier, Function.identity()), true);
     }
 
     @Override
@@ -242,6 +242,8 @@ final class LazyBuildDoubleStream
 
     public static Supplier<DoubleStream> toDoubleStreamSupplier(
             Supplier<DoubleStream> streamSupplier, Function<DoubleStream, DoubleStream> nextOp) {
-        return (isEmpty(streamSupplier)) ? EMPTY_DOUBLE_STREAM_SUPPLIER : () -> nextOp.apply(streamSupplier.get());
+        return (isEmpty(streamSupplier))
+                ? EMPTY_DOUBLE_STREAM_SUPPLIER
+                : (isIdentity(nextOp)) ? streamSupplier : () -> nextOp.apply(streamSupplier.get());
     }
 }

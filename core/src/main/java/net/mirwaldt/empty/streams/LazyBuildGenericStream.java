@@ -208,13 +208,13 @@ final class LazyBuildGenericStream<T>
     @Override
     public Stream<T> sequential() {
         initIfFirst();
-        return nextStream(toStreamSupplier(streamSupplier, BaseStream::sequential), false);
+        return nextStream(toSameTypeStreamSupplier(streamSupplier, Function.identity()), false);
     }
 
     @Override
     public Stream<T> parallel() {
         initIfFirst();
-        return nextStream(toStreamSupplier(streamSupplier, BaseStream::parallel), true);
+        return nextStream(toSameTypeStreamSupplier(streamSupplier, Function.identity()), true);
     }
 
     @Override
@@ -246,6 +246,13 @@ final class LazyBuildGenericStream<T>
     public static <T, R> Supplier<Stream<R>> toStreamSupplier(
             Supplier<Stream<T>> streamSupplier, Function<Stream<T>, Stream<R>> nextOp) {
         return (isEmpty(streamSupplier)) ? emptyGenericStreamSupplier() : () -> nextOp.apply(streamSupplier.get());
+    }
+
+    public static <T> Supplier<Stream<T>> toSameTypeStreamSupplier(
+            Supplier<Stream<T>> streamSupplier, Function<Stream<T>, Stream<T>> nextOp) {
+        return (isEmpty(streamSupplier))
+                ? emptyGenericStreamSupplier()
+                : (isIdentity(nextOp)) ? streamSupplier : () -> nextOp.apply(streamSupplier.get());
     }
 
     public static <T> Supplier<IntStream> toIntStreamSupplier(

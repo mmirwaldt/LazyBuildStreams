@@ -1,6 +1,7 @@
 package net.mirwaldt.empty.streams;
 
 import java.util.Spliterator;
+import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.*;
 
@@ -39,7 +40,7 @@ abstract sealed class AbstractLazyBuildStream<T, S extends BaseStream<T, S>, I e
     private final boolean isFirst;
     protected Spliterator<?> spliterator;
     protected Supplier<S> streamSupplier;
-    protected final boolean isParallel;
+    protected boolean isParallel;
 
     private boolean wasUsedOrClose;
 
@@ -168,5 +169,9 @@ abstract sealed class AbstractLazyBuildStream<T, S extends BaseStream<T, S>, I e
                 || streamSupplier == EMPTY_INT_STREAM_SUPPLIER
                 || streamSupplier == EMPTY_LONG_STREAM_SUPPLIER
                 || streamSupplier == EMPTY_DOUBLE_STREAM_SUPPLIER;
+    }
+
+    protected static <U, V extends BaseStream<U, V>> boolean isIdentity(Function<V, V> function) {
+        return function == Function.<V>identity();
     }
 }
