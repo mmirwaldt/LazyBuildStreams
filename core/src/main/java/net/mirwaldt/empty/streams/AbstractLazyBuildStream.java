@@ -160,14 +160,6 @@ abstract sealed class AbstractLazyBuildStream<T, S extends BaseStream<T, S>, I e
         return next;
     }
 
-    public Spliterator<?> getSpliterator() {
-        return spliterator;
-    }
-
-    public Supplier<S> getStreamSupplier() {
-        return streamSupplier;
-    }
-
     public static <T> Supplier<Stream<T>> emptyGenericStreamSupplier() {
         return (Supplier<Stream<T>>) EMPTY_STREAM_SUPPLIER;
     }
