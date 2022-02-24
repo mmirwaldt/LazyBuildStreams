@@ -7,6 +7,10 @@ import java.util.stream.*;
 final class LazyBuildLongStream
         extends AbstractLazyBuildStream<Long, LongStream, Spliterator.OfLong>
         implements LongStream {
+    LazyBuildLongStream(AbstractLazyBuildStream<Long, LongStream, Spliterator.OfLong> first) {
+        super(first.spliterator, first.streamSupplier, first.isParallel);
+    }
+
     LazyBuildLongStream(LongStream first) {
         super(first.spliterator(), first.isParallel());
     }

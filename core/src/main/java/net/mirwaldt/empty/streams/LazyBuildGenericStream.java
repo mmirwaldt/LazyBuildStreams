@@ -8,6 +8,10 @@ import java.util.stream.*;
 final class LazyBuildGenericStream<T>
         extends AbstractLazyBuildStream<T, Stream<T>, Spliterator<T>>
         implements Stream<T> {
+    LazyBuildGenericStream(AbstractLazyBuildStream<T, Stream<T>, Spliterator<T>> first) {
+        super(first.spliterator, first.streamSupplier, first.isParallel);
+    }
+
     LazyBuildGenericStream(Stream<T> first) {
         super(first.spliterator(), first.isParallel());
     }

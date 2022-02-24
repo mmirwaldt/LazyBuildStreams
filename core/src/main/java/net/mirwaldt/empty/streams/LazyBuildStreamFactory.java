@@ -12,19 +12,35 @@ public class LazyBuildStreamFactory {
     }
 
     public static <T> Stream<T> lazyBuildGenericStream(Stream<T> stream) {
-        return new LazyBuildGenericStream<T>(stream);
+        if(stream instanceof AbstractLazyBuildStream lazyBuildStream) {
+            return new LazyBuildGenericStream<T>(lazyBuildStream);
+        } else {
+            return new LazyBuildGenericStream<T>(stream);
+        }
     }
 
     public static IntStream lazyBuildIntStream(IntStream stream) {
-        return new LazyBuildIntStream(stream);
+        if(stream instanceof AbstractLazyBuildStream lazyBuildStream) {
+            return new LazyBuildIntStream(lazyBuildStream);
+        } else {
+            return new LazyBuildIntStream(stream);
+        }
     }
 
     public static LongStream lazyBuildLongStream(LongStream stream) {
-        return new LazyBuildLongStream(stream);
+        if(stream instanceof AbstractLazyBuildStream lazyBuildStream) {
+            return new LazyBuildLongStream(lazyBuildStream);
+        } else {
+            return new LazyBuildLongStream(stream);
+        }
     }
 
     public static DoubleStream lazyBuildDoubleStream(DoubleStream stream) {
-        return new LazyBuildDoubleStream(stream);
+        if(stream instanceof AbstractLazyBuildStream lazyBuildStream) {
+            return new LazyBuildDoubleStream(lazyBuildStream);
+        } else {
+            return new LazyBuildDoubleStream(stream);
+        }
     }
 
     public static <T> Stream<T> lazyBuildGenericStream(Spliterator<T> spliterator) {

@@ -7,6 +7,10 @@ import java.util.stream.*;
 final class LazyBuildIntStream
         extends AbstractLazyBuildStream<Integer, IntStream, Spliterator.OfInt>
         implements IntStream {
+    LazyBuildIntStream(AbstractLazyBuildStream<Integer, IntStream, Spliterator.OfInt> first) {
+        super(first.spliterator, first.streamSupplier, first.isParallel);
+    }
+
     LazyBuildIntStream(IntStream first) {
         super(first.spliterator(), first.isParallel());
     }
