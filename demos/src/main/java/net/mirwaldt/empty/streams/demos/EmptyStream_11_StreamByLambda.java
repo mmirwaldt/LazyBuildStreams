@@ -2,18 +2,34 @@ package net.mirwaldt.empty.streams.demos;
 
 import org.openjdk.jol.info.GraphLayout;
 
-import java.util.function.UnaryOperator;
+import java.util.function.Function;
 import java.util.stream.Stream;
+
+import static net.mirwaldt.empty.streams.LazyBuildStreamFactory.lazyBuildFromGenericStreamToGenericStream;
 
 public class EmptyStream_11_StreamByLambda {
     public static void main(String[] args) {
-        UnaryOperator<Stream<String>> streamOperator = (var stream) -> stream
-                .filter(str -> !str.isEmpty())
-                .map(String::toUpperCase);
-        GraphLayout graphLayout = GraphLayout.parseInstance(streamOperator);
-        System.out.println("streamOperator: " + graphLayout.totalSize() + " bytes");
+        Function<Stream<Integer>, Stream<String>> streamFunction = (var stream) -> stream
+                .filter(i -> 0 < i)
+                .map(Integer::toBinaryString);
+        GraphLayout graphLayout = GraphLayout.parseInstance(streamFunction);
+        System.out.println("streamFunction: " + graphLayout.totalSize() + " bytes");
         System.out.println(graphLayout.toFootprint());
-        System.out.println("Stream.empty(): " + streamOperator.apply(Stream.empty()).toList());
-        System.out.println("Stream.of(\"a\"): " + streamOperator.apply(Stream.of("a")).toList());
+
+        System.out.println("-".repeat(120));
+
+        Stream<String> smartEmptyStream = lazyBuildFromGenericStreamToGenericStream(Stream.empty(), streamFunction);
+        GraphLayout smartEmptyStreamLayout = GraphLayout.parseInstance(smartEmptyStream);
+        System.out.println("smartEmptyStream: " + smartEmptyStreamLayout.totalSize() + " bytes");
+        System.out.println(smartEmptyStreamLayout.toFootprint());
+        System.out.println("smartEmptyStream.toList()=" + smartEmptyStream.toList());
+
+        System.out.println("-".repeat(120));
+
+        Stream<String> smartNonEmptyStream = lazyBuildFromGenericStreamToGenericStream(Stream.of(0, 1, 2), streamFunction);
+        GraphLayout smartNonEmptyStreamLayout = GraphLayout.parseInstance(smartNonEmptyStream);
+        System.out.println("smartNonEmptyStreamLayout: " + smartNonEmptyStreamLayout.totalSize() + " bytes");
+        System.out.println(smartNonEmptyStreamLayout.toFootprint());
+        System.out.println("smartNonEmptyStream.toList()=" + smartNonEmptyStream.toList());
     }
 }

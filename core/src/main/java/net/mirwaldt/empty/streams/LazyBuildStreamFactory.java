@@ -1,10 +1,8 @@
 package net.mirwaldt.empty.streams;
 
 import java.util.Spliterator;
-import java.util.stream.DoubleStream;
-import java.util.stream.IntStream;
-import java.util.stream.LongStream;
-import java.util.stream.Stream;
+import java.util.function.Function;
+import java.util.stream.*;
 
 public class LazyBuildStreamFactory {
     private LazyBuildStreamFactory() {
@@ -73,5 +71,181 @@ public class LazyBuildStreamFactory {
 
     public static DoubleStream lazyBuildDoubleStream(Spliterator.OfDouble spliterator, boolean isParallel) {
         return new LazyBuildDoubleStream(spliterator, isParallel);
+    }
+
+    public static <S, T> Stream<T> lazyBuildFromGenericStreamToGenericStream(
+            Stream<S> initialStream, Function<Stream<S>, Stream<T>> chainFunction) {
+        Spliterator<S> spliterator = initialStream.spliterator();
+        if (0 < spliterator.estimateSize()) {
+            Stream<S> newStream = StreamSupport.stream(spliterator, initialStream.isParallel());
+            return chainFunction.apply(newStream);
+        } else {
+            return Stream.empty();
+        }
+    }
+
+    public static <T> Stream<T> lazyBuildFromIntStreamToGenericStream(
+            IntStream initialStream, Function<IntStream, Stream<T>> chainFunction) {
+        Spliterator.OfInt spliterator = initialStream.spliterator();
+        if (0 < spliterator.estimateSize()) {
+            IntStream newStream = StreamSupport.intStream(spliterator, initialStream.isParallel());
+            return chainFunction.apply(newStream);
+        } else {
+            return Stream.empty();
+        }
+    }
+
+    public static <T> Stream<T> lazyBuildFromLongStreamToGenericStream(
+            LongStream initialStream, Function<LongStream, Stream<T>> chainFunction) {
+        Spliterator.OfLong spliterator = initialStream.spliterator();
+        if (0 < spliterator.estimateSize()) {
+            LongStream newStream = StreamSupport.longStream(spliterator, initialStream.isParallel());
+            return chainFunction.apply(newStream);
+        } else {
+            return Stream.empty();
+        }
+    }
+
+    public static <T> Stream<T> lazyBuildFromDoubleStreamToGenericStream(
+            DoubleStream initialStream, Function<DoubleStream, Stream<T>> chainFunction) {
+        Spliterator.OfDouble spliterator = initialStream.spliterator();
+        if (0 < spliterator.estimateSize()) {
+            DoubleStream newStream = StreamSupport.doubleStream(spliterator, initialStream.isParallel());
+            return chainFunction.apply(newStream);
+        } else {
+            return Stream.empty();
+        }
+    }
+
+    public static <S> IntStream lazyBuildFromGenericStreamToIntStream(
+            Stream<S> initialStream, Function<Stream<S>, IntStream> chainFunction) {
+        Spliterator<S> spliterator = initialStream.spliterator();
+        if (0 < spliterator.estimateSize()) {
+            Stream<S> newStream = StreamSupport.stream(spliterator, initialStream.isParallel());
+            return chainFunction.apply(newStream);
+        } else {
+            return IntStream.empty();
+        }
+    }
+
+    public static IntStream lazyBuildFromIntStreamToIntStream(
+            IntStream initialStream, Function<IntStream, IntStream> chainFunction) {
+        Spliterator.OfInt spliterator = initialStream.spliterator();
+        if (0 < spliterator.estimateSize()) {
+            IntStream newStream = StreamSupport.intStream(spliterator, initialStream.isParallel());
+            return chainFunction.apply(newStream);
+        } else {
+            return IntStream.empty();
+        }
+    }
+
+    public static IntStream lazyBuildFromLongStreamToIntStream(
+            LongStream initialStream, Function<LongStream, IntStream> chainFunction) {
+        Spliterator.OfLong spliterator = initialStream.spliterator();
+        if (0 < spliterator.estimateSize()) {
+            LongStream newStream = StreamSupport.longStream(spliterator, initialStream.isParallel());
+            return chainFunction.apply(newStream);
+        } else {
+            return IntStream.empty();
+        }
+    }
+
+    public static IntStream lazyBuildFromDoubleStreamToIntStream(
+            DoubleStream initialStream, Function<DoubleStream, IntStream> chainFunction) {
+        Spliterator.OfDouble spliterator = initialStream.spliterator();
+        if (0 < spliterator.estimateSize()) {
+            DoubleStream newStream = StreamSupport.doubleStream(spliterator, initialStream.isParallel());
+            return chainFunction.apply(newStream);
+        } else {
+            return IntStream.empty();
+        }
+    }
+
+    public static <S> LongStream lazyBuildFromGenericStreamToLongStream(
+            Stream<S> initialStream, Function<Stream<S>, LongStream> chainFunction) {
+        Spliterator<S> spliterator = initialStream.spliterator();
+        if (0 < spliterator.estimateSize()) {
+            Stream<S> newStream = StreamSupport.stream(spliterator, initialStream.isParallel());
+            return chainFunction.apply(newStream);
+        } else {
+            return LongStream.empty();
+        }
+    }
+
+    public static LongStream lazyBuildFromIntStreamToLongStream(
+            IntStream initialStream, Function<IntStream, LongStream> chainFunction) {
+        Spliterator.OfInt spliterator = initialStream.spliterator();
+        if (0 < spliterator.estimateSize()) {
+            IntStream newStream = StreamSupport.intStream(spliterator, initialStream.isParallel());
+            return chainFunction.apply(newStream);
+        } else {
+            return LongStream.empty();
+        }
+    }
+
+    public static LongStream lazyBuildFromLongStreamToLongStream(
+            LongStream initialStream, Function<LongStream, LongStream> chainFunction) {
+        Spliterator.OfLong spliterator = initialStream.spliterator();
+        if (0 < spliterator.estimateSize()) {
+            LongStream newStream = StreamSupport.longStream(spliterator, initialStream.isParallel());
+            return chainFunction.apply(newStream);
+        } else {
+            return LongStream.empty();
+        }
+    }
+
+    public static LongStream lazyBuildFromDoubleStreamToLongStream(
+            DoubleStream initialStream, Function<DoubleStream, LongStream> chainFunction) {
+        Spliterator.OfDouble spliterator = initialStream.spliterator();
+        if (0 < spliterator.estimateSize()) {
+            DoubleStream newStream = StreamSupport.doubleStream(spliterator, initialStream.isParallel());
+            return chainFunction.apply(newStream);
+        } else {
+            return LongStream.empty();
+        }
+    }
+
+    public static <S> DoubleStream lazyBuildFromGenericStreamToDoubleStream(
+            Stream<S> initialStream, Function<Stream<S>, DoubleStream> chainFunction) {
+        Spliterator<S> spliterator = initialStream.spliterator();
+        if (0 < spliterator.estimateSize()) {
+            Stream<S> newStream = StreamSupport.stream(spliterator, initialStream.isParallel());
+            return chainFunction.apply(newStream);
+        } else {
+            return DoubleStream.empty();
+        }
+    }
+
+    public static DoubleStream lazyBuildFromIntStreamToDoubleStream(
+            IntStream initialStream, Function<IntStream, DoubleStream> chainFunction) {
+        Spliterator.OfInt spliterator = initialStream.spliterator();
+        if (0 < spliterator.estimateSize()) {
+            IntStream newStream = StreamSupport.intStream(spliterator, initialStream.isParallel());
+            return chainFunction.apply(newStream);
+        } else {
+            return DoubleStream.empty();
+        }
+    }
+
+    public static DoubleStream lazyBuildFromLongStreamToDoubleStream(
+            LongStream initialStream, Function<LongStream, DoubleStream> chainFunction) {
+        Spliterator.OfLong spliterator = initialStream.spliterator();
+        if (0 < spliterator.estimateSize()) {
+            LongStream newStream = StreamSupport.longStream(spliterator, initialStream.isParallel());
+            return chainFunction.apply(newStream);
+        } else {
+            return DoubleStream.empty();
+        }
+    }
+
+    public static DoubleStream lazyBuildFromDoubleStreamToDoubleStream(
+            DoubleStream initialStream, Function<DoubleStream, DoubleStream> chainFunction) {
+        Spliterator.OfDouble spliterator = initialStream.spliterator();
+        if (0 < spliterator.estimateSize()) {
+            DoubleStream newStream = StreamSupport.doubleStream(spliterator, initialStream.isParallel());
+            return chainFunction.apply(newStream);
+        } else {
+            return DoubleStream.empty();
+        }
     }
 }
