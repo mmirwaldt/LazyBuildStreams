@@ -55,7 +55,7 @@ public class EmptyStream_05_DefaultEmptyGenericStream_ParallelOp {
         printLineOfMinus();
 
         Stream<String> lazyBuildFilteredMappedParallelEmpty = lazyBuildFilteredMappedEmpty.parallel();
-        printStatistics("lazyBuildFilteredMappedEmpty:", lazyBuildFilteredMappedParallelEmpty);
+        printStatistics("lazyBuildFilteredMappedParallelEmpty:", lazyBuildFilteredMappedParallelEmpty);
 
         printLineOfMinus();
 
@@ -95,7 +95,7 @@ lazyBuildFilteredMappedEmpty:
 totalSize=24 bytes
 totalCount=1 objects
 ------------------------------------------------------------
-lazyBuildFilteredMappedEmpty:
+lazyBuildFilteredMappedParallelEmpty:
 totalSize=24 bytes
 totalCount=1 objects
 ------------------------------------------------------------
