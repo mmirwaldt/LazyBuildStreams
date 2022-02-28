@@ -37,7 +37,7 @@ public class PrintUtil {
     public static void printStatistics(String name, GraphLayout graphLayout) {
         System.out.println(name);
         System.out.println("totalSize=" + graphLayout.totalSize() + " bytes");
-        System.out.println("totalCount=" + graphLayout.totalCount() + " objects");
+        System.out.println("totalCount=" + graphLayout.totalCount() + " object(s)");
         if(printAll) {
             System.out.println(graphLayout.toFootprint());
         }
