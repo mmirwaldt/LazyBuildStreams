@@ -8,7 +8,7 @@ final class LazyBuildIntStream
         extends AbstractLazyBuildStream<Integer, IntStream, Spliterator.OfInt>
         implements IntStream {
     LazyBuildIntStream(AbstractLazyBuildStream<Integer, IntStream, Spliterator.OfInt> first) {
-        super(first.spliterator, first.streamSupplier, first.isParallel);
+        super(first.spliterator, first.functions, first.isParallel);
     }
 
     LazyBuildIntStream(IntStream first) {
@@ -19,74 +19,75 @@ final class LazyBuildIntStream
         super(spliterator, isParallel);
     }
 
-    LazyBuildIntStream(Spliterator<?> spliterator, Supplier<IntStream> streamSupplier, boolean isParallel) {
-        super(spliterator, streamSupplier, isParallel);
+    LazyBuildIntStream(Spliterator<?> spliterator, Function[] functions,
+                       Function<BaseStream<?, ?>, BaseStream<?, ?>> function, boolean isParallel) {
+        super(spliterator, functions, function, isParallel);
     }
 
     @Override
     public IntStream filter(IntPredicate predicate) {
-        initIfFirst();
-        return nextIntStream(toIntStreamSupplier(streamSupplier, (stream) -> stream.filter(predicate)));
+        return new LazyBuildIntStream(getSpliterator(), functions(),
+                (stream) -> ((IntStream) stream).filter(predicate), isParallel);
     }
 
     @Override
     public IntStream map(IntUnaryOperator mapper) {
-        initIfFirst();
-        return nextIntStream(toIntStreamSupplier(streamSupplier, (stream) -> stream.map(mapper)));
+        return new LazyBuildIntStream(getSpliterator(), functions(),
+                (stream) -> ((IntStream) stream).map(mapper), isParallel);
     }
 
     @Override
     public <U> Stream<U> mapToObj(IntFunction<? extends U> mapper) {
-        initIfFirst();
-        return nextStream(toStreamSupplier(streamSupplier, (stream) -> stream.mapToObj(mapper)));
+        return new LazyBuildGenericStream<>(getSpliterator(), functions(),
+                (stream) -> ((IntStream) stream).mapToObj(mapper), isParallel);
     }
 
     @Override
     public LongStream mapToLong(IntToLongFunction mapper) {
-        initIfFirst();
-        return nextLongStream(toLongStreamSupplier(streamSupplier, (stream) -> stream.mapToLong(mapper)));
+        return new LazyBuildLongStream(getSpliterator(), functions(),
+                (stream) -> ((IntStream) stream).mapToLong(mapper), isParallel);
     }
 
     @Override
     public DoubleStream mapToDouble(IntToDoubleFunction mapper) {
-        initIfFirst();
-        return nextDoubleStream(toDoubleStreamSupplier(streamSupplier, (stream) -> stream.mapToDouble(mapper)));
+        return new LazyBuildDoubleStream(getSpliterator(), functions(),
+                (stream) -> ((IntStream) stream).mapToDouble(mapper), isParallel);
     }
 
     @Override
     public IntStream flatMap(IntFunction<? extends IntStream> mapper) {
-        initIfFirst();
-        return nextIntStream(toIntStreamSupplier(streamSupplier, (stream) -> stream.flatMap(mapper)));
+        return new LazyBuildIntStream(getSpliterator(), functions(),
+                (stream) -> ((IntStream) stream).flatMap(mapper), isParallel);
     }
 
     @Override
     public IntStream distinct() {
-        initIfFirst();
-        return nextIntStream(toIntStreamSupplier(streamSupplier, IntStream::distinct));
+        return new LazyBuildIntStream(getSpliterator(), functions(),
+                (stream) -> ((IntStream) stream).distinct(), isParallel);
     }
 
     @Override
     public IntStream sorted() {
-        initIfFirst();
-        return nextIntStream(toIntStreamSupplier(streamSupplier, IntStream::sorted));
+        return new LazyBuildIntStream(getSpliterator(), functions(),
+                (stream) -> ((IntStream) stream).sorted(), isParallel);
     }
 
     @Override
     public IntStream peek(IntConsumer action) {
-        initIfFirst();
-        return nextIntStream(toIntStreamSupplier(streamSupplier, (stream) -> stream.peek(action)));
+        return new LazyBuildIntStream(getSpliterator(), functions(),
+                (stream) -> ((IntStream) stream).peek(action), isParallel);
     }
 
     @Override
     public IntStream limit(long maxSize) {
-        initIfFirst();
-        return nextIntStream(toIntStreamSupplier(streamSupplier, (stream) -> stream.limit(maxSize)));
+        return new LazyBuildIntStream(getSpliterator(), functions(),
+                (stream) -> ((IntStream) stream).limit(maxSize), isParallel);
     }
 
     @Override
     public IntStream skip(long n) {
-        initIfFirst();
-        return nextIntStream(toIntStreamSupplier(streamSupplier, (stream) -> stream.skip(n)));
+        return new LazyBuildIntStream(getSpliterator(), functions(),
+                (stream) -> ((IntStream) stream).skip(n), isParallel);
     }
 
     @Override
@@ -176,44 +177,42 @@ final class LazyBuildIntStream
 
     @Override
     public LongStream asLongStream() {
-        initIfFirst();
-        return nextLongStream(toLongStreamSupplier(streamSupplier, IntStream::asLongStream));
+        return new LazyBuildLongStream(getSpliterator(), functions(),
+                (stream) -> ((IntStream) stream).asLongStream(), isParallel);
     }
 
     @Override
     public DoubleStream asDoubleStream() {
-        initIfFirst();
-        return nextDoubleStream(toDoubleStreamSupplier(streamSupplier, IntStream::asDoubleStream));
+        return new LazyBuildDoubleStream(getSpliterator(), functions(),
+                (stream) -> ((IntStream) stream).asDoubleStream(), isParallel);
     }
 
     @Override
     public Stream<Integer> boxed() {
-        initIfFirst();
-        return nextStream(toStreamSupplier(streamSupplier, IntStream::boxed));
+        return new LazyBuildGenericStream<>(getSpliterator(), functions(),
+                (stream) -> ((IntStream) stream).boxed(), isParallel);
     }
 
     @Override
     public IntStream sequential() {
-        initIfFirst();
-        return nextIntStream(toIntStreamSupplier(streamSupplier, s -> s), false);
+        return new LazyBuildIntStream(getSpliterator(), functions(), Function.identity(), false);
     }
 
     @Override
     public IntStream parallel() {
-        initIfFirst();
-        return nextIntStream(toIntStreamSupplier(streamSupplier, s -> s), true);
+        return new LazyBuildIntStream(getSpliterator(), functions(), Function.identity(), true);
     }
 
     @Override
     public IntStream unordered() {
-        initIfFirst();
-        return nextIntStream(toIntStreamSupplier(streamSupplier, BaseStream::unordered));
+        return new LazyBuildIntStream(getSpliterator(), functions(),
+                (stream) -> ((IntStream) stream).unordered(), isParallel);
     }
 
     @Override
     public IntStream onClose(Runnable closeHandler) {
-        initIfFirst();
-        return nextIntStream(toIntStreamSupplier(streamSupplier, (stream) -> stream.onClose(closeHandler)));
+        return new LazyBuildIntStream(getSpliterator(), functions(),
+                (stream) -> ((IntStream) stream).onClose(closeHandler), isParallel);
     }
 
     @Override
@@ -227,40 +226,7 @@ final class LazyBuildIntStream
     }
 
     @Override
-    protected Spliterator.OfInt emptySpliterator() {
-        return Spliterators.emptyIntSpliterator();
-    }
-
-    @Override
-    protected Supplier<IntStream> emptyStreamSupplier() {
-        return EMPTY_INT_STREAM_SUPPLIER;
-    }
-
-    @Override
-    public IntStream get() {
-        return StreamSupport.intStream((Spliterator.OfInt) spliterator, isParallel);
-    }
-
-
-    public static <R> Supplier<Stream<R>> toStreamSupplier(
-            Supplier<IntStream> streamSupplier, Function<IntStream, Stream<R>> nextOp) {
-        return (isEmpty(streamSupplier)) ? emptyGenericStreamSupplier() : () -> nextOp.apply(streamSupplier.get());
-    }
-
-    public static Supplier<IntStream> toIntStreamSupplier(
-            Supplier<IntStream> streamSupplier, Function<IntStream, IntStream> nextOp) {
-        return (isEmpty(streamSupplier))
-                ? EMPTY_INT_STREAM_SUPPLIER
-                : (isIdentity(nextOp)) ? streamSupplier : () -> nextOp.apply(streamSupplier.get());
-    }
-
-    public static Supplier<LongStream> toLongStreamSupplier(
-            Supplier<IntStream> streamSupplier, Function<IntStream, LongStream> nextOp) {
-        return (isEmpty(streamSupplier)) ? EMPTY_LONG_STREAM_SUPPLIER : () -> nextOp.apply(streamSupplier.get());
-    }
-
-    public static Supplier<DoubleStream> toDoubleStreamSupplier(
-            Supplier<IntStream> streamSupplier, Function<IntStream, DoubleStream> nextOp) {
-        return (isEmpty(streamSupplier)) ? EMPTY_DOUBLE_STREAM_SUPPLIER : () -> nextOp.apply(streamSupplier.get());
+    protected IntStream emptyStream() {
+        return IntStream.empty();
     }
 }

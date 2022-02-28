@@ -1,66 +1,58 @@
 package net.mirwaldt.empty.streams;
 
 import java.util.Spliterator;
+import java.util.Spliterators;
 import java.util.function.Function;
-import java.util.function.Supplier;
-import java.util.stream.*;
+import java.util.stream.BaseStream;
+import java.util.stream.StreamSupport;
 
-abstract sealed class AbstractLazyBuildStream<T, S extends BaseStream<T, S>, I extends Spliterator<T>>
-        implements Supplier<S>, BaseStream<T, S>
-        permits LazyBuildGenericStream, LazyBuildIntStream, LazyBuildLongStream, LazyBuildDoubleStream {
-    @SuppressWarnings("Convert2Lambda")
-    private final static Supplier<?> EMPTY_STREAM_SUPPLIER = new Supplier<Object>() {
-        @Override
-        public Object get() {
-            return Stream.empty();
-        }
-    };
-
-    protected final static Supplier<LongStream> EMPTY_LONG_STREAM_SUPPLIER = new Supplier<LongStream>() {
-        @Override
-        public LongStream get() {
-            return LongStream.empty();
-        }
-    };
-
-    protected final static Supplier<IntStream> EMPTY_INT_STREAM_SUPPLIER = new Supplier<IntStream>() {
-        @Override
-        public IntStream get() {
-            return IntStream.empty();
-        }
-    };
-
-    protected final static Supplier<DoubleStream> EMPTY_DOUBLE_STREAM_SUPPLIER = new Supplier<DoubleStream>() {
-        @Override
-        public DoubleStream get() {
-            return DoubleStream.empty();
-        }
-    };
-
-    private final boolean isFirst;
+abstract class AbstractLazyBuildStream<T, S extends BaseStream<T, S>, I extends Spliterator<T>>
+        implements BaseStream<T, S> {
     protected Spliterator<?> spliterator;
-    protected Supplier<S> streamSupplier;
+    protected Function[] functions;
     protected boolean isParallel;
-
     private boolean wasUsedOrClose;
 
-    AbstractLazyBuildStream(I spliterator, boolean isParallel) {
-        this.isFirst = true;
-        this.spliterator = spliterator;
-        this.streamSupplier = null;
+    AbstractLazyBuildStream(Spliterator<?> spliterator, boolean isParallel) {
+        if(spliterator != null && !isEmptySpliterator(spliterator)) {
+            this.spliterator = spliterator;
+        }
+        this.functions = null;
         this.isParallel = isParallel;
     }
 
-    AbstractLazyBuildStream(Spliterator<?> spliterator, Supplier<S> streamSupplier, boolean isParallel) {
-        this.isFirst = false;
-        this.spliterator = spliterator;
-        this.streamSupplier = streamSupplier;
+    AbstractLazyBuildStream(
+            Spliterator<?> spliterator,
+            Function[] functions,
+            boolean isParallel) {
+        if(spliterator != null && !isEmptySpliterator(spliterator)) {
+            this.spliterator = spliterator;
+        }
+        this.isParallel = isParallel;
+        this.functions = functions;
+    }
+
+    AbstractLazyBuildStream(
+            Spliterator<?> spliterator,
+            Function[] functions,
+            Function<BaseStream<?, ?>, BaseStream<?, ?>> function,
+            boolean isParallel) {
+        if(spliterator != null && !isEmptySpliterator(spliterator)) {
+            this.spliterator = spliterator;
+            if (function.equals(Function.identity())) {
+                this.functions = functions;
+            } else {
+                this.functions = new Function[(functions == null) ? 1 : functions.length + 1];
+                if (functions != null && 0 < functions.length) {
+                    System.arraycopy(functions, 0, this.functions, 0, functions.length);
+                }
+                this.functions[(functions == null) ? 0 : functions.length] = function;
+            }
+        }
         this.isParallel = isParallel;
     }
 
-    abstract protected I emptySpliterator();
-
-    abstract protected Supplier<S> emptyStreamSupplier();
+    abstract protected S emptyStream();
 
     @Override
     public boolean isParallel() {
@@ -71,107 +63,64 @@ abstract sealed class AbstractLazyBuildStream<T, S extends BaseStream<T, S>, I e
     public void close() {
         wasUsedOrClose = true;
         spliterator = null;
-        streamSupplier = null;
+        functions = null;
     }
 
-    protected void initIfFirst() {
-        checkIfUsedOrClosed();
-        if (isFirst) {
-            streamSupplier = firstSupplier();
-        }
-    }
-
-    private Supplier<S> firstSupplier() {
-        if (spliterator.equals(emptySpliterator())) {
-            spliterator = null;
-            return emptyStreamSupplier();
+    protected static boolean isEmptySpliterator(Spliterator<?> spliterator) {
+        if (spliterator instanceof Spliterator.OfInt) {
+            return spliterator == Spliterators.emptyIntSpliterator();
+        } else if (spliterator instanceof Spliterator.OfLong) {
+            return spliterator == Spliterators.emptyLongSpliterator();
+        } else if (spliterator instanceof Spliterator.OfDouble) {
+            return spliterator == Spliterators.emptyDoubleSpliterator();
         } else {
-            return this;
+            return spliterator == Spliterators.emptySpliterator();
         }
     }
 
     protected S getOnce() {
-        checkIfUsedOrClosed();
+        if (wasUsedOrClose) {
+            throw new IllegalStateException("stream has already been operated upon or closed");
+        }
         S stream;
         if (spliterator != null && 0 < spliterator.estimateSize()) {
-            stream = streamSupplier.get();
+            BaseStream<?, ?> newStream = createStream();
+            stream = (S) decorateStream(newStream);
         } else {
-            stream = emptyStreamSupplier().get();
+            stream = emptyStream();
         }
         close();
         return stream;
     }
 
-    protected void clear() {
-        wasUsedOrClose = true;
-        if (streamSupplier != this) {
-            spliterator = null;
-        }
-        streamSupplier = null;
-    }
-
-    protected void checkIfUsedOrClosed() {
-        if (wasUsedOrClose) {
-            throw new IllegalStateException("stream has already been operated upon or closed");
+    private BaseStream<?, ?> createStream() {
+        if (spliterator instanceof Spliterator.OfInt) {
+            return StreamSupport.intStream((Spliterator.OfInt) spliterator, isParallel);
+        } else if (spliterator instanceof Spliterator.OfLong) {
+            return StreamSupport.longStream((Spliterator.OfLong) spliterator, isParallel);
+        } else if (spliterator instanceof Spliterator.OfDouble) {
+            return StreamSupport.doubleStream((Spliterator.OfDouble) spliterator, isParallel);
+        } else {
+            return StreamSupport.stream(spliterator, isParallel);
         }
     }
 
-    protected <U> Stream<U> nextStream(Supplier<Stream<U>> nextStreamSupplier) {
-        return nextStream(nextStreamSupplier, isParallel);
+    private BaseStream<?, ?> decorateStream(BaseStream<?, ?> newStream) {
+        for (Function<BaseStream<?, ?>, BaseStream<?, ?>> function : functions) {
+            newStream = function.apply(newStream);
+        }
+        return newStream;
     }
 
-    protected IntStream nextIntStream(Supplier<IntStream> nextStreamSupplier) {
-        return nextIntStream(nextStreamSupplier, isParallel);
+    protected Spliterator<?> getSpliterator() {
+        Spliterator<?> newSpliterator = spliterator;
+        spliterator = null;
+        return newSpliterator;
     }
 
-    protected LongStream nextLongStream(Supplier<LongStream> nextStreamSupplier) {
-        return nextLongStream(nextStreamSupplier, isParallel);
-    }
-
-    protected DoubleStream nextDoubleStream(Supplier<DoubleStream> nextStreamSupplier) {
-        return nextDoubleStream(nextStreamSupplier, isParallel);
-    }
-
-    protected <R> Stream<R> nextStream(Supplier<Stream<R>> nextStreamSupplier, boolean isParallel) {
-        checkIfUsedOrClosed();
-        var next = new LazyBuildGenericStream<>(spliterator, nextStreamSupplier, isParallel);
-        clear();
-        return next;
-    }
-
-    protected IntStream nextIntStream(Supplier<IntStream> nextStreamSupplier, boolean isParallel) {
-        checkIfUsedOrClosed();
-        var next = new LazyBuildIntStream(spliterator, nextStreamSupplier, isParallel);
-        clear();
-        return next;
-    }
-
-    protected LongStream nextLongStream(Supplier<LongStream> nextStreamSupplier, boolean isParallel) {
-        checkIfUsedOrClosed();
-        var next = new LazyBuildLongStream(spliterator, nextStreamSupplier, isParallel);
-        clear();
-        return next;
-    }
-
-    protected DoubleStream nextDoubleStream(Supplier<DoubleStream> nextStreamSupplier, boolean isParallel) {
-        checkIfUsedOrClosed();
-        var next = new LazyBuildDoubleStream(spliterator, nextStreamSupplier, isParallel);
-        clear();
-        return next;
-    }
-
-    public static <T> Supplier<Stream<T>> emptyGenericStreamSupplier() {
-        return (Supplier<Stream<T>>) EMPTY_STREAM_SUPPLIER;
-    }
-
-    protected static <U, V extends BaseStream<U, V>> boolean isEmpty(Supplier<V> streamSupplier) {
-        return streamSupplier == emptyGenericStreamSupplier()
-                || streamSupplier == EMPTY_INT_STREAM_SUPPLIER
-                || streamSupplier == EMPTY_LONG_STREAM_SUPPLIER
-                || streamSupplier == EMPTY_DOUBLE_STREAM_SUPPLIER;
-    }
-
-    protected static <U, V extends BaseStream<U, V>> boolean isIdentity(Function<V, V> function) {
-        return function == Function.<V>identity();
+    protected Function[] functions() {
+        Function[] newFunctions = functions;
+        functions = null;
+        return newFunctions;
     }
 }

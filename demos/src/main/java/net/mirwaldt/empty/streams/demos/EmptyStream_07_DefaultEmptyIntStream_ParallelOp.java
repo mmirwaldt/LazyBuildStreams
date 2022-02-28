@@ -84,20 +84,20 @@ totalCount=6 objects
 eagerBuildFilteredMappedParallelEmpty.findFirst().orElse(-1)=-1
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 lazyBuildEmpty:
-totalSize=40 bytes
-totalCount=2 objects
+totalSize=24 bytes
+totalCount=1 objects
 ------------------------------------------------------------
 lazyBuildFilteredEmpty:
-totalSize=40 bytes
-totalCount=2 objects
+totalSize=24 bytes
+totalCount=1 objects
 ------------------------------------------------------------
 lazyBuildFilteredMappedEmpty:
-totalSize=40 bytes
-totalCount=2 objects
+totalSize=24 bytes
+totalCount=1 objects
 ------------------------------------------------------------
 lazyBuildFilteredMappedParallelEmpty:
-totalSize=40 bytes
-totalCount=2 objects
+totalSize=24 bytes
+totalCount=1 objects
 ------------------------------------------------------------
 lazyBuildFilteredMappedParallelEmpty.findFirst().orElse(-1)=-1
 */

@@ -138,16 +138,16 @@ totalCount=10 objects
 eagerBuildFilteredMappedEmpty.findFirst().orElse(-1)=-1
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 lazyBuildEmpty:
-totalSize=40 bytes
-totalCount=2 objects
+totalSize=152 bytes
+totalCount=7 objects
 ------------------------------------------------------------
 lazyBuildFilteredEmpty:
-totalSize=40 bytes
-totalCount=2 objects
+totalSize=184 bytes
+totalCount=9 objects
 ------------------------------------------------------------
 lazyBuildFilteredMappedEmpty:
-totalSize=40 bytes
-totalCount=2 objects
+totalSize=224 bytes
+totalCount=11 objects
 ------------------------------------------------------------
 lazyBuildFilteredMappedEmpty.findFirst().orElse(-1)=-1
 ############################################################
@@ -168,17 +168,17 @@ totalCount=13 objects
 eagerBuildFilteredMappedNonEmpty.findFirst().orElse("?")=4
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 lazyBuildNonEmpty:
-totalSize=384 bytes
-totalCount=12 objects
+totalSize=240 bytes
+totalCount=10 objects
 ------------------------------------------------------------
 lazyBuildFilteredNonEmpty:
-totalSize=464 bytes
-totalCount=16 objects
+totalSize=272 bytes
+totalCount=12 objects
 ------------------------------------------------------------
 lazyBuildFilteredMappedNonEmpty:
-totalSize=520 bytes
-totalCount=19 objects
+totalSize=312 bytes
+totalCount=14 objects
 ------------------------------------------------------------
 lazyBuildFilteredMappedNonEmpty.findFirst().orElse(-1)=4
- */
+*/
 }

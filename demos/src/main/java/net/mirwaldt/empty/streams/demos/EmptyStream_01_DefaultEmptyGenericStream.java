@@ -70,16 +70,16 @@ totalCount=6 objects
 eagerBuildFilteredMappedEmpty.findFirst().orElse("?")=?
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 lazyBuildEmpty:
-totalSize=40 bytes
-totalCount=2 objects
+totalSize=24 bytes
+totalCount=1 objects
 ------------------------------------------------------------
 lazyBuildFilteredEmpty:
-totalSize=40 bytes
-totalCount=2 objects
+totalSize=24 bytes
+totalCount=1 objects
 ------------------------------------------------------------
 lazyBuildFilteredMappedEmpty:
-totalSize=40 bytes
-totalCount=2 objects
+totalSize=24 bytes
+totalCount=1 objects
 ------------------------------------------------------------
 lazyBuildFilteredMappedEmpty.findFirst().orElse("?")=?
  */

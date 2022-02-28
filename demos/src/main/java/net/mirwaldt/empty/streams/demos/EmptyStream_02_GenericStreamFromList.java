@@ -122,8 +122,6 @@ public class EmptyStream_02_GenericStreamFromList {
 ############################################################
 list=[]
 ############################################################
-# WARNING: Unable to get Instrumentation. Dynamic Attach failed. You may add this JAR as -javaagent manually, or supply -Djdk.attach.allowAttachSelf
-# WARNING: Unable to attach Serviceability Agent. sun.jvm.hotspot.memory.Universe.getNarrowOopBase()
 eagerBuildEmpty:
 totalSize=88 bytes
 totalCount=2 objects
@@ -143,12 +141,12 @@ totalSize=56 bytes
 totalCount=2 objects
 ------------------------------------------------------------
 lazyBuildFilteredEmpty:
-totalSize=136 bytes
-totalCount=6 objects
+totalSize=112 bytes
+totalCount=5 objects
 ------------------------------------------------------------
 lazyBuildFilteredMappedEmpty:
-totalSize=192 bytes
-totalCount=9 objects
+totalSize=144 bytes
+totalCount=7 objects
 ------------------------------------------------------------
 lazyBuildFilteredMappedEmpty.findFirst().orElse("?")=?
 ############################################################
@@ -173,12 +171,12 @@ totalSize=56 bytes
 totalCount=2 objects
 ------------------------------------------------------------
 lazyBuildFilteredNonEmpty:
-totalSize=136 bytes
-totalCount=6 objects
+totalSize=112 bytes
+totalCount=5 objects
 ------------------------------------------------------------
 lazyBuildFilteredMappedNonEmpty:
-totalSize=192 bytes
-totalCount=9 objects
+totalSize=144 bytes
+totalCount=7 objects
 ------------------------------------------------------------
 lazyBuildFilteredMappedNonEmpty.findFirst().orElse("?")=HEINZ
 */
