@@ -79,7 +79,7 @@ public class EmptyStream_06_GenericStreamFromList_ParallelOp {
 
         // non-empty builds
         list.add("");
-        list.add("Heinz");
+        list.add("Venkat");
         list.add("Michael");
         System.out.println("list=" + list.stream().map(s -> "\"" + s + "\"").toList());
 
@@ -179,7 +179,7 @@ totalCount=7 objects
 ------------------------------------------------------------
 lazyBuildFilteredMappedParallelEmpty.findFirst().orElse("?")=?
 ############################################################
-list=["", "Heinz", "Michael"]
+list=["", "Venkat", "Michael"]
 ############################################################
 eagerBuildNonEmpty:
 totalSize=88 bytes
@@ -197,7 +197,7 @@ eagerBuildFilteredMappedParallelNonEmpty:
 totalSize=248 bytes
 totalCount=6 objects
 ------------------------------------------------------------
-eagerBuildFilteredMappedParallelNonEmpty.findFirst().orElse("?")=HEINZ
+eagerBuildFilteredMappedParallelNonEmpty.findFirst().orElse("?")=VENKAT
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 lazyBuildNonEmpty:
 totalSize=56 bytes
@@ -215,6 +215,6 @@ lazyBuildFilteredMappedParallelNonEmpty:
 totalSize=144 bytes
 totalCount=7 objects
 ------------------------------------------------------------
-lazyBuildFilteredMappedParallelNonEmpty.findFirst().orElse("?")=HEINZ
+lazyBuildFilteredMappedParallelNonEmpty.findFirst().orElse("?")=VENKAT
 */
 }

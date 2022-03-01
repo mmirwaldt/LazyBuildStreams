@@ -69,7 +69,7 @@ public class EmptyStream_02_GenericStreamFromList {
 
         // non-empty builds
         list.add("");
-        list.add("Heinz");
+        list.add("Venkat");
         list.add("Michael");
         System.out.println("list=" + list.stream().map(s -> "\"" + s + "\"").toList());
 
@@ -151,7 +151,7 @@ totalCount=7 objects
 ------------------------------------------------------------
 lazyBuildFilteredMappedEmpty.findFirst().orElse("?")=?
 ############################################################
-list=["", "Heinz", "Michael"]
+list=["", "Venkat", "Michael"]
 ############################################################
 eagerBuildNonEmpty:
 totalSize=88 bytes
@@ -165,7 +165,7 @@ eagerBuildFilteredMappedNonEmpty:
 totalSize=248 bytes
 totalCount=6 objects
 ------------------------------------------------------------
-eagerBuildFilteredMappedNonEmpty.findFirst().orElse("?")=HEINZ
+eagerBuildFilteredMappedNonEmpty.findFirst().orElse("?")=VENKAT
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 lazyBuildNonEmpty:
 totalSize=56 bytes
@@ -179,6 +179,6 @@ lazyBuildFilteredMappedNonEmpty:
 totalSize=144 bytes
 totalCount=7 objects
 ------------------------------------------------------------
-lazyBuildFilteredMappedNonEmpty.findFirst().orElse("?")=HEINZ
+lazyBuildFilteredMappedNonEmpty.findFirst().orElse("?")=VENKAT
 */
 }
