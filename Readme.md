@@ -1,4 +1,4 @@
-# Lazy build streams - save memory with empty streams
+# Lazy build streams - save memory with streams
 
 ### What is the motivation?
 
@@ -14,6 +14,16 @@ This approach cannot only defer the build of the pipeline. It can also check whe
 be done when it is needed. The stream must not be Stream.empty(). It can also be the stream of an empty list. The build
 of the pipeline can even be avoided in that case. If the list, however, gets filled before the terminal operation of the
 stream is called, then the pipeline can be built and used as if the list had never been empty.
+
+### How much memory can be saved by using lazy build streams?
+
+Creating a LazyBuildStream object takes only 24 bytes if the stream is always empty. That's the case if Stream.empty()
+is used. It won't take more than 24 bytes even if intermediate operations are called on that lazy build empty stream. If
+the stream can be empty but must not be empty, it starts with 56 bytes and stays fewer than an ordinary stream when
+intermediate operations are called on the lazy build stream. This is the case when a stream of a list is used where the
+list is empty when it is declared and elements are added after the creation of a stream of the list. You can compare the
+memory footprints of the streams in the demos. The demos contain a comment at the end of the file with output which
+tells you how much memory is used.
 
 ### How is this project structured?
 
