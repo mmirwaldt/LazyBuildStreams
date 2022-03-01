@@ -11,7 +11,7 @@ abstract class AbstractLazyBuildStream<T, S extends BaseStream<T, S>, I extends 
     protected Spliterator<?> spliterator;
     protected Function[] functions;
     protected boolean isParallel;
-    private boolean wasUsedOrClose;
+    private boolean usedOrClosed;
 
     AbstractLazyBuildStream(Spliterator<?> spliterator, boolean isParallel) {
         if(spliterator != null && !isEmptySpliterator(spliterator)) {
@@ -61,7 +61,7 @@ abstract class AbstractLazyBuildStream<T, S extends BaseStream<T, S>, I extends 
 
     @Override
     public void close() {
-        wasUsedOrClose = true;
+        usedOrClosed = true;
         spliterator = null;
         functions = null;
     }
@@ -79,7 +79,7 @@ abstract class AbstractLazyBuildStream<T, S extends BaseStream<T, S>, I extends 
     }
 
     protected S getOnce() {
-        if (wasUsedOrClose) {
+        if (usedOrClosed) {
             throw new IllegalStateException("stream has already been operated upon or closed");
         }
         S stream;
