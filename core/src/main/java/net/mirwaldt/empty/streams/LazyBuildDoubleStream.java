@@ -10,12 +10,8 @@ import java.util.stream.*;
 final class LazyBuildDoubleStream
         extends AbstractLazyBuildStream<Double, DoubleStream, Spliterator.OfDouble>
         implements DoubleStream {
-    LazyBuildDoubleStream(AbstractLazyBuildStream<Double, DoubleStream, Spliterator.OfDouble> first) {
-        super(first.spliterator, first.functions, first.isParallel);
-    }
-
-    LazyBuildDoubleStream(DoubleStream first) {
-        super(first.spliterator(), first.isParallel());
+    LazyBuildDoubleStream(DoubleStream stream) {
+        super(stream);
     }
 
     LazyBuildDoubleStream(Spliterator<?> spliterator, boolean isParallel) {

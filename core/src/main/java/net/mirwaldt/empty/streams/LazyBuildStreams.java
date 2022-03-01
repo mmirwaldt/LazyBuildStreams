@@ -10,35 +10,19 @@ public class LazyBuildStreams {
     }
 
     public static <T> Stream<T> ofStream(Stream<T> stream) {
-        if (stream instanceof AbstractLazyBuildStream lazyBuildStream) {
-            return new LazyBuildStream<T>(lazyBuildStream);
-        } else {
-            return new LazyBuildStream<T>(stream);
-        }
+        return new LazyBuildStream<>(stream);
     }
 
     public static IntStream ofIntStream(IntStream stream) {
-        if (stream instanceof AbstractLazyBuildStream lazyBuildStream) {
-            return new LazyBuildIntStream(lazyBuildStream);
-        } else {
-            return new LazyBuildIntStream(stream);
-        }
+        return new LazyBuildIntStream(stream);
     }
 
     public static LongStream ofLongStream(LongStream stream) {
-        if (stream instanceof AbstractLazyBuildStream lazyBuildStream) {
-            return new LazyBuildLongStream(lazyBuildStream);
-        } else {
-            return new LazyBuildLongStream(stream);
-        }
+        return new LazyBuildLongStream(stream);
     }
 
     public static DoubleStream ofDoubleStream(DoubleStream stream) {
-        if (stream instanceof AbstractLazyBuildStream lazyBuildStream) {
-            return new LazyBuildDoubleStream(lazyBuildStream);
-        } else {
-            return new LazyBuildDoubleStream(stream);
-        }
+        return new LazyBuildDoubleStream(stream);
     }
 
     public static <T> Stream<T> ofSpliterator(Spliterator<T> spliterator) {

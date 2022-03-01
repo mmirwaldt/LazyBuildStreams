@@ -13,23 +13,16 @@ abstract class AbstractLazyBuildStream<T, S extends BaseStream<T, S>, I extends 
     protected boolean isParallel;
     private boolean usedOrClosed;
 
-    AbstractLazyBuildStream(Spliterator<?> spliterator, boolean isParallel) {
-        if (spliterator != null && isNonEmptySpliterator(spliterator)) {
-            this.spliterator = spliterator;
+    AbstractLazyBuildStream(S stream) {
+        if (stream instanceof AbstractLazyBuildStream lazyBuildStream) {
+            init(lazyBuildStream.spliterator, lazyBuildStream.functions, lazyBuildStream.isParallel);
+        } else {
+            init(stream.spliterator(), stream.isParallel());
         }
-        this.functions = null;
-        this.isParallel = isParallel;
     }
 
-    AbstractLazyBuildStream(
-            Spliterator<?> spliterator,
-            Function[] functions,
-            boolean isParallel) {
-        if (spliterator != null && isNonEmptySpliterator(spliterator)) {
-            this.spliterator = spliterator;
-        }
-        this.isParallel = isParallel;
-        this.functions = functions;
+    AbstractLazyBuildStream(Spliterator<?> spliterator, boolean isParallel) {
+        init(spliterator, isParallel);
     }
 
     AbstractLazyBuildStream(
@@ -53,6 +46,22 @@ abstract class AbstractLazyBuildStream<T, S extends BaseStream<T, S>, I extends 
     }
 
     abstract protected S emptyStream();
+
+    private void init(Spliterator<?> spliterator, Function[] functions, boolean isParallel) {
+        if (spliterator != null && isNonEmptySpliterator(spliterator)) {
+            this.spliterator = spliterator;
+            this.functions = functions;
+        }
+        this.isParallel = isParallel;
+    }
+
+    private void init(Spliterator<?> spliterator, boolean isParallel) {
+        if (spliterator != null && isNonEmptySpliterator(spliterator)) {
+            this.spliterator = spliterator;
+        }
+        this.functions = null;
+        this.isParallel = isParallel;
+    }
 
     @Override
     public boolean isParallel() {

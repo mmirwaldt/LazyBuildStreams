@@ -10,12 +10,8 @@ import java.util.stream.*;
 final class LazyBuildStream<T>
         extends AbstractLazyBuildStream<T, Stream<T>, Spliterator<T>>
         implements Stream<T> {
-    LazyBuildStream(AbstractLazyBuildStream<T, Stream<T>, Spliterator<T>> first) {
-        super(first.spliterator, first.functions, first.isParallel);
-    }
-
-    LazyBuildStream(Stream<T> first) {
-        super(first.spliterator(), first.isParallel());
+    LazyBuildStream(Stream<T> stream) {
+        super(stream);
     }
 
     LazyBuildStream(Spliterator<T> spliterator, boolean isParallel) {
