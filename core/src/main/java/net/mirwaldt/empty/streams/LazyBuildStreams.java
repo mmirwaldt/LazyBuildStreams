@@ -73,7 +73,7 @@ public class LazyBuildStreams {
         return new LazyBuildDoubleStream(spliterator, isParallel);
     }
 
-    public static <S, T> Stream<T> fromGenericStreamToGenericStream(
+    public static <S, T> Stream<T> fromStreamToStream(
             Stream<S> initialStream, Function<Stream<S>, Stream<T>> chainFunction) {
         Spliterator<S> spliterator = initialStream.spliterator();
         if (0 < spliterator.estimateSize()) {
@@ -84,7 +84,7 @@ public class LazyBuildStreams {
         }
     }
 
-    public static <T> Stream<T> fromIntStreamToGenericStream(
+    public static <T> Stream<T> fromIntStreamToStream(
             IntStream initialStream, Function<IntStream, Stream<T>> chainFunction) {
         Spliterator.OfInt spliterator = initialStream.spliterator();
         if (0 < spliterator.estimateSize()) {
@@ -95,7 +95,7 @@ public class LazyBuildStreams {
         }
     }
 
-    public static <T> Stream<T> fromLongStreamToGenericStream(
+    public static <T> Stream<T> fromLongStreamToStream(
             LongStream initialStream, Function<LongStream, Stream<T>> chainFunction) {
         Spliterator.OfLong spliterator = initialStream.spliterator();
         if (0 < spliterator.estimateSize()) {
@@ -106,7 +106,7 @@ public class LazyBuildStreams {
         }
     }
 
-    public static <T> Stream<T> fromDoubleStreamToGenericStream(
+    public static <T> Stream<T> fromDoubleStreamToStream(
             DoubleStream initialStream, Function<DoubleStream, Stream<T>> chainFunction) {
         Spliterator.OfDouble spliterator = initialStream.spliterator();
         if (0 < spliterator.estimateSize()) {
@@ -117,7 +117,7 @@ public class LazyBuildStreams {
         }
     }
 
-    public static <S> IntStream fromGenericStreamToIntStream(
+    public static <S> IntStream fromStreamToIntStream(
             Stream<S> initialStream, Function<Stream<S>, IntStream> chainFunction) {
         Spliterator<S> spliterator = initialStream.spliterator();
         if (0 < spliterator.estimateSize()) {
@@ -161,7 +161,7 @@ public class LazyBuildStreams {
         }
     }
 
-    public static <S> LongStream fromGenericStreamToLongStream(
+    public static <S> LongStream fromStreamToLongStream(
             Stream<S> initialStream, Function<Stream<S>, LongStream> chainFunction) {
         Spliterator<S> spliterator = initialStream.spliterator();
         if (0 < spliterator.estimateSize()) {
@@ -205,7 +205,7 @@ public class LazyBuildStreams {
         }
     }
 
-    public static <S> DoubleStream fromGenericStreamToDoubleStream(
+    public static <S> DoubleStream fromStreamToDoubleStream(
             Stream<S> initialStream, Function<Stream<S>, DoubleStream> chainFunction) {
         Spliterator<S> spliterator = initialStream.spliterator();
         if (0 < spliterator.estimateSize()) {
