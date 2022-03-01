@@ -9,7 +9,7 @@ import static net.mirwaldt.empty.streams.demos.PrintUtil.*;
 /**
  * Use with VM option -Djol.magicFieldOffset=true
  */
-public class EmptyStream_01_DefaultEmptyGenericStream {
+public class EmptyStream_01_DefaultEmptyStream {
     public static void main(String[] args) {
         // eager build
         Stream<String> eagerBuildEmpty = Stream.empty();

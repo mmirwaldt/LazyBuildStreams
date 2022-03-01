@@ -11,7 +11,7 @@ import static net.mirwaldt.empty.streams.demos.PrintUtil.*;
 /**
  * Use with VM option -Djol.magicFieldOffset=true
  */
-public class EmptyStream_02_GenericStreamFromList {
+public class EmptyStream_06_StreamFromList_ParallelOp {
     public static void main(String[] args) {
         List<String> list = new ArrayList<>();
 
@@ -38,8 +38,13 @@ public class EmptyStream_02_GenericStreamFromList {
 
         printLineOfMinus(); // ------------------------------------------------------------
 
-        System.out.println("eagerBuildFilteredMappedEmpty.findFirst().orElse(\"?\")="
-                + eagerBuildFilteredMappedEmpty.findFirst().orElse("?"));
+        Stream<String> eagerBuildFilteredMappedParallelEmpty = eagerBuildFilteredMappedEmpty.parallel();
+        printStatistics("eagerBuildFilteredMappedParallelEmpty:", eagerBuildFilteredMappedParallelEmpty, list);
+
+        printLineOfMinus(); // ------------------------------------------------------------
+
+        System.out.println("eagerBuildFilteredMappedParallelEmpty.findFirst().orElse(\"?\")="
+                + eagerBuildFilteredMappedParallelEmpty.findFirst().orElse("?"));
 
 
         printLineOfPlus();  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -61,8 +66,13 @@ public class EmptyStream_02_GenericStreamFromList {
 
         printLineOfMinus(); // ------------------------------------------------------------
 
-        System.out.println("lazyBuildFilteredMappedEmpty.findFirst().orElse(\"?\")="
-                + lazyBuildFilteredMappedEmpty.findFirst().orElse("?"));
+        Stream<String> lazyBuildFilteredMappedParallelEmpty = lazyBuildFilteredMappedEmpty.parallel();
+        printStatistics("lazyBuildFilteredMappedParallelEmpty:", lazyBuildFilteredMappedParallelEmpty, list);
+
+        printLineOfMinus(); // ------------------------------------------------------------
+
+        System.out.println("lazyBuildFilteredMappedParallelEmpty.findFirst().orElse(\"?\")="
+                + lazyBuildFilteredMappedParallelEmpty.findFirst().orElse("?"));
 
 
         printLineOfSharp(); // ############################################################
@@ -91,8 +101,13 @@ public class EmptyStream_02_GenericStreamFromList {
 
         printLineOfMinus(); // ------------------------------------------------------------
 
-        System.out.println("eagerBuildFilteredMappedNonEmpty.findFirst().orElse(\"?\")="
-                + eagerBuildFilteredMappedNonEmpty.findFirst().orElse("?"));
+        Stream<String> eagerBuildFilteredMappedParallelNonEmpty = eagerBuildFilteredMappedNonEmpty.parallel();
+        printStatistics("eagerBuildFilteredMappedParallelNonEmpty:", eagerBuildFilteredMappedParallelNonEmpty, list);
+
+        printLineOfMinus(); // ------------------------------------------------------------
+
+        System.out.println("eagerBuildFilteredMappedParallelNonEmpty.findFirst().orElse(\"?\")="
+                + eagerBuildFilteredMappedParallelNonEmpty.findFirst().orElse("?"));
 
 
         printLineOfPlus();  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -114,8 +129,13 @@ public class EmptyStream_02_GenericStreamFromList {
 
         printLineOfMinus(); // ------------------------------------------------------------
 
-        System.out.println("lazyBuildFilteredMappedNonEmpty.findFirst().orElse(\"?\")="
-                + lazyBuildFilteredMappedNonEmpty.findFirst().orElse("?"));
+        Stream<String> lazyBuildFilteredMappedParallelNonEmpty = lazyBuildFilteredMappedNonEmpty.parallel();
+        printStatistics("lazyBuildFilteredMappedParallelNonEmpty:", lazyBuildFilteredMappedParallelNonEmpty, list);
+
+        printLineOfMinus(); // ------------------------------------------------------------
+
+        System.out.println("lazyBuildFilteredMappedParallelNonEmpty.findFirst().orElse(\"?\")="
+                + lazyBuildFilteredMappedParallelNonEmpty.findFirst().orElse("?"));
     }
 
 // Output:
@@ -135,7 +155,11 @@ eagerBuildFilteredMappedEmpty:
 totalSize=248 bytes
 totalCount=6 objects
 ------------------------------------------------------------
-eagerBuildFilteredMappedEmpty.findFirst().orElse("?")=?
+eagerBuildFilteredMappedParallelEmpty:
+totalSize=248 bytes
+totalCount=6 objects
+------------------------------------------------------------
+eagerBuildFilteredMappedParallelEmpty.findFirst().orElse("?")=?
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 lazyBuildEmpty:
 totalSize=56 bytes
@@ -149,7 +173,11 @@ lazyBuildFilteredMappedEmpty:
 totalSize=144 bytes
 totalCount=7 objects
 ------------------------------------------------------------
-lazyBuildFilteredMappedEmpty.findFirst().orElse("?")=?
+lazyBuildFilteredMappedParallelEmpty:
+totalSize=144 bytes
+totalCount=7 objects
+------------------------------------------------------------
+lazyBuildFilteredMappedParallelEmpty.findFirst().orElse("?")=?
 ############################################################
 list=["", "Venkat", "Michael"]
 ############################################################
@@ -165,7 +193,11 @@ eagerBuildFilteredMappedNonEmpty:
 totalSize=248 bytes
 totalCount=6 objects
 ------------------------------------------------------------
-eagerBuildFilteredMappedNonEmpty.findFirst().orElse("?")=VENKAT
+eagerBuildFilteredMappedParallelNonEmpty:
+totalSize=248 bytes
+totalCount=6 objects
+------------------------------------------------------------
+eagerBuildFilteredMappedParallelNonEmpty.findFirst().orElse("?")=VENKAT
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 lazyBuildNonEmpty:
 totalSize=56 bytes
@@ -179,6 +211,10 @@ lazyBuildFilteredMappedNonEmpty:
 totalSize=144 bytes
 totalCount=7 objects
 ------------------------------------------------------------
-lazyBuildFilteredMappedNonEmpty.findFirst().orElse("?")=VENKAT
+lazyBuildFilteredMappedParallelNonEmpty:
+totalSize=144 bytes
+totalCount=7 objects
+------------------------------------------------------------
+lazyBuildFilteredMappedParallelNonEmpty.findFirst().orElse("?")=VENKAT
 */
 }
