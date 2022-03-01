@@ -38,7 +38,7 @@ final class LazyBuildIntStream
 
     @Override
     public <U> Stream<U> mapToObj(IntFunction<? extends U> mapper) {
-        return new LazyBuildGenericStream<>(getSpliterator(), functions(),
+        return new LazyBuildStream<>(getSpliterator(), functions(),
                 (stream) -> ((IntStream) stream).mapToObj(mapper), isParallel);
     }
 
@@ -189,7 +189,7 @@ final class LazyBuildIntStream
 
     @Override
     public Stream<Integer> boxed() {
-        return new LazyBuildGenericStream<>(getSpliterator(), functions(),
+        return new LazyBuildStream<>(getSpliterator(), functions(),
                 (stream) -> ((IntStream) stream).boxed(), isParallel);
     }
 

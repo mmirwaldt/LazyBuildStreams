@@ -7,22 +7,22 @@ import java.util.Spliterator;
 import java.util.function.*;
 import java.util.stream.*;
 
-final class LazyBuildGenericStream<T>
+final class LazyBuildStream<T>
         extends AbstractLazyBuildStream<T, Stream<T>, Spliterator<T>>
         implements Stream<T> {
-    LazyBuildGenericStream(AbstractLazyBuildStream<T, Stream<T>, Spliterator<T>> first) {
+    LazyBuildStream(AbstractLazyBuildStream<T, Stream<T>, Spliterator<T>> first) {
         super(first.spliterator, first.functions, first.isParallel);
     }
 
-    LazyBuildGenericStream(Stream<T> first) {
+    LazyBuildStream(Stream<T> first) {
         super(first.spliterator(), first.isParallel());
     }
 
-    LazyBuildGenericStream(Spliterator<T> spliterator, boolean isParallel) {
+    LazyBuildStream(Spliterator<T> spliterator, boolean isParallel) {
         super(spliterator, isParallel);
     }
 
-    LazyBuildGenericStream(
+    LazyBuildStream(
             Spliterator<?> spliterator,
             Function[] functions,
             Function<BaseStream<?, ?>, BaseStream<?, ?>> function,
@@ -37,13 +37,13 @@ final class LazyBuildGenericStream<T>
 
     @Override
     public Stream<T> filter(Predicate<? super T> predicate) {
-        return new LazyBuildGenericStream<>(getSpliterator(), functions(),
+        return new LazyBuildStream<>(getSpliterator(), functions(),
                 (stream) -> ((Stream<T>) stream).filter(predicate), isParallel);
     }
 
     @Override
     public <R> Stream<R> map(Function<? super T, ? extends R> mapper) {
-        return new LazyBuildGenericStream<>(getSpliterator(), functions(),
+        return new LazyBuildStream<>(getSpliterator(), functions(),
                 (stream) -> ((Stream<T>) stream).map(mapper), isParallel);
     }
 
@@ -67,7 +67,7 @@ final class LazyBuildGenericStream<T>
 
     @Override
     public <R> Stream<R> flatMap(Function<? super T, ? extends Stream<? extends R>> mapper) {
-        return new LazyBuildGenericStream<>(getSpliterator(), functions(),
+        return new LazyBuildStream<>(getSpliterator(), functions(),
                 (stream) -> ((Stream<T>) stream).flatMap(mapper), isParallel);
     }
 
@@ -91,37 +91,37 @@ final class LazyBuildGenericStream<T>
 
     @Override
     public Stream<T> distinct() {
-        return new LazyBuildGenericStream<>(getSpliterator(), functions(),
+        return new LazyBuildStream<>(getSpliterator(), functions(),
                 (stream) -> ((Stream<T>) stream).distinct(), isParallel);
     }
 
     @Override
     public Stream<T> sorted() {
-        return new LazyBuildGenericStream<>(getSpliterator(), functions(),
+        return new LazyBuildStream<>(getSpliterator(), functions(),
                 (stream) -> ((Stream<T>) stream).sorted(), isParallel);
     }
 
     @Override
     public Stream<T> sorted(Comparator<? super T> comparator) {
-        return new LazyBuildGenericStream<>(getSpliterator(), functions(),
+        return new LazyBuildStream<>(getSpliterator(), functions(),
                 (stream) -> ((Stream<T>) stream).sorted(comparator), isParallel);
     }
 
     @Override
     public Stream<T> peek(Consumer<? super T> action) {
-        return new LazyBuildGenericStream<>(getSpliterator(), functions(),
+        return new LazyBuildStream<>(getSpliterator(), functions(),
                 (stream) -> ((Stream<T>) stream).peek(action), isParallel);
     }
 
     @Override
     public Stream<T> limit(long maxSize) {
-        return new LazyBuildGenericStream<>(getSpliterator(), functions(),
+        return new LazyBuildStream<>(getSpliterator(), functions(),
                 (stream) -> ((Stream<T>) stream).limit(maxSize), isParallel);
     }
 
     @Override
     public Stream<T> skip(long n) {
-        return new LazyBuildGenericStream<>(getSpliterator(), functions(),
+        return new LazyBuildStream<>(getSpliterator(), functions(),
                 (stream) -> ((Stream<T>) stream).skip(n), isParallel);
     }
 
@@ -222,23 +222,23 @@ final class LazyBuildGenericStream<T>
 
     @Override
     public Stream<T> sequential() {
-        return new LazyBuildGenericStream<>(getSpliterator(), functions(), Function.identity(), false);
+        return new LazyBuildStream<>(getSpliterator(), functions(), Function.identity(), false);
     }
 
     @Override
     public Stream<T> parallel() {
-        return new LazyBuildGenericStream<>(getSpliterator(), functions(), Function.identity(), true);
+        return new LazyBuildStream<>(getSpliterator(), functions(), Function.identity(), true);
     }
 
     @Override
     public Stream<T> unordered() {
-        return new LazyBuildGenericStream<>(getSpliterator(), functions(),
+        return new LazyBuildStream<>(getSpliterator(), functions(),
                 (stream) -> ((Stream<T>) stream).unordered(), isParallel);
     }
 
     @Override
     public Stream<T> onClose(Runnable closeHandler) {
-        return new LazyBuildGenericStream<>(getSpliterator(), functions(),
+        return new LazyBuildStream<>(getSpliterator(), functions(),
                 (stream) -> ((Stream<T>) stream).onClose(closeHandler), isParallel);
     }
 }

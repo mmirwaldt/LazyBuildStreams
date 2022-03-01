@@ -1,4 +1,4 @@
-package net.mirwaldt.empty.streams.supplier;
+package net.mirwaldt.empty.streams;
 
 import org.junit.jupiter.api.Test;
 
@@ -8,8 +8,7 @@ import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
 import static net.mirwaldt.empty.streams.LazyBuildStreams.*;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class LazyBuildStreamUtilTest {
     @Test

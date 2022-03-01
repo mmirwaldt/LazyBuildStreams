@@ -11,9 +11,9 @@ public class LazyBuildStreams {
 
     public static <T> Stream<T> ofStream(Stream<T> stream) {
         if(stream instanceof AbstractLazyBuildStream lazyBuildStream) {
-            return new LazyBuildGenericStream<T>(lazyBuildStream);
+            return new LazyBuildStream<T>(lazyBuildStream);
         } else {
-            return new LazyBuildGenericStream<T>(stream);
+            return new LazyBuildStream<T>(stream);
         }
     }
 
@@ -58,7 +58,7 @@ public class LazyBuildStreams {
     }
 
     public static <T> Stream<T> ofSpliterator(Spliterator<T> spliterator, boolean isParallel) {
-        return new LazyBuildGenericStream<T>(spliterator, isParallel);
+        return new LazyBuildStream<T>(spliterator, isParallel);
     }
 
     public static IntStream ofIntSpliterator(Spliterator.OfInt spliterator, boolean isParallel) {

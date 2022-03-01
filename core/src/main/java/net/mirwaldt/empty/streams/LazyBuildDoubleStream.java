@@ -41,7 +41,7 @@ final class LazyBuildDoubleStream
 
     @Override
     public <U> Stream<U> mapToObj(DoubleFunction<? extends U> mapper) {
-        return new LazyBuildGenericStream<>(getSpliterator(), functions(),
+        return new LazyBuildStream<>(getSpliterator(), functions(),
                 (stream) -> ((DoubleStream) stream).mapToObj(mapper), isParallel);
     }
 
@@ -180,7 +180,7 @@ final class LazyBuildDoubleStream
 
     @Override
     public Stream<Double> boxed() {
-        return new LazyBuildGenericStream<>(getSpliterator(), functions(),
+        return new LazyBuildStream<>(getSpliterator(), functions(),
                 (stream) -> ((DoubleStream) stream).boxed(), isParallel);
     }
 

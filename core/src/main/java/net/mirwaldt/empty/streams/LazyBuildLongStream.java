@@ -38,7 +38,7 @@ final class LazyBuildLongStream
 
     @Override
     public <U> Stream<U> mapToObj(LongFunction<? extends U> mapper) {
-        return new LazyBuildGenericStream(getSpliterator(), functions(),
+        return new LazyBuildStream(getSpliterator(), functions(),
                 (stream) -> ((LongStream) stream).mapToObj(mapper), isParallel);
     }
 
@@ -183,7 +183,7 @@ final class LazyBuildLongStream
 
     @Override
     public Stream<Long> boxed() {
-        return new LazyBuildGenericStream<>(getSpliterator(), functions(),
+        return new LazyBuildStream<>(getSpliterator(), functions(),
                 (stream) -> ((LongStream) stream).boxed(), isParallel);
     }
 
