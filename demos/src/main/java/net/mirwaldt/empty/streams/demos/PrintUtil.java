@@ -10,25 +10,25 @@ import java.util.stream.Stream;
 public class PrintUtil {
     public static boolean printAll = false;
 
-    public static <T> void printStatistics(String name, Stream<T> stream, Object...ignored) {
+    public static <T> void printStatistics(String name, Stream<T> stream, Object... ignored) {
         printStatistics(name,
                 GraphLayout.parseInstance(stream)
                         .subtract(GraphLayout.parseInstance(ignored)));
     }
 
-    public static void printStatistics(String name, IntStream stream, Object...ignored) {
+    public static void printStatistics(String name, IntStream stream, Object... ignored) {
         printStatistics(name,
                 GraphLayout.parseInstance(stream)
                         .subtract(GraphLayout.parseInstance(ignored)));
     }
 
-    public static void printStatistics(String name, LongStream stream, Object...ignored) {
+    public static void printStatistics(String name, LongStream stream, Object... ignored) {
         printStatistics(name,
                 GraphLayout.parseInstance(stream)
                         .subtract(GraphLayout.parseInstance(ignored)));
     }
 
-    public static void printStatistics(String name, DoubleStream stream, Object...ignored) {
+    public static void printStatistics(String name, DoubleStream stream, Object... ignored) {
         printStatistics(name,
                 GraphLayout.parseInstance(stream)
                         .subtract(GraphLayout.parseInstance(ignored)));
@@ -38,7 +38,7 @@ public class PrintUtil {
         System.out.println(name);
         System.out.println("totalSize=" + graphLayout.totalSize() + " bytes");
         System.out.println("totalCount=" + graphLayout.totalCount() + " object(s)");
-        if(printAll) {
+        if (printAll) {
             System.out.println(graphLayout.toFootprint());
         }
     }

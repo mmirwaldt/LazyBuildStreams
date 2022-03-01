@@ -14,9 +14,9 @@ public class EmptyStream_07_DefaultEmptyIntStream_ParallelOp {
         // eager build
         IntStream eagerBuildEmpty = IntStream.empty();
         printStatistics("eagerBuildEmpty:", eagerBuildEmpty);
-        
+
         printLineOfMinus();
-        
+
         IntStream eagerBuildFilteredEmpty = eagerBuildEmpty.filter(i -> 0 < i);
         printStatistics("eagerBuildFilteredEmpty:", eagerBuildFilteredEmpty);
 
@@ -35,10 +35,10 @@ public class EmptyStream_07_DefaultEmptyIntStream_ParallelOp {
         System.out.println("eagerBuildFilteredMappedParallelEmpty.findFirst().orElse(-1)="
                 + eagerBuildFilteredMappedParallelEmpty.findFirst().orElse(-1));
 
-        
+
         printLineOfPlus();
 
-        
+
         // lazy build
         IntStream lazyBuildEmpty = LazyBuildStreams.ofIntStream(IntStream.empty());
         printStatistics("lazyBuildEmpty:", lazyBuildEmpty);

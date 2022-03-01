@@ -14,9 +14,9 @@ public class EmptyStream_03_DefaultEmptyIntStream {
         // eager build
         IntStream eagerBuildEmpty = IntStream.empty();
         printStatistics("eagerBuildEmpty:", eagerBuildEmpty);
-        
+
         printLineOfMinus();
-        
+
         IntStream eagerBuildFilteredEmpty = eagerBuildEmpty.filter(i -> 0 < i);
         printStatistics("eagerBuildFilteredEmpty:", eagerBuildFilteredEmpty);
 
@@ -30,10 +30,10 @@ public class EmptyStream_03_DefaultEmptyIntStream {
         System.out.println("eagerBuildFilteredMappedEmpty.findFirst().orElse(-1)="
                 + eagerBuildFilteredMappedEmpty.findFirst().orElse(-1));
 
-        
+
         printLineOfPlus();
 
-        
+
         // lazy build
         IntStream lazyBuildEmpty = LazyBuildStreams.ofIntStream(IntStream.empty());
         printStatistics("lazyBuildEmpty:", lazyBuildEmpty);

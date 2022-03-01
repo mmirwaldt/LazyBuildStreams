@@ -10,7 +10,7 @@ public class LazyBuildStreams {
     }
 
     public static <T> Stream<T> ofStream(Stream<T> stream) {
-        if(stream instanceof AbstractLazyBuildStream lazyBuildStream) {
+        if (stream instanceof AbstractLazyBuildStream lazyBuildStream) {
             return new LazyBuildStream<T>(lazyBuildStream);
         } else {
             return new LazyBuildStream<T>(stream);
@@ -18,7 +18,7 @@ public class LazyBuildStreams {
     }
 
     public static IntStream ofIntStream(IntStream stream) {
-        if(stream instanceof AbstractLazyBuildStream lazyBuildStream) {
+        if (stream instanceof AbstractLazyBuildStream lazyBuildStream) {
             return new LazyBuildIntStream(lazyBuildStream);
         } else {
             return new LazyBuildIntStream(stream);
@@ -26,7 +26,7 @@ public class LazyBuildStreams {
     }
 
     public static LongStream ofLongStream(LongStream stream) {
-        if(stream instanceof AbstractLazyBuildStream lazyBuildStream) {
+        if (stream instanceof AbstractLazyBuildStream lazyBuildStream) {
             return new LazyBuildLongStream(lazyBuildStream);
         } else {
             return new LazyBuildLongStream(stream);
@@ -34,7 +34,7 @@ public class LazyBuildStreams {
     }
 
     public static DoubleStream ofDoubleStream(DoubleStream stream) {
-        if(stream instanceof AbstractLazyBuildStream lazyBuildStream) {
+        if (stream instanceof AbstractLazyBuildStream lazyBuildStream) {
             return new LazyBuildDoubleStream(lazyBuildStream);
         } else {
             return new LazyBuildDoubleStream(stream);

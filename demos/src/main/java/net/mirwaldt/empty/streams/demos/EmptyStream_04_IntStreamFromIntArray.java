@@ -46,7 +46,8 @@ public class EmptyStream_04_IntStreamFromIntArray {
 
 
         // lazy build of empty
-        IntStream lazyBuildEmpty = LazyBuildStreams.ofIntStream(LazyBuildStreams.ofStream(list.stream()).mapToInt(Integer::valueOf));
+        IntStream lazyBuildEmpty = LazyBuildStreams.ofIntStream(LazyBuildStreams.ofStream(list.stream())
+                .mapToInt(Integer::valueOf));
         printStatistics("lazyBuildEmpty:", lazyBuildEmpty);
 
         printLineOfMinus(); // ------------------------------------------------------------
@@ -65,14 +66,13 @@ public class EmptyStream_04_IntStreamFromIntArray {
                 + lazyBuildFilteredMappedEmpty.findFirst().orElse(-1));
 
 
-
         printLineOfSharp(); // ############################################################
 
         // non-empty builds
         list.add(-3);
         list.add(2);
         list.add(5);
-        System.out.println("list=" + list.stream().map(s -> "\"" + s +"\"").toList());
+        System.out.println("list=" + list.stream().map(s -> "\"" + s + "\"").toList());
 
         printLineOfSharp(); // ############################################################
 

@@ -14,7 +14,7 @@ abstract class AbstractLazyBuildStream<T, S extends BaseStream<T, S>, I extends 
     private boolean usedOrClosed;
 
     AbstractLazyBuildStream(Spliterator<?> spliterator, boolean isParallel) {
-        if(spliterator != null && isNonEmptySpliterator(spliterator)) {
+        if (spliterator != null && isNonEmptySpliterator(spliterator)) {
             this.spliterator = spliterator;
         }
         this.functions = null;
@@ -25,7 +25,7 @@ abstract class AbstractLazyBuildStream<T, S extends BaseStream<T, S>, I extends 
             Spliterator<?> spliterator,
             Function[] functions,
             boolean isParallel) {
-        if(spliterator != null && isNonEmptySpliterator(spliterator)) {
+        if (spliterator != null && isNonEmptySpliterator(spliterator)) {
             this.spliterator = spliterator;
         }
         this.isParallel = isParallel;
@@ -37,7 +37,7 @@ abstract class AbstractLazyBuildStream<T, S extends BaseStream<T, S>, I extends 
             Function[] functions,
             Function<BaseStream<?, ?>, BaseStream<?, ?>> function,
             boolean isParallel) {
-        if(spliterator != null && isNonEmptySpliterator(spliterator)) {
+        if (spliterator != null && isNonEmptySpliterator(spliterator)) {
             this.spliterator = spliterator;
             if (function.equals(Function.identity())) {
                 this.functions = functions;

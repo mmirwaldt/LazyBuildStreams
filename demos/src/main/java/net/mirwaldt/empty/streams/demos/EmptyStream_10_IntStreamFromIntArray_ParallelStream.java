@@ -67,14 +67,13 @@ public class EmptyStream_10_IntStreamFromIntArray_ParallelStream {
                 + lazyBuildFilteredMappedEmpty.findFirst().orElse(-1));
 
 
-
         printLineOfSharp(); // ############################################################
 
         // non-empty builds
         list.add(-3);
         list.add(2);
         list.add(5);
-        System.out.println("list=" + list.stream().map(s -> "\"" + s +"\"").toList());
+        System.out.println("list=" + list.stream().map(s -> "\"" + s + "\"").toList());
 
         printLineOfSharp(); // ############################################################
 
