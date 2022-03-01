@@ -1,8 +1,9 @@
 package net.mirwaldt.empty.streams.demos;
 
+import net.mirwaldt.empty.streams.LazyBuildStreams;
+
 import java.util.stream.Stream;
 
-import static net.mirwaldt.empty.streams.LazyBuildStreamFactory.lazyBuildGenericStream;
 import static net.mirwaldt.empty.streams.demos.PrintUtil.*;
 
 /**
@@ -34,7 +35,7 @@ public class EmptyStream_01_DefaultEmptyGenericStream {
 
 
         // lazy build
-        Stream<String> lazyBuildEmpty = lazyBuildGenericStream(Stream.empty());
+        Stream<String> lazyBuildEmpty = LazyBuildStreams.ofStream(Stream.empty());
         printStatistics("lazyBuildEmpty:", lazyBuildEmpty);
 
         printLineOfMinus();

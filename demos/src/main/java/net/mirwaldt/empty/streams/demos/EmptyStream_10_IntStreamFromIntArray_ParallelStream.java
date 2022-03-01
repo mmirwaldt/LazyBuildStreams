@@ -1,11 +1,11 @@
 package net.mirwaldt.empty.streams.demos;
 
+import net.mirwaldt.empty.streams.LazyBuildStreams;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
-import static net.mirwaldt.empty.streams.LazyBuildStreamFactory.lazyBuildGenericStream;
-import static net.mirwaldt.empty.streams.LazyBuildStreamFactory.lazyBuildIntStream;
 import static net.mirwaldt.empty.streams.demos.PrintUtil.*;
 
 /**
@@ -47,7 +47,7 @@ public class EmptyStream_10_IntStreamFromIntArray_ParallelStream {
 
 
         // lazy build of empty
-        IntStream lazyBuildEmpty = lazyBuildIntStream(lazyBuildGenericStream(list.parallelStream())
+        IntStream lazyBuildEmpty = LazyBuildStreams.ofIntStream(LazyBuildStreams.ofStream(list.parallelStream())
                 .mapToInt(Integer::valueOf));
         printStatistics("lazyBuildEmpty:", lazyBuildEmpty, list);
 
@@ -103,7 +103,7 @@ public class EmptyStream_10_IntStreamFromIntArray_ParallelStream {
 
 
         // lazy build of empty
-        IntStream lazyBuildNonEmpty = lazyBuildIntStream(lazyBuildGenericStream(list.parallelStream())
+        IntStream lazyBuildNonEmpty = LazyBuildStreams.ofIntStream(LazyBuildStreams.ofStream(list.parallelStream())
                 .mapToInt(Integer::valueOf));
         printStatistics("lazyBuildNonEmpty:", lazyBuildNonEmpty, list);
 
