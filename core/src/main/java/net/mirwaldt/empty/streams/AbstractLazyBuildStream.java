@@ -14,7 +14,7 @@ abstract class AbstractLazyBuildStream<T, S extends BaseStream<T, S>, I extends 
     private boolean usedOrClosed;
 
     AbstractLazyBuildStream(Spliterator<?> spliterator, boolean isParallel) {
-        if(spliterator != null && !isEmptySpliterator(spliterator)) {
+        if(spliterator != null && isNonEmptySpliterator(spliterator)) {
             this.spliterator = spliterator;
         }
         this.functions = null;
@@ -25,7 +25,7 @@ abstract class AbstractLazyBuildStream<T, S extends BaseStream<T, S>, I extends 
             Spliterator<?> spliterator,
             Function[] functions,
             boolean isParallel) {
-        if(spliterator != null && !isEmptySpliterator(spliterator)) {
+        if(spliterator != null && isNonEmptySpliterator(spliterator)) {
             this.spliterator = spliterator;
         }
         this.isParallel = isParallel;
@@ -37,7 +37,7 @@ abstract class AbstractLazyBuildStream<T, S extends BaseStream<T, S>, I extends 
             Function[] functions,
             Function<BaseStream<?, ?>, BaseStream<?, ?>> function,
             boolean isParallel) {
-        if(spliterator != null && !isEmptySpliterator(spliterator)) {
+        if(spliterator != null && isNonEmptySpliterator(spliterator)) {
             this.spliterator = spliterator;
             if (function.equals(Function.identity())) {
                 this.functions = functions;
@@ -66,15 +66,15 @@ abstract class AbstractLazyBuildStream<T, S extends BaseStream<T, S>, I extends 
         functions = null;
     }
 
-    protected static boolean isEmptySpliterator(Spliterator<?> spliterator) {
+    protected static boolean isNonEmptySpliterator(Spliterator<?> spliterator) {
         if (spliterator instanceof Spliterator.OfInt) {
-            return spliterator == Spliterators.emptyIntSpliterator();
+            return spliterator != Spliterators.emptyIntSpliterator();
         } else if (spliterator instanceof Spliterator.OfLong) {
-            return spliterator == Spliterators.emptyLongSpliterator();
+            return spliterator != Spliterators.emptyLongSpliterator();
         } else if (spliterator instanceof Spliterator.OfDouble) {
-            return spliterator == Spliterators.emptyDoubleSpliterator();
+            return spliterator != Spliterators.emptyDoubleSpliterator();
         } else {
-            return spliterator == Spliterators.emptySpliterator();
+            return spliterator != Spliterators.emptySpliterator();
         }
     }
 
