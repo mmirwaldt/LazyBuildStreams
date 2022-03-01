@@ -9,7 +9,7 @@ import static net.mirwaldt.empty.streams.demos.PrintUtil.*;
 /**
  * Use with VM option -Djol.magicFieldOffset=true
  */
-public class EmptyStream_03_DefaultEmptyIntStream {
+public class EmptyStream_07_EmptyIntStream_ParallelOp {
     public static void main(String[] args) {
         // eager build
         IntStream eagerBuildEmpty = IntStream.empty();
@@ -27,8 +27,13 @@ public class EmptyStream_03_DefaultEmptyIntStream {
 
         printLineOfMinus();
 
-        System.out.println("eagerBuildFilteredMappedEmpty.findFirst().orElse(-1)="
-                + eagerBuildFilteredMappedEmpty.findFirst().orElse(-1));
+        IntStream eagerBuildFilteredMappedParallelEmpty = eagerBuildFilteredMappedEmpty.parallel();
+        printStatistics("eagerBuildFilteredMappedParallelEmpty:", eagerBuildFilteredMappedParallelEmpty);
+
+        printLineOfMinus();
+
+        System.out.println("eagerBuildFilteredMappedParallelEmpty.findFirst().orElse(-1)="
+                + eagerBuildFilteredMappedParallelEmpty.findFirst().orElse(-1));
 
 
         printLineOfPlus();
@@ -50,8 +55,13 @@ public class EmptyStream_03_DefaultEmptyIntStream {
 
         printLineOfMinus();
 
-        System.out.println("lazyBuildFilteredMappedEmpty.findFirst().orElse(-1)="
-                + lazyBuildFilteredMappedEmpty.findFirst().orElse(-1));
+        IntStream lazyBuildFilteredMappedParallelEmpty = lazyBuildFilteredMappedEmpty.parallel();
+        printStatistics("lazyBuildFilteredMappedParallelEmpty:", lazyBuildFilteredMappedParallelEmpty);
+
+        printLineOfMinus();
+
+        System.out.println("lazyBuildFilteredMappedParallelEmpty.findFirst().orElse(-1)="
+                + lazyBuildFilteredMappedParallelEmpty.findFirst().orElse(-1));
     }
 
 // Output:
@@ -68,7 +78,11 @@ eagerBuildFilteredMappedEmpty:
 totalSize=232 bytes
 totalCount=6 objects
 ------------------------------------------------------------
-eagerBuildFilteredMappedEmpty.findFirst().orElse(-1)=-1
+eagerBuildFilteredMappedParallelEmpty:
+totalSize=232 bytes
+totalCount=6 objects
+------------------------------------------------------------
+eagerBuildFilteredMappedParallelEmpty.findFirst().orElse(-1)=-1
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 lazyBuildEmpty:
 totalSize=24 bytes
@@ -82,6 +96,10 @@ lazyBuildFilteredMappedEmpty:
 totalSize=24 bytes
 totalCount=1 objects
 ------------------------------------------------------------
-lazyBuildFilteredMappedEmpty.findFirst().orElse(-1)=-1
+lazyBuildFilteredMappedParallelEmpty:
+totalSize=24 bytes
+totalCount=1 objects
+------------------------------------------------------------
+lazyBuildFilteredMappedParallelEmpty.findFirst().orElse(-1)=-1
 */
 }

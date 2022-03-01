@@ -2,66 +2,56 @@ package net.mirwaldt.empty.streams.demos;
 
 import net.mirwaldt.empty.streams.LazyBuildStreams;
 
-import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import static net.mirwaldt.empty.streams.demos.PrintUtil.*;
 
 /**
  * Use with VM option -Djol.magicFieldOffset=true
  */
-public class EmptyStream_07_DefaultEmptyIntStream_ParallelOp {
+public class EmptyStream_01_EmptyStream {
     public static void main(String[] args) {
         // eager build
-        IntStream eagerBuildEmpty = IntStream.empty();
+        Stream<String> eagerBuildEmpty = Stream.empty();
         printStatistics("eagerBuildEmpty:", eagerBuildEmpty);
 
         printLineOfMinus();
 
-        IntStream eagerBuildFilteredEmpty = eagerBuildEmpty.filter(i -> 0 < i);
+        Stream<String> eagerBuildFilteredEmpty = eagerBuildEmpty.filter(s -> !s.isEmpty());
         printStatistics("eagerBuildFilteredEmpty:", eagerBuildFilteredEmpty);
 
         printLineOfMinus();
 
-        IntStream eagerBuildFilteredMappedEmpty = eagerBuildFilteredEmpty.map(i -> 2 * i);
+        Stream<String> eagerBuildFilteredMappedEmpty = eagerBuildFilteredEmpty.map(String::toUpperCase);
         printStatistics("eagerBuildFilteredMappedEmpty:", eagerBuildFilteredMappedEmpty);
 
         printLineOfMinus();
 
-        IntStream eagerBuildFilteredMappedParallelEmpty = eagerBuildFilteredMappedEmpty.parallel();
-        printStatistics("eagerBuildFilteredMappedParallelEmpty:", eagerBuildFilteredMappedParallelEmpty);
-
-        printLineOfMinus();
-
-        System.out.println("eagerBuildFilteredMappedParallelEmpty.findFirst().orElse(-1)="
-                + eagerBuildFilteredMappedParallelEmpty.findFirst().orElse(-1));
+        System.out.println("eagerBuildFilteredMappedEmpty.findFirst().orElse(\"?\")="
+                + eagerBuildFilteredMappedEmpty.findFirst().orElse("?"));
 
 
         printLineOfPlus();
 
 
         // lazy build
-        IntStream lazyBuildEmpty = LazyBuildStreams.ofIntStream(IntStream.empty());
+        Stream<String> lazyBuildEmpty = LazyBuildStreams.ofStream(Stream.empty());
         printStatistics("lazyBuildEmpty:", lazyBuildEmpty);
 
         printLineOfMinus();
 
-        IntStream lazyBuildFilteredEmpty = lazyBuildEmpty.filter(i -> 0 < i);
+        Stream<String> lazyBuildFilteredEmpty = lazyBuildEmpty.filter(s -> !s.isEmpty());
         printStatistics("lazyBuildFilteredEmpty:", lazyBuildFilteredEmpty);
 
         printLineOfMinus();
 
-        IntStream lazyBuildFilteredMappedEmpty = lazyBuildFilteredEmpty.map(i -> 2 * i);
+        Stream<String> lazyBuildFilteredMappedEmpty = lazyBuildFilteredEmpty.map(String::toUpperCase);
         printStatistics("lazyBuildFilteredMappedEmpty:", lazyBuildFilteredMappedEmpty);
 
         printLineOfMinus();
 
-        IntStream lazyBuildFilteredMappedParallelEmpty = lazyBuildFilteredMappedEmpty.parallel();
-        printStatistics("lazyBuildFilteredMappedParallelEmpty:", lazyBuildFilteredMappedParallelEmpty);
-
-        printLineOfMinus();
-
-        System.out.println("lazyBuildFilteredMappedParallelEmpty.findFirst().orElse(-1)="
-                + lazyBuildFilteredMappedParallelEmpty.findFirst().orElse(-1));
+        System.out.println("lazyBuildFilteredMappedEmpty.findFirst().orElse(\"?\")="
+                + lazyBuildFilteredMappedEmpty.findFirst().orElse("?"));
     }
 
 // Output:
@@ -78,11 +68,7 @@ eagerBuildFilteredMappedEmpty:
 totalSize=232 bytes
 totalCount=6 objects
 ------------------------------------------------------------
-eagerBuildFilteredMappedParallelEmpty:
-totalSize=232 bytes
-totalCount=6 objects
-------------------------------------------------------------
-eagerBuildFilteredMappedParallelEmpty.findFirst().orElse(-1)=-1
+eagerBuildFilteredMappedEmpty.findFirst().orElse("?")=?
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 lazyBuildEmpty:
 totalSize=24 bytes
@@ -96,10 +82,6 @@ lazyBuildFilteredMappedEmpty:
 totalSize=24 bytes
 totalCount=1 objects
 ------------------------------------------------------------
-lazyBuildFilteredMappedParallelEmpty:
-totalSize=24 bytes
-totalCount=1 objects
-------------------------------------------------------------
-lazyBuildFilteredMappedParallelEmpty.findFirst().orElse(-1)=-1
-*/
+lazyBuildFilteredMappedEmpty.findFirst().orElse("?")=?
+ */
 }

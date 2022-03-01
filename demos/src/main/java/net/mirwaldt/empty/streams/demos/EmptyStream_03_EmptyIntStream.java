@@ -2,56 +2,56 @@ package net.mirwaldt.empty.streams.demos;
 
 import net.mirwaldt.empty.streams.LazyBuildStreams;
 
-import java.util.stream.Stream;
+import java.util.stream.IntStream;
 
 import static net.mirwaldt.empty.streams.demos.PrintUtil.*;
 
 /**
  * Use with VM option -Djol.magicFieldOffset=true
  */
-public class EmptyStream_01_DefaultEmptyStream {
+public class EmptyStream_03_EmptyIntStream {
     public static void main(String[] args) {
         // eager build
-        Stream<String> eagerBuildEmpty = Stream.empty();
+        IntStream eagerBuildEmpty = IntStream.empty();
         printStatistics("eagerBuildEmpty:", eagerBuildEmpty);
 
         printLineOfMinus();
 
-        Stream<String> eagerBuildFilteredEmpty = eagerBuildEmpty.filter(s -> !s.isEmpty());
+        IntStream eagerBuildFilteredEmpty = eagerBuildEmpty.filter(i -> 0 < i);
         printStatistics("eagerBuildFilteredEmpty:", eagerBuildFilteredEmpty);
 
         printLineOfMinus();
 
-        Stream<String> eagerBuildFilteredMappedEmpty = eagerBuildFilteredEmpty.map(String::toUpperCase);
+        IntStream eagerBuildFilteredMappedEmpty = eagerBuildFilteredEmpty.map(i -> 2 * i);
         printStatistics("eagerBuildFilteredMappedEmpty:", eagerBuildFilteredMappedEmpty);
 
         printLineOfMinus();
 
-        System.out.println("eagerBuildFilteredMappedEmpty.findFirst().orElse(\"?\")="
-                + eagerBuildFilteredMappedEmpty.findFirst().orElse("?"));
+        System.out.println("eagerBuildFilteredMappedEmpty.findFirst().orElse(-1)="
+                + eagerBuildFilteredMappedEmpty.findFirst().orElse(-1));
 
 
         printLineOfPlus();
 
 
         // lazy build
-        Stream<String> lazyBuildEmpty = LazyBuildStreams.ofStream(Stream.empty());
+        IntStream lazyBuildEmpty = LazyBuildStreams.ofIntStream(IntStream.empty());
         printStatistics("lazyBuildEmpty:", lazyBuildEmpty);
 
         printLineOfMinus();
 
-        Stream<String> lazyBuildFilteredEmpty = lazyBuildEmpty.filter(s -> !s.isEmpty());
+        IntStream lazyBuildFilteredEmpty = lazyBuildEmpty.filter(i -> 0 < i);
         printStatistics("lazyBuildFilteredEmpty:", lazyBuildFilteredEmpty);
 
         printLineOfMinus();
 
-        Stream<String> lazyBuildFilteredMappedEmpty = lazyBuildFilteredEmpty.map(String::toUpperCase);
+        IntStream lazyBuildFilteredMappedEmpty = lazyBuildFilteredEmpty.map(i -> 2 * i);
         printStatistics("lazyBuildFilteredMappedEmpty:", lazyBuildFilteredMappedEmpty);
 
         printLineOfMinus();
 
-        System.out.println("lazyBuildFilteredMappedEmpty.findFirst().orElse(\"?\")="
-                + lazyBuildFilteredMappedEmpty.findFirst().orElse("?"));
+        System.out.println("lazyBuildFilteredMappedEmpty.findFirst().orElse(-1)="
+                + lazyBuildFilteredMappedEmpty.findFirst().orElse(-1));
     }
 
 // Output:
@@ -68,7 +68,7 @@ eagerBuildFilteredMappedEmpty:
 totalSize=232 bytes
 totalCount=6 objects
 ------------------------------------------------------------
-eagerBuildFilteredMappedEmpty.findFirst().orElse("?")=?
+eagerBuildFilteredMappedEmpty.findFirst().orElse(-1)=-1
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 lazyBuildEmpty:
 totalSize=24 bytes
@@ -82,6 +82,6 @@ lazyBuildFilteredMappedEmpty:
 totalSize=24 bytes
 totalCount=1 objects
 ------------------------------------------------------------
-lazyBuildFilteredMappedEmpty.findFirst().orElse("?")=?
- */
+lazyBuildFilteredMappedEmpty.findFirst().orElse(-1)=-1
+*/
 }
