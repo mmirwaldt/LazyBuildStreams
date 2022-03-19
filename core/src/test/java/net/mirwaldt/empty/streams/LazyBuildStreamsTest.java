@@ -10,7 +10,7 @@ import java.util.stream.Stream;
 import static net.mirwaldt.empty.streams.LazyBuildStreams.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class LazyBuildStreamUtilTest {
+public class LazyBuildStreamsTest {
     @Test
     void testParallelGenericStreams() {
         assertFalse(ofStream(Stream.empty()).isParallel());
