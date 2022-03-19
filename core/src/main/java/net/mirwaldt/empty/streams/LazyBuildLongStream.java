@@ -4,9 +4,7 @@ import java.util.*;
 import java.util.function.*;
 import java.util.stream.*;
 
-final class LazyBuildLongStream
-        extends AbstractLazyBuildStream<Long, LongStream, Spliterator.OfLong>
-        implements LongStream {
+final class LazyBuildLongStream extends AbstractLazyBuildStream<Long, LongStream> implements LongStream {
     LazyBuildLongStream(LongStream stream) {
         super(stream);
     }

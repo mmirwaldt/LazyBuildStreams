@@ -7,9 +7,7 @@ import java.util.Spliterator;
 import java.util.function.*;
 import java.util.stream.*;
 
-final class LazyBuildStream<T>
-        extends AbstractLazyBuildStream<T, Stream<T>, Spliterator<T>>
-        implements Stream<T> {
+final class LazyBuildStream<T> extends AbstractLazyBuildStream<T, Stream<T>> implements Stream<T> {
     LazyBuildStream(Stream<T> stream) {
         super(stream);
     }

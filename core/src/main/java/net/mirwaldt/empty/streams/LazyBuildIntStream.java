@@ -4,9 +4,7 @@ import java.util.*;
 import java.util.function.*;
 import java.util.stream.*;
 
-final class LazyBuildIntStream
-        extends AbstractLazyBuildStream<Integer, IntStream, Spliterator.OfInt>
-        implements IntStream {
+final class LazyBuildIntStream extends AbstractLazyBuildStream<Integer, IntStream> implements IntStream {
     LazyBuildIntStream(IntStream stream) {
         super(stream);
     }

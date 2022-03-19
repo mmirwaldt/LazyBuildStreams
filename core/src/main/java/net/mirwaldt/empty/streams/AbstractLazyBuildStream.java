@@ -6,8 +6,7 @@ import java.util.function.Function;
 import java.util.stream.BaseStream;
 import java.util.stream.StreamSupport;
 
-abstract class AbstractLazyBuildStream<T, S extends BaseStream<T, S>, I extends Spliterator<T>>
-        implements BaseStream<T, S> {
+abstract class AbstractLazyBuildStream<T, S extends BaseStream<T, S>> implements BaseStream<T, S> {
     protected Spliterator<?> spliterator;
     protected Function[] functions;
     protected boolean isParallel;
