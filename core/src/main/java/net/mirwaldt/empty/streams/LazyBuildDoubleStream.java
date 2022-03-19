@@ -1,9 +1,6 @@
 package net.mirwaldt.empty.streams;
 
-import java.util.DoubleSummaryStatistics;
-import java.util.OptionalDouble;
-import java.util.PrimitiveIterator;
-import java.util.Spliterator;
+import java.util.*;
 import java.util.function.*;
 import java.util.stream.*;
 
@@ -23,36 +20,42 @@ final class LazyBuildDoubleStream extends AbstractLazyBuildStream<Double, Double
 
     @Override
     public DoubleStream filter(DoublePredicate predicate) {
+        Objects.requireNonNull(predicate);
         return new LazyBuildDoubleStream(getSpliterator(), functions(),
                 (stream) -> ((DoubleStream) stream).filter(predicate), isParallel);
     }
 
     @Override
     public DoubleStream map(DoubleUnaryOperator mapper) {
+        Objects.requireNonNull(mapper);
         return new LazyBuildDoubleStream(getSpliterator(), functions(),
                 (stream) -> ((DoubleStream) stream).map(mapper), isParallel);
     }
 
     @Override
     public <U> Stream<U> mapToObj(DoubleFunction<? extends U> mapper) {
+        Objects.requireNonNull(mapper);
         return new LazyBuildStream<>(getSpliterator(), functions(),
                 (stream) -> ((DoubleStream) stream).mapToObj(mapper), isParallel);
     }
 
     @Override
     public IntStream mapToInt(DoubleToIntFunction mapper) {
+        Objects.requireNonNull(mapper);
         return new LazyBuildIntStream(getSpliterator(), functions(),
                 (stream) -> ((DoubleStream) stream).mapToInt(mapper), isParallel);
     }
 
     @Override
     public LongStream mapToLong(DoubleToLongFunction mapper) {
+        Objects.requireNonNull(mapper);
         return new LazyBuildLongStream(getSpliterator(), functions(),
                 (stream) -> ((DoubleStream) stream).mapToLong(mapper), isParallel);
     }
 
     @Override
     public DoubleStream flatMap(DoubleFunction<? extends DoubleStream> mapper) {
+        Objects.requireNonNull(mapper);
         return new LazyBuildDoubleStream(getSpliterator(), functions(),
                 (stream) -> ((DoubleStream) stream).flatMap(mapper), isParallel);
     }
@@ -71,6 +74,7 @@ final class LazyBuildDoubleStream extends AbstractLazyBuildStream<Double, Double
 
     @Override
     public DoubleStream peek(DoubleConsumer action) {
+        Objects.requireNonNull(action);
         return new LazyBuildDoubleStream(getSpliterator(), functions(),
                 (stream) -> ((DoubleStream) stream).peek(action), isParallel);
     }
@@ -89,11 +93,13 @@ final class LazyBuildDoubleStream extends AbstractLazyBuildStream<Double, Double
 
     @Override
     public void forEach(DoubleConsumer action) {
+        Objects.requireNonNull(action);
         getOnce().forEach(action);
     }
 
     @Override
     public void forEachOrdered(DoubleConsumer action) {
+        Objects.requireNonNull(action);
         getOnce().forEachOrdered(action);
     }
 
@@ -104,16 +110,21 @@ final class LazyBuildDoubleStream extends AbstractLazyBuildStream<Double, Double
 
     @Override
     public double reduce(double identity, DoubleBinaryOperator op) {
+        Objects.requireNonNull(op);
         return getOnce().reduce(identity, op);
     }
 
     @Override
     public OptionalDouble reduce(DoubleBinaryOperator op) {
+        Objects.requireNonNull(op);
         return getOnce().reduce(op);
     }
 
     @Override
     public <R> R collect(Supplier<R> supplier, ObjDoubleConsumer<R> accumulator, BiConsumer<R, R> combiner) {
+        Objects.requireNonNull(supplier);
+        Objects.requireNonNull(accumulator);
+        Objects.requireNonNull(combiner);
         return getOnce().collect(supplier, accumulator, combiner);
     }
 
@@ -149,16 +160,19 @@ final class LazyBuildDoubleStream extends AbstractLazyBuildStream<Double, Double
 
     @Override
     public boolean anyMatch(DoublePredicate predicate) {
+        Objects.requireNonNull(predicate);
         return getOnce().anyMatch(predicate);
     }
 
     @Override
     public boolean allMatch(DoublePredicate predicate) {
+        Objects.requireNonNull(predicate);
         return getOnce().allMatch(predicate);
     }
 
     @Override
     public boolean noneMatch(DoublePredicate predicate) {
+        Objects.requireNonNull(predicate);
         return getOnce().noneMatch(predicate);
     }
 
@@ -196,6 +210,7 @@ final class LazyBuildDoubleStream extends AbstractLazyBuildStream<Double, Double
 
     @Override
     public DoubleStream onClose(Runnable closeHandler) {
+        Objects.requireNonNull(closeHandler);
         return new LazyBuildDoubleStream(getSpliterator(), functions(),
                 (stream) -> ((DoubleStream) stream).onClose(closeHandler), isParallel);
     }

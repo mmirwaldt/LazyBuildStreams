@@ -20,36 +20,42 @@ final class LazyBuildIntStream extends AbstractLazyBuildStream<Integer, IntStrea
 
     @Override
     public IntStream filter(IntPredicate predicate) {
+        Objects.requireNonNull(predicate);
         return new LazyBuildIntStream(getSpliterator(), functions(),
                 (stream) -> ((IntStream) stream).filter(predicate), isParallel);
     }
 
     @Override
     public IntStream map(IntUnaryOperator mapper) {
+        Objects.requireNonNull(mapper);
         return new LazyBuildIntStream(getSpliterator(), functions(),
                 (stream) -> ((IntStream) stream).map(mapper), isParallel);
     }
 
     @Override
     public <U> Stream<U> mapToObj(IntFunction<? extends U> mapper) {
+        Objects.requireNonNull(mapper);
         return new LazyBuildStream<>(getSpliterator(), functions(),
                 (stream) -> ((IntStream) stream).mapToObj(mapper), isParallel);
     }
 
     @Override
     public LongStream mapToLong(IntToLongFunction mapper) {
+        Objects.requireNonNull(mapper);
         return new LazyBuildLongStream(getSpliterator(), functions(),
                 (stream) -> ((IntStream) stream).mapToLong(mapper), isParallel);
     }
 
     @Override
     public DoubleStream mapToDouble(IntToDoubleFunction mapper) {
+        Objects.requireNonNull(mapper);
         return new LazyBuildDoubleStream(getSpliterator(), functions(),
                 (stream) -> ((IntStream) stream).mapToDouble(mapper), isParallel);
     }
 
     @Override
     public IntStream flatMap(IntFunction<? extends IntStream> mapper) {
+        Objects.requireNonNull(mapper);
         return new LazyBuildIntStream(getSpliterator(), functions(),
                 (stream) -> ((IntStream) stream).flatMap(mapper), isParallel);
     }
@@ -68,6 +74,7 @@ final class LazyBuildIntStream extends AbstractLazyBuildStream<Integer, IntStrea
 
     @Override
     public IntStream peek(IntConsumer action) {
+        Objects.requireNonNull(action);
         return new LazyBuildIntStream(getSpliterator(), functions(),
                 (stream) -> ((IntStream) stream).peek(action), isParallel);
     }
@@ -86,11 +93,13 @@ final class LazyBuildIntStream extends AbstractLazyBuildStream<Integer, IntStrea
 
     @Override
     public void forEach(IntConsumer action) {
+        Objects.requireNonNull(action);
         getOnce().forEach(action);
     }
 
     @Override
     public void forEachOrdered(IntConsumer action) {
+        Objects.requireNonNull(action);
         getOnce().forEachOrdered(action);
     }
 
@@ -101,16 +110,21 @@ final class LazyBuildIntStream extends AbstractLazyBuildStream<Integer, IntStrea
 
     @Override
     public int reduce(int identity, IntBinaryOperator op) {
+        Objects.requireNonNull(op);
         return getOnce().reduce(identity, op);
     }
 
     @Override
     public OptionalInt reduce(IntBinaryOperator op) {
+        Objects.requireNonNull(op);
         return getOnce().reduce(op);
     }
 
     @Override
     public <R> R collect(Supplier<R> supplier, ObjIntConsumer<R> accumulator, BiConsumer<R, R> combiner) {
+        Objects.requireNonNull(supplier);
+        Objects.requireNonNull(accumulator);
+        Objects.requireNonNull(combiner);
         return getOnce().collect(supplier, accumulator, combiner);
     }
 
@@ -146,16 +160,19 @@ final class LazyBuildIntStream extends AbstractLazyBuildStream<Integer, IntStrea
 
     @Override
     public boolean anyMatch(IntPredicate predicate) {
+        Objects.requireNonNull(predicate);
         return getOnce().anyMatch(predicate);
     }
 
     @Override
     public boolean allMatch(IntPredicate predicate) {
+        Objects.requireNonNull(predicate);
         return getOnce().allMatch(predicate);
     }
 
     @Override
     public boolean noneMatch(IntPredicate predicate) {
+        Objects.requireNonNull(predicate);
         return getOnce().noneMatch(predicate);
     }
 
@@ -205,6 +222,7 @@ final class LazyBuildIntStream extends AbstractLazyBuildStream<Integer, IntStrea
 
     @Override
     public IntStream onClose(Runnable closeHandler) {
+        Objects.requireNonNull(closeHandler);
         return new LazyBuildIntStream(getSpliterator(), functions(),
                 (stream) -> ((IntStream) stream).onClose(closeHandler), isParallel);
     }

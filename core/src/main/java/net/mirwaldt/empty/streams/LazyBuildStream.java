@@ -1,9 +1,6 @@
 package net.mirwaldt.empty.streams;
 
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.Optional;
-import java.util.Spliterator;
+import java.util.*;
 import java.util.function.*;
 import java.util.stream.*;
 
@@ -31,54 +28,63 @@ final class LazyBuildStream<T> extends AbstractLazyBuildStream<T, Stream<T>> imp
 
     @Override
     public Stream<T> filter(Predicate<? super T> predicate) {
+        Objects.requireNonNull(predicate);
         return new LazyBuildStream<>(getSpliterator(), functions(),
                 (stream) -> ((Stream<T>) stream).filter(predicate), isParallel);
     }
 
     @Override
     public <R> Stream<R> map(Function<? super T, ? extends R> mapper) {
+        Objects.requireNonNull(mapper);
         return new LazyBuildStream<>(getSpliterator(), functions(),
                 (stream) -> ((Stream<T>) stream).map(mapper), isParallel);
     }
 
     @Override
     public IntStream mapToInt(ToIntFunction<? super T> mapper) {
+        Objects.requireNonNull(mapper);
         return new LazyBuildIntStream(getSpliterator(), functions(),
                 (stream) -> ((Stream<T>) stream).mapToInt(mapper), isParallel);
     }
 
     @Override
     public LongStream mapToLong(ToLongFunction<? super T> mapper) {
+        Objects.requireNonNull(mapper);
         return new LazyBuildLongStream(getSpliterator(), functions(),
                 (stream) -> ((Stream<T>) stream).mapToLong(mapper), isParallel);
     }
 
     @Override
     public DoubleStream mapToDouble(ToDoubleFunction<? super T> mapper) {
+        Objects.requireNonNull(mapper);
         return new LazyBuildDoubleStream(getSpliterator(), functions(),
                 (stream) -> ((Stream<T>) stream).mapToDouble(mapper), isParallel);
     }
 
     @Override
     public <R> Stream<R> flatMap(Function<? super T, ? extends Stream<? extends R>> mapper) {
+        Objects.requireNonNull(mapper);
         return new LazyBuildStream<>(getSpliterator(), functions(),
                 (stream) -> ((Stream<T>) stream).flatMap(mapper), isParallel);
     }
 
     @Override
     public IntStream flatMapToInt(Function<? super T, ? extends IntStream> mapper) {
+        Objects.requireNonNull(mapper);
         return new LazyBuildIntStream(getSpliterator(), functions(),
                 (stream) -> ((Stream<T>) stream).flatMapToInt(mapper), isParallel);
     }
 
     @Override
     public LongStream flatMapToLong(Function<? super T, ? extends LongStream> mapper) {
+        Objects.requireNonNull(mapper);
         return new LazyBuildLongStream(getSpliterator(), functions(),
                 (stream) -> ((Stream<T>) stream).flatMapToLong(mapper), isParallel);
     }
 
     @Override
     public DoubleStream flatMapToDouble(Function<? super T, ? extends DoubleStream> mapper) {
+        Objects.requireNonNull(mapper);
         return new LazyBuildDoubleStream(getSpliterator(), functions(),
                 (stream) -> ((Stream<T>) stream).flatMapToDouble(mapper), isParallel);
     }
@@ -97,12 +103,14 @@ final class LazyBuildStream<T> extends AbstractLazyBuildStream<T, Stream<T>> imp
 
     @Override
     public Stream<T> sorted(Comparator<? super T> comparator) {
+        Objects.requireNonNull(comparator);
         return new LazyBuildStream<>(getSpliterator(), functions(),
                 (stream) -> ((Stream<T>) stream).sorted(comparator), isParallel);
     }
 
     @Override
     public Stream<T> peek(Consumer<? super T> action) {
+        Objects.requireNonNull(action);
         return new LazyBuildStream<>(getSpliterator(), functions(),
                 (stream) -> ((Stream<T>) stream).peek(action), isParallel);
     }
@@ -121,11 +129,13 @@ final class LazyBuildStream<T> extends AbstractLazyBuildStream<T, Stream<T>> imp
 
     @Override
     public void forEach(Consumer<? super T> action) {
+        Objects.requireNonNull(action);
         getOnce().forEach(action);
     }
 
     @Override
     public void forEachOrdered(Consumer<? super T> action) {
+        Objects.requireNonNull(action);
         getOnce().forEachOrdered(action);
     }
 
@@ -136,41 +146,54 @@ final class LazyBuildStream<T> extends AbstractLazyBuildStream<T, Stream<T>> imp
 
     @Override
     public <A> A[] toArray(IntFunction<A[]> generator) {
+        Objects.requireNonNull(generator);
         return getOnce().toArray(generator);
     }
 
     @Override
     public T reduce(T identity, BinaryOperator<T> accumulator) {
+        Objects.requireNonNull(identity);
+        Objects.requireNonNull(accumulator);
         return getOnce().reduce(identity, accumulator);
     }
 
     @Override
     public Optional<T> reduce(BinaryOperator<T> accumulator) {
+        Objects.requireNonNull(accumulator);
         return getOnce().reduce(accumulator);
     }
 
     @Override
     public <U> U reduce(U identity, BiFunction<U, ? super T, U> accumulator, BinaryOperator<U> combiner) {
+        Objects.requireNonNull(identity);
+        Objects.requireNonNull(accumulator);
+        Objects.requireNonNull(combiner);
         return getOnce().reduce(identity, accumulator, combiner);
     }
 
     @Override
     public <R> R collect(Supplier<R> supplier, BiConsumer<R, ? super T> accumulator, BiConsumer<R, R> combiner) {
+        Objects.requireNonNull(supplier);
+        Objects.requireNonNull(accumulator);
+        Objects.requireNonNull(combiner);
         return getOnce().collect(supplier, accumulator, combiner);
     }
 
     @Override
     public <R, A> R collect(Collector<? super T, A, R> collector) {
+        Objects.requireNonNull(collector);
         return getOnce().collect(collector);
     }
 
     @Override
     public Optional<T> min(Comparator<? super T> comparator) {
+        Objects.requireNonNull(comparator);
         return getOnce().min(comparator);
     }
 
     @Override
     public Optional<T> max(Comparator<? super T> comparator) {
+        Objects.requireNonNull(comparator);
         return getOnce().max(comparator);
     }
 
@@ -181,16 +204,19 @@ final class LazyBuildStream<T> extends AbstractLazyBuildStream<T, Stream<T>> imp
 
     @Override
     public boolean anyMatch(Predicate<? super T> predicate) {
+        Objects.requireNonNull(predicate);
         return getOnce().anyMatch(predicate);
     }
 
     @Override
     public boolean allMatch(Predicate<? super T> predicate) {
+        Objects.requireNonNull(predicate);
         return getOnce().allMatch(predicate);
     }
 
     @Override
     public boolean noneMatch(Predicate<? super T> predicate) {
+        Objects.requireNonNull(predicate);
         return getOnce().noneMatch(predicate);
     }
 
@@ -232,6 +258,7 @@ final class LazyBuildStream<T> extends AbstractLazyBuildStream<T, Stream<T>> imp
 
     @Override
     public Stream<T> onClose(Runnable closeHandler) {
+        Objects.requireNonNull(closeHandler);
         return new LazyBuildStream<>(getSpliterator(), functions(),
                 (stream) -> ((Stream<T>) stream).onClose(closeHandler), isParallel);
     }

@@ -20,36 +20,42 @@ final class LazyBuildLongStream extends AbstractLazyBuildStream<Long, LongStream
 
     @Override
     public LongStream filter(LongPredicate predicate) {
+        Objects.requireNonNull(predicate);
         return new LazyBuildLongStream(getSpliterator(), functions(),
                 (stream) -> ((LongStream) stream).filter(predicate), isParallel);
     }
 
     @Override
     public LongStream map(LongUnaryOperator mapper) {
+        Objects.requireNonNull(mapper);
         return new LazyBuildLongStream(getSpliterator(), functions(),
                 (stream) -> ((LongStream) stream).map(mapper), isParallel);
     }
 
     @Override
     public <U> Stream<U> mapToObj(LongFunction<? extends U> mapper) {
+        Objects.requireNonNull(mapper);
         return new LazyBuildStream(getSpliterator(), functions(),
                 (stream) -> ((LongStream) stream).mapToObj(mapper), isParallel);
     }
 
     @Override
     public IntStream mapToInt(LongToIntFunction mapper) {
+        Objects.requireNonNull(mapper);
         return new LazyBuildIntStream(getSpliterator(), functions(),
                 (stream) -> ((LongStream) stream).mapToInt(mapper), isParallel);
     }
 
     @Override
     public DoubleStream mapToDouble(LongToDoubleFunction mapper) {
+        Objects.requireNonNull(mapper);
         return new LazyBuildDoubleStream(getSpliterator(), functions(),
                 (stream) -> ((LongStream) stream).mapToDouble(mapper), isParallel);
     }
 
     @Override
     public LongStream flatMap(LongFunction<? extends LongStream> mapper) {
+        Objects.requireNonNull(mapper);
         return new LazyBuildLongStream(getSpliterator(), functions(),
                 (stream) -> ((LongStream) stream).flatMap(mapper), isParallel);
     }
@@ -68,6 +74,7 @@ final class LazyBuildLongStream extends AbstractLazyBuildStream<Long, LongStream
 
     @Override
     public LongStream peek(LongConsumer action) {
+        Objects.requireNonNull(action);
         return new LazyBuildLongStream(getSpliterator(), functions(),
                 (stream) -> ((LongStream) stream).peek(action), isParallel);
     }
@@ -86,11 +93,13 @@ final class LazyBuildLongStream extends AbstractLazyBuildStream<Long, LongStream
 
     @Override
     public void forEach(LongConsumer action) {
+        Objects.requireNonNull(action);
         getOnce().forEach(action);
     }
 
     @Override
     public void forEachOrdered(LongConsumer action) {
+        Objects.requireNonNull(action);
         getOnce().forEachOrdered(action);
     }
 
@@ -101,16 +110,21 @@ final class LazyBuildLongStream extends AbstractLazyBuildStream<Long, LongStream
 
     @Override
     public long reduce(long identity, LongBinaryOperator op) {
+        Objects.requireNonNull(op);
         return getOnce().reduce(identity, op);
     }
 
     @Override
     public OptionalLong reduce(LongBinaryOperator op) {
+        Objects.requireNonNull(op);
         return getOnce().reduce(op);
     }
 
     @Override
     public <R> R collect(Supplier<R> supplier, ObjLongConsumer<R> accumulator, BiConsumer<R, R> combiner) {
+        Objects.requireNonNull(supplier);
+        Objects.requireNonNull(accumulator);
+        Objects.requireNonNull(combiner);
         return getOnce().collect(supplier, accumulator, combiner);
     }
 
@@ -146,16 +160,19 @@ final class LazyBuildLongStream extends AbstractLazyBuildStream<Long, LongStream
 
     @Override
     public boolean anyMatch(LongPredicate predicate) {
+        Objects.requireNonNull(predicate);
         return getOnce().anyMatch(predicate);
     }
 
     @Override
     public boolean allMatch(LongPredicate predicate) {
+        Objects.requireNonNull(predicate);
         return getOnce().allMatch(predicate);
     }
 
     @Override
     public boolean noneMatch(LongPredicate predicate) {
+        Objects.requireNonNull(predicate);
         return getOnce().noneMatch(predicate);
     }
 
@@ -199,6 +216,7 @@ final class LazyBuildLongStream extends AbstractLazyBuildStream<Long, LongStream
 
     @Override
     public LongStream onClose(Runnable closeHandler) {
+        Objects.requireNonNull(closeHandler);
         return new LazyBuildLongStream(getSpliterator(), functions(),
                 (stream) -> ((LongStream) stream).onClose(closeHandler), isParallel);
     }
