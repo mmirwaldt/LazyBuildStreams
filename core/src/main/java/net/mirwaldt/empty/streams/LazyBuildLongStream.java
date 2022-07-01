@@ -46,7 +46,7 @@ final class LazyBuildLongStream extends AbstractLazyBuildStream<Long, LongStream
     @Override
     public <U> Stream<U> mapToObj(LongFunction<? extends U> mapper) {
         Objects.requireNonNull(mapper);
-        return new LazyBuildStream(getSpliterator(), functions(),
+        return new LazyBuildStream<>(getSpliterator(), functions(),
                 (stream) -> ((LongStream) stream).mapToObj(mapper), isParallel);
     }
 
